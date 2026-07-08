@@ -24,9 +24,16 @@ export const business = {
     lotBased: '병점동 203-35',
     locality: '화성시',
     region: '경기도',
+    postalCode: '18413',
     country: 'KR',
-    // TODO(확인 대기): 실제 좌표로 교체 — 오시는길 지도·JSON-LD geo 에 사용 (05 §3)
-    geo: { lat: 0, lng: 0 },
+    geo: { lat: 37.2121627, lng: 127.0515001 }, // WGS84 — 오시는길 지도·JSON-LD geo (05 §3)
+  },
+
+  // ── 지도 바로가기 (오시는 길 페이지용) ────────────────
+  maps: {
+    naverPlace: 'https://map.naver.com/p/entry/place/1323147007',
+    google: 'https://www.google.com/maps/search/?api=1&query=37.2121627,127.0515001',
+    kakao: 'https://map.kakao.com/link/map/37.2121627,127.0515001',
   },
 
   // ── 전화 ──────────────────────────────────────────────
@@ -51,8 +58,8 @@ export const business = {
 
   // ── 예약·채널 ─────────────────────────────────────────
   booking: {
-    // TODO(확인 대기): 네이버 스마트플레이스 예약 실제 URL 로 교체 (07 체크리스트 §5)
-    naverUrl: 'https://booking.naver.com/',
+    // 네이버 플레이스(예약 기능 연동) — CTA "네이버로 예약하기" 목적지
+    naverUrl: 'https://map.naver.com/p/entry/place/1323147007',
     naverBlogUrl: 'https://blog.naver.com/extran',
   },
 

@@ -26,6 +26,7 @@ const jsonLd: Record<string, unknown> = {
     streetAddress: business.address.street,
     addressLocality: business.address.locality,
     addressRegion: business.address.region,
+    postalCode: business.address.postalCode,
     addressCountry: business.address.country,
   },
   telephone: business.phone.intl,
@@ -45,15 +46,12 @@ const jsonLd: Record<string, unknown> = {
     },
   ],
   areaServed: [...business.serviceAreas],
-};
-// 좌표는 확정 시(placeholder 아닐 때)만 삽입
-if (business.address.geo.lat !== 0 || business.address.geo.lng !== 0) {
-  jsonLd.geo = {
+  geo: {
     '@type': 'GeoCoordinates',
     latitude: business.address.geo.lat,
     longitude: business.address.geo.lng,
-  };
-}
+  },
+};
 ---
 
 <!doctype html>
