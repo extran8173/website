@@ -6,12 +6,18 @@
  *   §1 한글 폰트 스택(Pretendard) · 단일 블루 액센트(#0066cc) · 그림자 전면 금지 · weight 500 금지
  */
 
-/* ── Pretendard Variable ──────────────────────────────────
- * DESIGN-motorrepair §1: self-host(woff2, font-display:swap) 가 최종 목표.
- * TODO(자산): public/fonts/ 에 PretendardVariable.woff2 배치 후 아래 @font-face 로 교체.
- * 현재는 검증용으로 jsDelivr CDN 서브셋 CSS 를 사용 (font-display:swap 포함).
+/* ── Pretendard Variable (self-host) ──────────────────────
+ * DESIGN-motorrepair §1 준수: woff2 self-host + font-display:swap.
+ * 자산: public/fonts/PretendardVariable.woff2 (Pretendard v1.3.9)
+ * 외부 CDN 의존 제거 — 로드 안정성·개인정보·오프라인 대응.
  */
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+@font-face {
+  font-family: 'Pretendard Variable';
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+  src: url('/fonts/PretendardVariable.woff2') format('woff2-variations');
+}
 
 :root {
   /* ── Colors (DESIGN-apple) ── */
