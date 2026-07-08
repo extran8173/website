@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://motorrepair.pages.dev/sitemap-index.xml

@@ -12,10 +12,13 @@ interface Props {
   path?: string;
   /** 문의 페이지 등: 하단 전환 요소 중복 방지로 FAB 숨김 (03 공통 §3) */
   hideFab?: boolean;
+  /** og:image 경로 (예: 사례 thumbnail). 미지정 시 브랜드 기본 OG 이미지 */
+  ogImage?: string;
 }
 
-const { title, description, path, hideFab = false } = Astro.props;
+const { title, description, path, hideFab = false, ogImage = '/og-default.png' } = Astro.props;
 const canonical = new URL(path ?? Astro.url.pathname, Astro.site).href;
+const ogImageUrl = new URL(ogImage, Astro.site).href;
 
 // ── JSON-LD: AutoRepair (LocalBusiness 하위) — 05_local_business §3 ──
 const jsonLd: Record<string, unknown> = {
@@ -72,6 +75,15 @@ const jsonLd: Record<string, unknown> = {
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content={business.name} />
     <meta property="og:locale" content="ko_KR" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
