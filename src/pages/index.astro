@@ -1,0 +1,43 @@
+---
+// 홈 — 빌드 1단계 검증용 최소 스캐폴드.
+// ⚠️ 확정 카피·섹션 구조는 빌드 3단계에서 docs/기획/page_main.md 기준으로 작성.
+//    여기서는 확정된 불변 사실(상호·서비스지역·CTA)만 노출한다 (추측 카피 금지).
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { business, cta } from '../data/business.ts';
+
+const title = `${business.name} — 동탄·화성 수입차 전문 정비`;
+const description =
+  '브랜드 전용 진단기(ISTA+·Xentry·ODIS·PIWIS)로 진단하는 수입차 전문 정비소. 동탄·화성·오산·평택.';
+---
+
+<BaseLayout title={title} description={description} path="/">
+  <section class="hero container">
+    <p class="hero-eyebrow t-tagline">{business.serviceAreaText}</p>
+    <h1 class="t-hero-display">{business.name}</h1>
+    <p class="hero-lead t-lead">{description}</p>
+    <div class="hero-cta">
+      <a href={cta.callHref} class="btn btn-call btn-hero">{cta.callLabel}</a>
+      <a href={cta.naverHref} target="_blank" rel="noopener" class="btn btn-naver btn-hero">{cta.naverLabel}</a>
+    </div>
+    <p class="hero-note t-caption">※ 이 페이지는 빌드 1단계 검증용입니다. 확정 콘텐츠는 3단계에서 반영됩니다.</p>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: var(--space-section);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .hero-eyebrow { color: var(--color-primary); }
+  .hero-lead { max-width: 42ch; color: var(--color-ink-muted-80); }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+  .hero-note { color: var(--color-ink-muted-48); margin-top: 8px; }
+
+  @media (max-width: 640px) {
+    .hero { padding-block: var(--space-xxl); }
+    .hero :global(.t-hero-display) { font-size: 34px; }
+  }
+</style>

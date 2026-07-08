@@ -1,0 +1,89 @@
+---
+import '../styles/tokens.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FabContact from '../components/FabContact.astro';
+import { business } from '../data/business.ts';
+
+interface Props {
+  title: string;
+  description: string;
+  /** canonical 경로 (예: "/services/") — 미지정 시 현재 URL */
+  path?: string;
+}
+
+const { title, description, path } = Astro.props;
+const canonical = new URL(path ?? Astro.url.pathname, Astro.site).href;
+
+// ── JSON-LD: AutoRepair (LocalBusiness 하위) — 05_local_business §3 ──
+const jsonLd: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'AutoRepair',
+  name: business.name,
+  alternateName: business.alternateName,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: business.address.street,
+    addressLocality: business.address.locality,
+    addressRegion: business.address.region,
+    addressCountry: business.address.country,
+  },
+  telephone: business.phone.intl,
+  url: Astro.site?.href,
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: business.hours.weekday.opens,
+      closes: business.hours.weekday.closes,
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: 'Saturday',
+      opens: business.hours.saturday.opens,
+      closes: business.hours.saturday.closes,
+    },
+  ],
+  areaServed: [...business.serviceAreas],
+};
+// 좌표는 확정 시(placeholder 아닐 때)만 삽입
+if (business.address.geo.lat !== 0 || business.address.geo.lng !== 0) {
+  jsonLd.geo = {
+    '@type': 'GeoCoordinates',
+    latitude: business.address.geo.lat,
+    longitude: business.address.geo.lng,
+  };
+}
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={business.name} />
+    <meta property="og:locale" content="ko_KR" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <!-- JSON-LD: AutoRepair -->
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <FabContact />
+  </body>
+</html>

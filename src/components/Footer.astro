@@ -1,0 +1,71 @@
+---
+// 푸터 — parchment 배경 · 3단(데스크톱)/1단(모바일) · 법정·SEO 행
+// 기준: 03_common_ui §2 · DESIGN-motorrepair §5 · 05_local_business §4
+import { navItems, business, cta } from '../data/business.ts';
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <!-- 열 1 — 사업자 정보 -->
+    <div class="footer-col">
+      <p class="footer-brand t-body-strong">{business.name}</p>
+      <p class="t-caption">{business.alternateName}</p>
+      <p class="t-caption">사업자등록번호 {business.businessRegistrationNumber}</p>
+      <p class="t-caption">{business.address.full}</p>
+      <address class="footer-hours t-caption">
+        {business.hours.displayLines.map((line) => <span>{line}</span>)}
+      </address>
+    </div>
+
+    <!-- 열 2 — 메뉴 -->
+    <nav class="footer-col" aria-label="푸터 메뉴">
+      {navItems.map((item) => (
+        <a href={item.href} class="footer-menu-link t-body">{item.label}</a>
+      ))}
+    </nav>
+
+    <!-- 열 3 — 연락·예약 -->
+    <div class="footer-col">
+      <a href={cta.callHref} class="footer-phone t-body-strong t-latin">전화 {business.phone.display}</a>
+      <a href={cta.naverHref} target="_blank" rel="noopener" class="footer-link t-body">네이버 예약</a>
+      <a href={business.booking.naverBlogUrl} target="_blank" rel="noopener" class="footer-link t-body">네이버 블로그</a>
+    </div>
+  </div>
+
+  <!-- 최하단 법정·SEO 행 -->
+  <div class="container footer-legal t-fine-print">
+    <p>{business.certifications.join(' · ')} 취득</p>
+    <p>{business.warranty.text}</p>
+    <p>{business.serviceAreaText} — {business.brands.join(' · ')}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--color-canvas-parchment);
+    color: var(--color-ink-muted-80);
+    padding-block: 64px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .footer-col { display: flex; flex-direction: column; gap: 6px; }
+  .footer-brand { color: var(--color-ink); }
+  .footer-hours { display: flex; flex-direction: column; gap: 2px; margin: 0; font-style: normal; }
+  .footer-menu-link { color: var(--color-ink-muted-80); }
+  .footer-phone { color: var(--color-ink); }   /* 유일 강조 */
+  .footer-link { color: var(--color-ink-muted-80); }
+  .footer-legal {
+    margin-top: 40px;
+    color: var(--color-ink-muted-48);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  @media (min-width: 835px) {
+    .footer-grid { grid-template-columns: 2fr 1fr 1fr; gap: 48px; }
+  }
+</style>

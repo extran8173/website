@@ -1,0 +1,81 @@
+---
+// fab-contact — 모바일 플로팅 CTA (1024px 미만). 탭하면 전화·네이버 예약 펼침.
+// 기준: 03_common_ui §3 · DESIGN-motorrepair §4
+import { cta } from '../data/business.ts';
+---
+
+<div id="fab-contact" class="fab" data-open="false">
+  <div class="fab-actions" hidden>
+    <a href={cta.callHref} class="btn btn-call fab-action">{cta.callLabel}</a>
+    <a href={cta.naverHref} target="_blank" rel="noopener" class="btn btn-naver fab-action">{cta.naverLabel}</a>
+  </div>
+  <button id="fab-toggle" class="fab-main" aria-label="연락 방법 열기" aria-expanded="false" aria-controls="fab-contact">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1L6.6 10.8z" fill="currentColor"/>
+    </svg>
+  </button>
+</div>
+
+<style>
+  .fab {
+    position: fixed;
+    right: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+  }
+  .fab-actions { display: flex; flex-direction: column; gap: 12px; }
+  .fab-actions[hidden] { display: none; }
+  .fab-action { min-height: 48px; box-shadow: none; }
+  /* 고스트 네이버 버튼이 페이지 위에 떠도 읽히도록 배경 채움 */
+  .fab-action.btn-naver { background: var(--color-canvas); }
+
+  .fab-main {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--rounded-full);
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.12s ease;
+    align-self: flex-end;
+  }
+  .fab-main:active { transform: scale(0.95); }
+  .fab-main:focus-visible { outline: 2px solid var(--color-primary-focus); outline-offset: 2px; }
+
+  /* 데스크톱(1024px 이상)에서는 숨김 — 헤더 CTA 가 대신 */
+  @media (min-width: 1024px) {
+    .fab { display: none; }
+  }
+</style>
+
+<script>
+  const fab = document.getElementById('fab-contact');
+  const toggle = document.getElementById('fab-toggle');
+  const actions = fab?.querySelector('.fab-actions') as HTMLElement | null;
+
+  function setOpen(open: boolean) {
+    if (!fab || !toggle || !actions) return;
+    fab.dataset.open = String(open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? '연락 방법 닫기' : '연락 방법 열기');
+    if (open) actions.removeAttribute('hidden');
+    else actions.setAttribute('hidden', '');
+  }
+
+  toggle?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setOpen(fab?.dataset.open !== 'true');
+  });
+  // 바깥 탭 시 접힘
+  document.addEventListener('click', (e) => {
+    if (fab && !fab.contains(e.target as Node)) setOpen(false);
+  });
+</script>

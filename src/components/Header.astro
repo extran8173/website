@@ -1,0 +1,168 @@
+---
+// 헤더 — sub-nav-frosted (parchment 80% + backdrop-blur, 높이 52px, sticky)
+// 기준: 03_common_ui §1 · DESIGN-motorrepair §5
+import { navItems, business, cta } from '../data/business.ts';
+
+const current = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? current === '/' : current.startsWith(href);
+---
+
+<header class="site-header">
+  <div class="header-inner container">
+    <a href="/" class="logo t-latin" aria-label="모터리페어 홈">MOTOR REPAIR</a>
+
+    <!-- 데스크톱 메뉴 -->
+    <nav class="nav-desktop" aria-label="주 메뉴">
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          class="nav-link t-button-utility"
+          aria-current={isActive(item.href) ? 'page' : undefined}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <!-- 데스크톱 우측: 전화 상담 + 번호 -->
+    <div class="header-cta-desktop">
+      <a href={cta.callHref} class="btn btn-call header-call">전화 상담</a>
+      <a href={cta.callHref} class="header-phone t-caption t-latin">{business.phone.display}</a>
+    </div>
+
+    <!-- 모바일 우측: 전화 아이콘 + 햄버거 -->
+    <div class="header-cta-mobile">
+      <a href={cta.callHref} class="icon-btn" aria-label="전화 걸기">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1L6.6 10.8z" fill="currentColor"/>
+        </svg>
+      </a>
+      <button id="nav-toggle" class="icon-btn" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- 모바일 오버레이 메뉴 -->
+  <div id="mobile-menu" class="mobile-menu" hidden>
+    <nav aria-label="모바일 메뉴">
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          class="mobile-link t-body-strong"
+          aria-current={isActive(item.href) ? 'page' : undefined}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+    <div class="mobile-cta">
+      <a href={cta.callHref} class="btn btn-call">{cta.callLabel}</a>
+      <a href={cta.naverHref} target="_blank" rel="noopener" class="btn btn-naver">{cta.naverLabel}</a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: 52px;
+    background: color-mix(in srgb, var(--color-canvas-parchment) 80%, transparent);
+    backdrop-filter: var(--frost);
+    -webkit-backdrop-filter: var(--frost);
+    border-bottom: 1px solid var(--color-hairline);
+  }
+  .header-inner {
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .logo {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--color-ink);
+    white-space: nowrap;
+  }
+
+  /* 데스크톱 */
+  .nav-desktop { display: none; gap: 28px; }
+  .nav-link { color: var(--color-ink-muted-80); }
+  .nav-link[aria-current='page'] { color: var(--color-ink); }
+  .header-cta-desktop { display: none; align-items: center; gap: 12px; }
+  .header-call { min-height: 36px; padding: 7px 16px; font-size: 14px; }
+  .header-phone { color: var(--color-ink); white-space: nowrap; }
+
+  /* 모바일 */
+  .header-cta-mobile { display: flex; align-items: center; gap: 4px; }
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    color: var(--color-ink);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: var(--rounded-full);
+  }
+  .icon-btn:active { transform: scale(0.95); }
+
+  .mobile-menu {
+    position: fixed;
+    inset: 52px 0 0 0;
+    background: var(--color-canvas);
+    padding: 8px 16px 24px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .mobile-menu[hidden] { display: none; }
+  .mobile-link {
+    display: flex;
+    align-items: center;
+    height: 56px;
+    color: var(--color-ink);
+    border-bottom: 1px solid var(--color-hairline);
+  }
+  .mobile-link[aria-current='page'] { color: var(--color-primary); }
+  .mobile-cta { margin-top: auto; padding-top: 24px; display: flex; flex-direction: column; gap: 12px; }
+  .mobile-cta .btn { width: 100%; min-height: 48px; }
+
+  /* 데스크톱 전환 (834px 초과) */
+  @media (min-width: 835px) {
+    .nav-desktop { display: flex; }
+    .header-cta-desktop { display: flex; }
+    .header-cta-mobile { display: none; }
+    .mobile-menu { display: none !important; }
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const menu = document.getElementById('mobile-menu');
+  if (toggle && menu) {
+    toggle.addEventListener('click', () => {
+      const open = menu.hasAttribute('hidden');
+      if (open) {
+        menu.removeAttribute('hidden');
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.setAttribute('aria-label', '메뉴 닫기');
+        document.body.style.overflow = 'hidden';
+      } else {
+        menu.setAttribute('hidden', '');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', '메뉴 열기');
+        document.body.style.overflow = '';
+      }
+    });
+  }
+</script>
