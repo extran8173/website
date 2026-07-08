@@ -1,0 +1,56 @@
+---
+// recent-cases — 최근 정비 사례 카드 3개 (Astro 컬렉션 최신순 자동).
+// 첫 발행 전: 준비 중 문구 + 네이버 블로그 링크로 임시 대체 (page_main §6).
+// 기준: 03_common_ui §5 · page_main §6 · page_services §8 · page_equipment §6
+import { getCollection } from 'astro:content';
+import CaseCard from './CaseCard.astro';
+import { business } from '../data/business.ts';
+
+interface Props {
+  heading: string;
+  sub?: string;
+  tone?: 'canvas' | 'parchment';
+  showViewAll?: boolean;
+}
+const { heading, sub, tone = 'canvas', showViewAll = true } = Astro.props;
+
+const cases = (await getCollection('cases'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+---
+
+<section class:list={['recent-cases', tone]}>
+  <div class="container">
+    <h2 class="t-display-md">{heading}</h2>
+    {sub && <p class="recent-sub t-body">{sub}</p>}
+
+    {cases.length === 0 ? (
+      <div class="recent-empty">
+        <p class="t-body">새 정비 기록을 준비하고 있습니다. 그동안의 정비 이야기는 네이버 블로그에서 보실 수 있습니다.</p>
+        <a href={business.booking.naverBlogUrl} target="_blank" rel="noopener" class="btn btn-naver">네이버 블로그 보기 →</a>
+      </div>
+    ) : (
+      <div class="recent-grid">
+        {cases.map((entry) => <CaseCard entry={entry} />)}
+      </div>
+    )}
+
+    {showViewAll && cases.length > 0 && (
+      <a href="/cases/" class="recent-viewall t-body">정비 사례 전체 보기 →</a>
+    )}
+  </div>
+</section>
+
+<style>
+  .recent-cases { padding-block: var(--space-section); }
+  .recent-cases.canvas { background: var(--color-canvas); }
+  .recent-cases.parchment { background: var(--color-canvas-parchment); }
+  .recent-cases h2 { color: var(--color-ink); margin: 0 0 var(--space-sm); }
+  .recent-sub { color: var(--color-ink-muted-80); margin: 0 0 var(--space-xl); max-width: 52ch; }
+  .recent-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-lg); }
+  .recent-empty { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-lg); }
+  .recent-viewall { display: inline-block; margin-top: var(--space-xl); color: var(--color-primary); }
+
+  @media (min-width: 641px) { .recent-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 835px) { .recent-grid { grid-template-columns: repeat(3, 1fr); } }
+</style>

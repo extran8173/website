@@ -1,0 +1,141 @@
+---
+// 진단 장비 — 확정본: docs/기획/page_equipment.md
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RecentCases from '../components/RecentCases.astro';
+import CtaSection from '../components/CtaSection.astro';
+import ImageSlot from '../components/ImageSlot.astro';
+
+const title = '브랜드 전용 진단기 · ISO 인증 | 동탄 모터리페어';
+const description =
+  'BMW ISTA+, 벤츠 Xentry, 아우디 ODIS, 포르쉐 PIWIS, Picoscope 보유. 20년 경력 대표가 직접 진단하는 동탄 수입차 정비소. ISO 9001·14001·45001 취득.';
+
+const tools = [
+  { brand: 'BMW · 미니', tool: 'ISTA+', desc: '모터리페어는 BMW 공식 진단 시스템 ISTA+를 보유하고, BMW·미니의 고장 코드 판독과 코딩·프로그래밍에 사용합니다.' },
+  { brand: '벤츠', tool: 'Xentry', desc: '모터리페어는 벤츠 공식 진단 시스템 Xentry를 보유하고, 벤츠 전 차종의 제어기 진단과 기능 설정에 사용합니다.' },
+  { brand: '아우디 · 폭스바겐', tool: 'ODIS', desc: '모터리페어는 아우디·폭스바겐 공식 진단 시스템 ODIS를 보유하고, 두 브랜드의 고장 진단과 부품 적응 작업에 사용합니다.' },
+  { brand: '포르쉐', tool: 'PIWIS', desc: '모터리페어는 포르쉐 공식 진단 시스템 PIWIS를 보유하고, 포르쉐 전 차종의 진단과 정비 이력 관리에 사용합니다.' },
+];
+---
+
+<BaseLayout title={title} description={description} path="/equipment/">
+  {/* [1] 페이지 헤드 — 다크 타일 (IMG-007 배경, 확보 전 다크 타일) */}
+  <section class="eq-head">
+    <div class="container">
+      <h1 class="t-hero-display">장비가 진단의 절반입니다</h1>
+      <p class="eq-head-sub t-lead">공식 서비스센터가 쓰는 진단기를 그대로 갖췄습니다.</p>
+    </div>
+  </section>
+
+  {/* [2] 브랜드별 진단기 — 카드 4개 */}
+  <section class="eq-tools">
+    <div class="container">
+      <h2 class="t-display-md">브랜드별 전용 진단기</h2>
+      <p class="eq-tools-intro t-body">수입차는 브랜드마다 진단 규격이 다릅니다. 범용 스캐너로는 읽지 못하는 데이터를 전용 진단기가 읽습니다.</p>
+      <div class="tool-grid">
+        {tools.map((t) => (
+          <div class="tool-card">
+            <p class="tool-brand t-caption">{t.brand}</p>
+            <p class="tool-name t-body-strong t-latin">{t.tool}</p>
+            <p class="tool-desc t-body">{t.desc}</p>
+          </div>
+        ))}
+      </div>
+      <div class="eq-tools-imgs">
+        <ImageSlot id="IMG-008" label="수입차 브랜드별 전용 진단기 노트북 세트" ratio="16 / 9" />
+        <ImageSlot id="IMG-009" label="포르쉐 PIWIS 전용 진단 화면" ratio="1 / 1" />
+      </div>
+    </div>
+  </section>
+
+  {/* [3] 정밀 계측 — Picoscope */}
+  <section class="eq-pico">
+    <div class="container eq-pico-grid">
+      <div>
+        <h2 class="t-display-md">진단기가 못 찾으면, 신호를 직접 봅니다</h2>
+        <p class="t-body eq-pico-body">
+          고장 코드만으로 원인이 좁혀지지 않는 경우가 있습니다. 그럴 때는 Picoscope(오실로스코프 — 전기 신호를 파형으로 보는 계측기)를 센서와 배선에 직접 연결해 신호를 확인합니다. 추측 대신 계측으로 판단합니다.
+        </p>
+      </div>
+      <ImageSlot id="IMG-010" label="Picoscope 정밀 진단 장비 엔진룸 계측" ratio="4 / 3" />
+    </div>
+  </section>
+
+  {/* [4] 장비를 다루는 사람 — 다크 타일 */}
+  <section class="eq-person">
+    <div class="container eq-person-grid">
+      <div>
+        <h2 class="t-display-md">장비는 도구입니다. 판단은 경력이 합니다</h2>
+        <p class="t-body eq-person-body">
+          대표 장용석은 수입차 서비스센터와 엔진 전문회사에서 20년 넘게 정비해 왔습니다. 진단 데이터를 읽는 것과 원인을 판단하는 것은 다른 일입니다. 모든 차량의 진단과 판단을 대표가 직접 합니다.
+        </p>
+      </div>
+      <ImageSlot id="IMG-011" label="동탄 수입차 정비소 차량 상태 사진 설명" ratio="4 / 3" tone="dark" />
+    </div>
+  </section>
+
+  {/* [5] 객관적 근거 — ISO 인증 (IMG-012 미보유 → 텍스트 배지) */}
+  <section class="eq-iso">
+    <div class="container">
+      <h2 class="t-display-md">숫자로 확인할 수 있는 것들</h2>
+      <p class="t-body eq-iso-body">
+        모터리페어는 ISO 9001(품질경영) · ISO 14001(환경경영) · ISO 45001(안전보건경영) 인증을 취득했습니다. 교환한 부품은 차량 제작사 기준과 동일하게 1년 / 2만km 동안 A/S를 적용합니다.
+      </p>
+      <ul class="iso-badges">
+        <li class="iso-badge t-caption">ISO 9001 · 품질경영</li>
+        <li class="iso-badge t-caption">ISO 14001 · 환경경영</li>
+        <li class="iso-badge t-caption">ISO 45001 · 안전보건경영</li>
+      </ul>
+    </div>
+  </section>
+
+  {/* [6] 최근 정비 사례 */}
+  <RecentCases heading="이 장비들로 이렇게 진단했습니다" tone="parchment" />
+
+  {/* [7] 최종 CTA */}
+  <CtaSection text="원인이 궁금하시면, 증상부터 말씀해 주세요." caption="진단 후 견적 안내 → 승인 후 작업 순서로 진행합니다." />
+</BaseLayout>
+
+<style>
+  .eq-head { background: var(--color-surface-tile-1); color: var(--color-on-dark); padding-block: 100px; }
+  .eq-head :global(.t-hero-display) { color: var(--color-on-dark); }
+  .eq-head-sub { color: var(--color-body-muted); margin: 16px 0 0; }
+
+  .eq-tools { background: var(--color-canvas); padding-block: var(--space-section); }
+  .eq-tools h2 { color: var(--color-ink); margin: 0 0 var(--space-md); }
+  .eq-tools-intro { color: var(--color-ink-muted-80); max-width: 60ch; margin: 0 0 var(--space-xl); }
+  .tool-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-lg); margin-bottom: var(--space-xl); }
+  .tool-card { border: 1px solid var(--color-hairline); border-radius: var(--rounded-lg); padding: var(--space-lg); }
+  .tool-brand { color: var(--color-ink-muted-48); margin: 0 0 4px; }
+  .tool-name { color: var(--color-primary); margin: 0 0 var(--space-sm); font-size: 20px; }
+  .tool-desc { color: var(--color-ink-muted-80); margin: 0; }
+  .eq-tools-imgs { display: grid; grid-template-columns: 1fr; gap: var(--space-lg); }
+
+  .eq-pico { background: var(--color-canvas-parchment); padding-block: var(--space-section); }
+  .eq-pico h2 { color: var(--color-ink); margin: 0 0 var(--space-md); }
+  .eq-pico-body { color: var(--color-ink-muted-80); margin: 0; }
+  .eq-pico-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-xl); align-items: center; }
+
+  .eq-person { background: var(--color-surface-tile-1); color: var(--color-on-dark); padding-block: var(--space-section); }
+  .eq-person h2 { color: var(--color-on-dark); margin: 0 0 var(--space-md); }
+  .eq-person-body { color: var(--color-body-muted); margin: 0; }
+  .eq-person-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-xl); align-items: center; }
+
+  .eq-iso { background: var(--color-canvas); padding-block: var(--space-section); }
+  .eq-iso h2 { color: var(--color-ink); margin: 0 0 var(--space-md); }
+  .eq-iso-body { color: var(--color-ink-muted-80); max-width: 64ch; margin: 0 0 var(--space-lg); }
+  .iso-badges { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .iso-badge { border: 1px solid var(--color-hairline); border-radius: var(--rounded-pill); padding: 8px 16px; color: var(--color-ink-muted-80); }
+
+  @media (min-width: 641px) {
+    .tool-grid { grid-template-columns: repeat(2, 1fr); }
+    .eq-tools-imgs { grid-template-columns: 2fr 1fr; }
+  }
+  @media (min-width: 835px) {
+    .eq-pico-grid { grid-template-columns: 1.2fr 1fr; }
+    .eq-person-grid { grid-template-columns: 1.2fr 1fr; }
+  }
+  @media (max-width: 640px) {
+    .eq-head { padding-block: 64px; }
+    .eq-head :global(.t-hero-display) { font-size: 34px; }
+  }
+</style>

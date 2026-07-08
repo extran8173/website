@@ -1,0 +1,46 @@
+---
+// 이미지 자리표시(placeholder) — 실제 사진 미배치 슬롯.
+// ⚠️ 가짜 사진이 아니다. 어떤 사진이 들어갈지 안내하는 중립 패널.
+//    실제 자산 확보 시 이 컴포넌트를 <Image>(astro:assets)로 교체한다.
+// 기준: 사업장·작업 사진 AI 생성/스톡 금지(CLAUDE.md) → 확보 전까지 빈 슬롯 유지.
+interface Props {
+  id: string; // IMG-0xx
+  label: string; // 어떤 컷인지
+  ratio?: string; // CSS aspect-ratio, 기본 16/9
+  tone?: 'light' | 'dark';
+}
+const { id, label, ratio = '16 / 9', tone = 'light' } = Astro.props;
+---
+
+<div class:list={['img-slot', tone]} style={`aspect-ratio:${ratio}`} role="img" aria-label={label}>
+  <span class="img-slot-id">{id}</span>
+  <span class="img-slot-label">{label}</span>
+  <span class="img-slot-note">사진 위치 · 실제 컷으로 교체 예정</span>
+</div>
+
+<style>
+  .img-slot {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-radius: var(--rounded-lg);
+    padding: var(--space-lg);
+    text-align: center;
+  }
+  .img-slot.light {
+    background: var(--color-canvas-parchment);
+    border: 1px dashed var(--color-hairline);
+    color: var(--color-ink-muted-48);
+  }
+  .img-slot.dark {
+    background: var(--color-surface-tile-2);
+    border: 1px dashed #4a4a4d;
+    color: var(--color-body-muted);
+  }
+  .img-slot-id { font-size: 12px; letter-spacing: 0.04em; opacity: 0.8; }
+  .img-slot-label { font-size: 15px; font-weight: 600; }
+  .img-slot-note { font-size: 12px; opacity: 0.7; }
+</style>

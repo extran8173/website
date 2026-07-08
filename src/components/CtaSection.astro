@@ -1,0 +1,36 @@
+---
+// cta-section — 페이지 하단 공통 전환 블록 (다크 타일). 문구는 페이지별 지정.
+// 기준: 03_common_ui §5 · DESIGN-motorrepair §2(다크 타일)
+import { cta } from '../data/business.ts';
+
+interface Props {
+  text: string; // 설득 문구 1줄
+  caption?: string; // 하단 caption (영업시간·대차 등)
+}
+const { text, caption } = Astro.props;
+---
+
+<section class="cta-section">
+  <div class="container">
+    <p class="cta-text t-tagline">{text}</p>
+    <div class="cta-buttons">
+      <a href={cta.callHref} class="btn btn-call">{cta.callLabel}</a>
+      <a href={cta.naverHref} target="_blank" rel="noopener" class="btn btn-naver">{cta.naverLabel}</a>
+    </div>
+    {caption && <p class="cta-caption t-caption">{caption}</p>}
+  </div>
+</section>
+
+<style>
+  .cta-section {
+    background: var(--color-surface-tile-1);
+    color: var(--color-on-dark);
+    padding-block: var(--space-section);
+    text-align: center;
+  }
+  .cta-text { margin: 0 0 var(--space-lg); color: var(--color-on-dark); }
+  .cta-buttons { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .cta-caption { margin: var(--space-lg) 0 0; color: var(--color-body-muted); }
+  /* 다크 타일 위 고스트 네이버 버튼 가독 확보 */
+  .cta-section :global(.btn-naver) { color: var(--color-on-dark); border-color: var(--color-on-dark); }
+</style>

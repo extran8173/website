@@ -10,9 +10,11 @@ interface Props {
   description: string;
   /** canonical 경로 (예: "/services/") — 미지정 시 현재 URL */
   path?: string;
+  /** 문의 페이지 등: 하단 전환 요소 중복 방지로 FAB 숨김 (03 공통 §3) */
+  hideFab?: boolean;
 }
 
-const { title, description, path } = Astro.props;
+const { title, description, path, hideFab = false } = Astro.props;
 const canonical = new URL(path ?? Astro.url.pathname, Astro.site).href;
 
 // ── JSON-LD: AutoRepair (LocalBusiness 하위) — 05_local_business §3 ──
@@ -85,6 +87,6 @@ const jsonLd: Record<string, unknown> = {
       <slot />
     </main>
     <Footer />
-    <FabContact />
+    {!hideFab && <FabContact />}
   </body>
 </html>
