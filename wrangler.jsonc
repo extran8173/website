@@ -1,0 +1,11 @@
+{
+  // Cloudflare Workers(정적 자산) 배포 설정 — Astro 정적 빌드(dist)를 그대로 서빙.
+  // Workers Builds 의 "npx wrangler deploy" 가 이 파일을 읽어 dist 를 업로드한다.
+  "name": "website",
+  "compatibility_date": "2025-06-01",
+  "assets": {
+    "directory": "./dist",
+    // 매칭 안 되는 경로는 커스텀 404 페이지를 404 상태로 서빙
+    "not_found_handling": "404-page"
+  }
+}
