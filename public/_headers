@@ -1,0 +1,15 @@
+# Cloudflare Pages 헤더 규칙 (dist 루트에 복사됨)
+
+# 해시 파일명 자산 — 영구 캐시(immutable)
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# self-host 폰트 — 장기 캐시
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# 전역 보안 헤더
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
