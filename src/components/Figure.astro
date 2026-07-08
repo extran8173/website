@@ -1,0 +1,41 @@
+---
+// 캡션 달린 최적화 이미지 — 명세: Astro_정비사례_파이프라인.md §3
+// 디자인: 그림자·보더 없음(다큐 컷), rounded.lg(18px), 캡션 caption + ink-muted-48
+import { Image } from 'astro:assets';
+
+interface Props {
+  img: ImageMetadata;
+  alt: string;
+  caption?: string;
+}
+const { img, alt, caption } = Astro.props;
+---
+
+<figure class="case-figure">
+  <Image
+    src={img}
+    alt={alt}
+    widths={[480, 768, 1200]}
+    sizes="(max-width: 980px) 100vw, 980px"
+    loading="lazy"
+    decoding="async"
+  />
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .case-figure { margin: var(--space-xl) 0; } /* 32px */
+  .case-figure :global(img) {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--rounded-lg); /* 18px, 그림자·보더 없음 */
+  }
+  .case-figure figcaption {
+    margin-top: var(--space-xs); /* 8px */
+    font-size: 14px;
+    line-height: 1.43;
+    letter-spacing: -0.224px;
+    color: var(--color-ink-muted-48); /* #7a7a7a — 조용한 캡션 */
+  }
+</style>

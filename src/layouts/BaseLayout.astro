@@ -75,6 +75,9 @@ const jsonLd: Record<string, unknown> = {
 
     <!-- JSON-LD: AutoRepair -->
     <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <!-- 페이지별 추가 head (예: 사례 상세의 FAQPage JSON-LD) -->
+    <slot name="head" />
   </head>
   <body>
     <Header />

@@ -1,0 +1,68 @@
+---
+// 정비 사례 목록 — 명세: page_cases 목록 구조. (12편 이상 시 브랜드 필터 활성 — 추후)
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseCard from '../../components/CaseCard.astro';
+import { business, cta } from '../../data/business.ts';
+
+const cases = (await getCollection('cases')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const title = '수입차 정비 사례 | 동탄 모터리페어';
+const description =
+  'BMW·벤츠·아우디·포르쉐 정비 기록. 차종, 증상, 원인, 수리 과정과 결과를 사진과 함께 남깁니다.';
+---
+
+<BaseLayout title={title} description={description} path="/cases/">
+  <section class="cases-head">
+    <div class="container">
+      <h1 class="t-display-lg">정비 기록</h1>
+      <p class="cases-sub t-lead">모든 정비를 차종 · 증상 · 원인 · 수리 · 결과 순서로, 사진과 함께 기록합니다.</p>
+      <p class="cases-caption t-caption">매주 새 사례가 올라옵니다.</p>
+    </div>
+  </section>
+
+  <section class="cases-body container">
+    {cases.length === 0 ? (
+      <div class="cases-empty">
+        <p class="t-body">새 정비 기록을 준비하고 있습니다. 그동안의 정비 이야기는 네이버 블로그에서 보실 수 있습니다.</p>
+        <a href={business.booking.naverBlogUrl} target="_blank" rel="noopener" class="btn btn-naver">네이버 블로그 보기 →</a>
+      </div>
+    ) : (
+      <div class="cases-grid">
+        {cases.map((entry) => <CaseCard entry={entry} />)}
+      </div>
+    )}
+  </section>
+
+  <section class="cases-cta">
+    <div class="container">
+      <p class="t-tagline">비슷한 증상이신가요? 차종과 증상을 말씀해 주세요.</p>
+      <div class="cases-cta-buttons">
+        <a href={cta.callHref} class="btn btn-call">{cta.callLabel}</a>
+        <a href={cta.naverHref} target="_blank" rel="noopener" class="btn btn-naver">{cta.naverLabel}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .cases-head { background: var(--color-canvas-parchment); padding-block: var(--space-section); }
+  .cases-head h1 { color: var(--color-ink); margin: 0 0 var(--space-md); }
+  .cases-sub { color: var(--color-ink-muted-80); margin: 0 0 8px; max-width: 46ch; }
+  .cases-caption { color: var(--color-ink-muted-48); margin: 0; }
+
+  .cases-body { padding-block: var(--space-section); }
+  .cases-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-lg); }
+  .cases-empty { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-lg); }
+
+  .cases-cta { background: var(--color-surface-tile-1); color: var(--color-on-dark); padding-block: var(--space-section); text-align: center; }
+  .cases-cta .t-tagline { margin: 0 0 var(--space-lg); }
+  .cases-cta-buttons { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  /* 다크 타일 위 고스트 네이버 버튼 가독 확보 */
+  .cases-cta :global(.btn-naver) { color: var(--color-on-dark); border-color: var(--color-on-dark); }
+
+  @media (min-width: 641px) { .cases-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 835px) { .cases-grid { grid-template-columns: repeat(3, 1fr); } }
+</style>

@@ -1,0 +1,155 @@
+---
+// 정비 사례 상세 — 리딩 컬럼(980px). 명세: Astro_정비사례_파이프라인.md §4 · page_cases 상세 구조
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseCard from '../../components/CaseCard.astro';
+import { cta } from '../../data/business.ts';
+
+export async function getStaticPaths() {
+  const cases = await getCollection('cases');
+  return cases.map((entry) => ({
+    params: { id: entry.data.slug ?? entry.id.replace(/\/index$/, '') },
+    props: { entry, all: cases },
+  }));
+}
+
+const { entry, all } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+
+const selfId = entry.id;
+// 관련 사례: 같은 브랜드 또는 같은 카테고리, 자기 제외, 최신순 최대 3개
+const related = all
+  .filter((e) => e.id !== selfId && (e.data.brand === d.brand || e.data.category === d.category))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const dateText = d.date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: d.faq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<BaseLayout title={d.seo_title} description={d.description} path={`/cases/${d.slug ?? selfId.replace(/\/index$/, '')}/`}>
+  <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+
+  <article class="case container">
+    <!-- [1] 헤드 -->
+    <header class="case-head">
+      <h1 class="t-display-lg">{d.title}</h1>
+      <p class="case-meta t-caption">
+        <time datetime={d.date.toISOString()}>{dateText}</time> · {d.brand} · 주행 {d.mileage_km.toLocaleString()}km
+      </p>
+    </header>
+
+    <!-- GEO 요약 카드 (한눈에 보기) -->
+    <aside class="case-summary">
+      <p class="lead t-body-strong">{d.summary_lead}</p>
+      <dl>
+        <div><dt>차종</dt><dd>{d.car_model} / {d.mileage_km.toLocaleString()}km</dd></div>
+        <div><dt>증상</dt><dd>{d.symptom_customer.join(' · ')}</dd></div>
+        <div><dt>진단</dt><dd>{d.diagnostic.join(' · ')}</dd></div>
+        <div><dt>원인</dt><dd>{d.diagnosis_cause}</dd></div>
+        <div><dt>수리</dt><dd>{d.parts_used.join(' · ')}</dd></div>
+        <div><dt>결과</dt><dd>{d.result}</dd></div>
+      </dl>
+    </aside>
+
+    <!-- [2] 본문 -->
+    <div class="case-body">
+      <Content />
+    </div>
+
+    <!-- [3] FAQ (펼친 상태) -->
+    <section class="case-faq">
+      <h2 class="t-display-md">자주 묻는 질문</h2>
+      {d.faq.map((f) => (
+        <div class="faq-item">
+          <h3 class="t-body-strong">{f.q}</h3>
+          <p class="t-body">{f.a}</p>
+        </div>
+      ))}
+    </section>
+
+    <!-- [4] 전환 블록 -->
+    <section class="case-cta">
+      <p class="t-tagline">비슷한 증상이신가요? 증상을 말씀해 주시면 원인부터 확인해 드립니다.</p>
+      <div class="case-cta-buttons">
+        <a href={cta.callHref} class="btn btn-call">{cta.callLabel}</a>
+        <a href={cta.naverHref} target="_blank" rel="noopener" class="btn btn-naver">{cta.naverLabel}</a>
+      </div>
+      <p class="case-cta-note t-caption">예: {d.symptom_customer.map((s) => `“${s}”`).join(' · ')} 같은 증상</p>
+    </section>
+
+    <!-- [5] 관련 사례 -->
+    {related.length > 0 && (
+      <section class="case-related">
+        <h2 class="t-display-md">관련 정비 사례</h2>
+        <div class="related-grid">
+          {related.map((e) => <CaseCard entry={e} />)}
+        </div>
+      </section>
+    )}
+
+    <p class="case-outro t-caption">바쁜 일정에도 찾아주셔서 고맙습니다. 언제나 안전운전입니다. 모터리페어</p>
+  </article>
+</BaseLayout>
+
+<style>
+  .case { max-width: var(--reading-max); padding-block: var(--space-xxl); }
+  .case-head h1 { color: var(--color-ink); margin: 0 0 12px; }
+  .case-meta { color: var(--color-ink-muted-48); margin: 0; }
+
+  .case-summary {
+    background: var(--color-canvas-parchment);
+    border-radius: var(--rounded-lg);
+    padding: var(--space-lg);
+    margin: var(--space-xl) 0;
+  }
+  .case-summary .lead { margin: 0 0 var(--space-md); color: var(--color-ink); }
+  .case-summary dl { margin: 0; display: flex; flex-direction: column; gap: 4px; }
+  .case-summary dl div { display: flex; gap: var(--space-sm); padding: 4px 0; }
+  .case-summary dt { min-width: 56px; color: var(--color-ink-muted-48); flex-shrink: 0; }
+  .case-summary dd { margin: 0; color: var(--color-ink); }
+
+  /* 한글 장문 본문만 행간 1.6 (DESIGN-motorrepair §6) */
+  .case-body { font-size: 17px; line-height: 1.6; letter-spacing: -0.01em; color: var(--color-body); }
+  .case-body :global(p) { margin: 0 0 var(--space-md); }
+
+  .case-faq { margin-top: var(--space-section); }
+  .case-faq h2 { color: var(--color-ink); margin-bottom: var(--space-lg); }
+  .faq-item { padding: var(--space-md) 0; border-top: 1px solid var(--color-hairline); }
+  .faq-item h3 { margin: 0 0 6px; color: var(--color-ink); }
+  .faq-item p { margin: 0; color: var(--color-ink-muted-80); }
+
+  .case-cta {
+    margin-top: var(--space-section);
+    padding: var(--space-xl);
+    background: var(--color-canvas-parchment);
+    border-radius: var(--rounded-lg);
+    text-align: center;
+  }
+  .case-cta > .t-tagline { color: var(--color-ink); margin: 0 0 var(--space-lg); }
+  .case-cta-buttons { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .case-cta-note { color: var(--color-ink-muted-48); margin: var(--space-md) 0 0; }
+
+  .case-related { margin-top: var(--space-section); }
+  .case-related h2 { color: var(--color-ink); margin-bottom: var(--space-lg); }
+  .related-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-lg); }
+
+  .case-outro { color: var(--color-ink-muted-48); margin-top: var(--space-xxl); text-align: center; }
+
+  @media (min-width: 641px) {
+    .related-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 835px) {
+    .related-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>

@@ -11,6 +11,7 @@
     "check": "astro check"
   },
   "dependencies": {
+    "@astrojs/mdx": "^4.3.14",
     "astro": "^5.6.1"
   },
   "devDependencies": {
