@@ -8,15 +8,24 @@ import { business, cta } from '../data/business.ts';
 
 const title = '동탄 수입차 전문 정비 | 모터리페어';
 const description =
-  '동탄·화성·오산·평택 수입차 정비. BMW·벤츠·아우디·포르쉐 전용 진단기로 원인을 진단하고, 작업 과정을 사진으로 보여드립니다. 부품 A/S 1년/2만km.';
+  '동탄·화성·오산·평택 수입차 정비. 엔진오일·미션오일 등 소모품 교환을 제조사 규격대로, 경고등·고장은 BMW·벤츠·아우디·포르쉐 전용 진단기로 진단합니다. 부품 A/S 1년/2만km.';
 
-// §4 증상 진입 블록
+// 정기 점검·소모품 교환 — 대표 정비(요약, 상세는 /services/#maintenance)
+const maintenanceGroups = [
+  { title: '오일류', items: '엔진오일 · 미션오일 · 디퍼렌셜오일 · 트랜스퍼케이스오일' },
+  { title: '유체 · 냉각', items: '브레이크액 · 냉각수 · 에어컨 냉매' },
+  { title: '필터류', items: '에어컨 필터 · 연료 필터' },
+  { title: '브레이크', items: '브레이크 패드 · 브레이크 로터' },
+  { title: '벨트 · 펌프', items: '구동벨트 · 타이밍벨트 · 워터펌프 · 써머스탯' },
+];
+
+// 증상 진입 블록 (고장 진단)
 const symptoms = [
   { text: '경고등이 떴어요', link: '진단', href: '/services/#diagnosis' },
   { text: '주행 중 소음이 나요', link: '브레이크·서스펜션', href: '/services/#brake-suspension' },
   { text: '에어컨이 안 나와요', link: '냉·난방', href: '/services/#hvac' },
   { text: '냉각수가 부족하다고 떠요', link: '냉·난방', href: '/services/#hvac' },
-  { text: '오일 교환 시기가 됐어요', link: '오일류', href: '/services/#oil' },
+  { text: '오일 교환 시기가 됐어요', link: '소모품 교환', href: '/services/#maintenance' },
 ];
 
 // §7 후기 (04_trust_sections §3 — 캡처 원문 기준)
@@ -48,7 +57,7 @@ const faqs = [
   <section class="hero">
     <div class="container hero-inner">
       <h1 class="t-hero-display">동탄 수입차 전문 정비</h1>
-      <p class="hero-sub t-lead">원인을 진단하고, 과정을 사진으로 보여드립니다.</p>
+      <p class="hero-sub t-lead">정기 점검·소모품 교환부터 고장 진단까지, 과정을 사진으로 보여드립니다.</p>
       <div class="hero-cta">
         <a href={cta.callHref} class="btn btn-call btn-hero">{cta.callLabel}</a>
         <a href={cta.naverHref} target="_blank" rel="noopener" class="btn btn-naver btn-hero">{cta.naverLabel}</a>
@@ -67,13 +76,33 @@ const faqs = [
       <h2 class="t-display-md">모터리페어는 이런 곳입니다</h2>
       <p class="intro-body t-body">
         모터리페어는 경기 화성 동탄에서 BMW·벤츠·아우디·폭스바겐·미니·포르쉐를 정비하는 수입차 전문 정비소입니다.
-        ISTA+·Xentry·ODIS·PIWIS 등 브랜드 전용 진단기로 고장 원인을 진단하고, 점검부터 출고까지 모든 과정을 사진으로 기록해 보여드립니다.
-        서비스센터와 엔진 전문회사에서 20년 넘게 정비해 온 대표가 직접 진단합니다.
+        엔진오일·미션오일 등 교환주기가 정해진 소모품 정비를 차종별 제조사 규격에 맞춰 진행하고, 원인 모를 증상은 ISTA+·Xentry·ODIS·PIWIS 등 브랜드 전용 진단기로 진단합니다.
+        점검부터 출고까지 모든 과정을 사진으로 기록해 보여드리며, 서비스센터와 엔진 전문회사에서 20년 넘게 정비해 온 대표가 직접 진단합니다.
       </p>
     </div>
   </section>
 
-  {/* [4] 증상 진입 블록 */}
+  {/* [4] 정기 점검·소모품 교환 — 대표 정비 */}
+  <section class="maint-band">
+    <div class="container">
+      <p class="maint-eyebrow t-caption-strong">정기 점검 · 소모품 교환</p>
+      <h2 class="t-display-md">정비의 대부분은 소모품 교환입니다</h2>
+      <p class="maint-band-body t-body">
+        엔진오일·미션오일부터 브레이크·냉각수, 벨트·워터펌프까지 — 교환주기가 정해진 소모품을 차종별 제조사 규격에 맞춰 교환합니다. 교환 전 상태를 사진으로 보여드리고, 대부분 당일 정비로 진행됩니다.
+      </p>
+      <ul class="maint-chip-grid">
+        {maintenanceGroups.map((g) => (
+          <li class="maint-chip">
+            <span class="maint-chip-title t-body-strong">{g.title}</span>
+            <span class="maint-chip-items t-caption">{g.items}</span>
+          </li>
+        ))}
+      </ul>
+      <a href="/services/#maintenance" class="maint-more t-body">소모품 교환 항목 자세히 보기 →</a>
+    </div>
+  </section>
+
+  {/* [5] 증상 진입 블록 — 고장 진단 */}
   <section class="symptoms">
     <div class="container">
       <h2 class="t-display-md">이런 증상이신가요?</h2>
@@ -164,7 +193,25 @@ const faqs = [
   .intro h2 { color: var(--color-ink); margin: 0 0 var(--space-lg); }
   .intro-body { color: var(--color-ink-muted-80); max-width: 68ch; margin: 0; }
 
-  .symptoms { background: var(--color-canvas); padding-block: var(--space-section); }
+  /* [4] 정기 점검·소모품 교환 — 대표 정비 (canvas) */
+  .maint-band { background: var(--color-canvas); padding-block: var(--space-section); }
+  .maint-eyebrow { display: block; color: var(--color-primary); margin: 0 0 8px; letter-spacing: 0.02em; }
+  .maint-band h2 { color: var(--color-ink); margin: 0 0 var(--space-md); }
+  .maint-band-body { color: var(--color-ink-muted-80); max-width: 68ch; margin: 0 0 var(--space-xl); }
+  .maint-chip-grid {
+    list-style: none; margin: 0 0 var(--space-xl); padding: 0;
+    display: grid; grid-template-columns: 1fr; gap: var(--space-sm);
+  }
+  .maint-chip {
+    display: flex; flex-direction: column; gap: 4px;
+    border: 1px solid var(--color-hairline); border-radius: var(--rounded-lg); padding: var(--space-lg);
+  }
+  .maint-chip-title { color: var(--color-primary); }
+  .maint-chip-items { color: var(--color-ink-muted-80); }
+  .maint-more { display: inline-block; color: var(--color-primary); }
+
+  /* [5] 증상 진입 (parchment — 교대 리듬) */
+  .symptoms { background: var(--color-canvas-parchment); padding-block: var(--space-section); }
   .symptoms h2 { color: var(--color-ink); margin: 0 0 var(--space-xl); }
   .symptom-grid {
     list-style: none; margin: 0 0 var(--space-lg); padding: 0;
@@ -172,6 +219,7 @@ const faqs = [
   }
   .symptom-card {
     display: flex; flex-direction: column; gap: 6px;
+    background: var(--color-canvas);
     border: 1px solid var(--color-hairline); border-radius: var(--rounded-lg);
     padding: var(--space-lg); color: var(--color-ink); transition: transform 0.12s ease;
   }
@@ -204,10 +252,12 @@ const faqs = [
 
   @media (min-width: 641px) {
     .symptom-grid { grid-template-columns: repeat(2, 1fr); }
+    .maint-chip-grid { grid-template-columns: repeat(2, 1fr); }
     .reviews-grid { grid-template-columns: repeat(3, 1fr); }
   }
   @media (min-width: 835px) {
     .symptom-grid { grid-template-columns: repeat(3, 1fr); }
+    .maint-chip-grid { grid-template-columns: repeat(3, 1fr); }
   }
   @media (max-width: 640px) {
     .hero { padding-block: 72px; }
