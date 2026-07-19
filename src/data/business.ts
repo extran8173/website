@@ -83,14 +83,14 @@ export const business = {
   },
 } as const;
 
-// ── 사이트 내비게이션 (6개) — 01_sitemap §2 ────────────
+// ── 사이트 내비게이션 (5개) ────────────────────────────
+// 2026-07: 문의 페이지를 오시는 길로 통합 → 메뉴에서 문의 제거.
 export const navItems = [
   { label: '홈', href: '/' },
   { label: '서비스', href: '/services/' },
   { label: '정비 사례', href: '/cases/' },
   { label: '진단 장비', href: '/equipment/' },
   { label: '오시는 길', href: '/location/' },
-  { label: '문의', href: '/contact/' },
 ] as const;
 
 // ── 주 전환 CTA (문구 확정본 — 01 §3 / DESIGN-motorrepair §4) ──

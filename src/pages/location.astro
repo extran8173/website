@@ -1,13 +1,15 @@
 ---
-// 오시는 길 — 확정본: docs/기획/page_location.md
+// 오시는 길 · 문의/예약 — 확정본: docs/기획/page_location.md + page_contact.md 통합.
+// 2026-07: 문의 페이지를 이 페이지로 통합(메뉴에서 문의 제거). 폼 백엔드 없음 — 전화·네이버 예약.
 import BaseLayout from '../layouts/BaseLayout.astro';
+import TrustBadgeRow from '../components/TrustBadgeRow.astro';
 import CtaSection from '../components/CtaSection.astro';
 import ImageSlot from '../components/ImageSlot.astro';
-import { business } from '../data/business.ts';
+import { business, cta } from '../data/business.ts';
 
-const title = '오시는 길 · 영업시간 | 동탄 모터리페어';
+const title = '오시는 길 · 문의 예약 | 동탄 모터리페어';
 const description =
-  '경기 화성시 효행로1156번길 9. 동탄·오산·평택에서 가까운 수입차 정비소. 월–금 08:30–18:30, 토 08:30–15:00. 대차 2대 운용.';
+  '경기 화성시 효행로1156번길 9. 동탄·오산·평택·용인에서 가까운 수입차 정비소. 전화 010-3203-7607 또는 네이버 예약. 월–금 08:30–18:30, 토 08:30–15:00. 대차 2대 운용.';
 
 // 지역별 소요 시간 — 사장님 확인값 (2026-07-08 확정)
 const regions = [
@@ -17,13 +19,46 @@ const regions = [
   '병점역 인근으로, 화성 전역에서 접근이 쉽습니다.',
   '평택·수원 등 경기 남부에서도 방문하십니다.',
 ];
+
+// 첫 방문 3단계 (문의 §2). ⚠️ 1단계 "준비물 없음"은 사장님 확인값
+const steps = [
+  { n: '1', h: '연락', body: '전화 또는 네이버 예약으로 증상과 차종을 알려주세요. 차량등록증 등 따로 준비하실 것은 없습니다.' },
+  { n: '2', h: '입고·진단', body: '예약 시간에 오시면 전용 진단기로 원인부터 확인합니다. 대기실에서 기다리시거나, 대차가 필요하시면 미리 말씀해 주세요.' },
+  { n: '3', h: '견적·작업', body: '확인된 원인과 견적을 사진과 함께 설명해 드리고, 승인해 주시면 작업을 시작합니다. 과정은 사진으로 기록됩니다.' },
+];
+
+// FAQ 전체 (문의 §FAQ) — 자기완결형
+const faqs = [
+  { q: '사설 정비소에서 수리하면 제조사 보증이 깨지나요?', a: '보증 기간 중인 차량은 입고 시 미리 알려주세요. 보증 수리 대상 항목은 공식 서비스센터 이용이 유리할 수 있어 사전에 안내해 드립니다. 모터리페어에서 교환한 부품은 차량 제작사 기준과 동일하게 1년 / 2만km A/S를 적용합니다.' },
+  { q: '당일 정비도 가능한가요?', a: '엔진오일 등 오일류와 소모품 교환 같은 메인터넌스 정비는 당일 가능합니다. 진단이 필요한 증상이나 엔진·미션 중정비는 전화로 증상을 말씀해 주시면 소요 일정을 미리 안내해 드립니다.' },
+  { q: '수리하는 동안 차가 없으면 어떻게 하나요?', a: '모터리페어는 대차 2대를 운용하고 있습니다. 예약 시 말씀해 주시면 일정에 맞춰 준비해 드립니다.' },
+  { q: '어떤 브랜드를 정비하나요?', a: 'BMW·벤츠·아우디·폭스바겐·미니·포르쉐를 정비합니다. 브랜드별 전용 진단기(ISTA+ · Xentry · ODIS · PIWIS)를 갖추고 있습니다.' },
+  { q: '견적은 미리 알 수 있나요?', a: '네. 진단으로 원인을 확인한 뒤 작업 전에 견적을 안내하고, 승인해 주신 뒤에 작업을 시작합니다. 교환이 필요한 부위는 사진으로 함께 보여드립니다.' },
+  { q: '공식 서비스센터와 무엇이 다른가요?', a: '같은 규격의 진단기와 부품 기준으로 정비하되, 진단부터 작업까지 20년 경력의 대표가 직접 진행하고 과정을 사진으로 보여드립니다. 비용은 작업 전 견적으로 미리 확인하실 수 있습니다.' },
+  { q: '수리 후 문제가 생기면요?', a: '교환한 부품은 차량 제작사 기준과 동일하게 1년 / 2만km 동안 A/S를 적용합니다.' },
+  { q: '동탄이 아닌 지역인데 가도 되나요?', a: '동탄·화성·오산·평택에서 오시는 분들이 가장 많고, 수원·서울 등 수도권과 충청권에서도 방문하십니다.' },
+];
+
+const hoursLine = business.hours.displayLines.join(' · ');
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
 ---
 
 <BaseLayout title={title} description={description} path="/location/">
-  {/* [1] 페이지 헤드 + 지도 */}
+  <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+
+  {/* [1] 헤드 + 지도 */}
   <section class="loc-head">
     <div class="container">
-      <h1 class="t-display-lg">오시는 길</h1>
+      <h1 class="t-display-lg">오시는 길 · 문의</h1>
       {/* IMG-014 정적 지도 이미지(제작 필요) — 확보 전 슬롯. 아래 링크는 실제 좌표로 동작 */}
       <ImageSlot id="IMG-014" label="모터리페어 위치 지도 · 경기 화성 효행로" ratio="16 / 9" />
       <p class="loc-address t-body-strong">{business.address.full}</p>
@@ -34,9 +69,23 @@ const regions = [
     </div>
   </section>
 
-  {/* [2] 핵심 정보 블록 */}
-  <section class="loc-info">
+  {/* [2] 전화·예약 + 핵심 정보 (문의 전환 블록 통합) */}
+  <section class="loc-contact">
     <div class="container">
+      <h2 class="t-display-md">전화 또는 네이버 예약으로 접수하세요</h2>
+      <p class="loc-contact-sub t-body">증상만 말씀해 주시면 진단 후 견적을 안내하고, 승인 후 작업합니다.</p>
+
+      <div class="loc-actions">
+        <div class="loc-action">
+          <a href={cta.callHref} class="btn btn-call btn-hero">{cta.callLabel}</a>
+          <p class="loc-action-cap t-caption">{business.phone.display} · {hoursLine}</p>
+        </div>
+        <div class="loc-action">
+          <a href={cta.naverHref} target="_blank" rel="noopener" class="btn btn-naver btn-hero">{cta.naverLabel}</a>
+          <p class="loc-action-cap t-caption">원하는 시간을 직접 고르실 수 있습니다.</p>
+        </div>
+      </div>
+
       <table class="hours-table">
         <tbody>
           <tr><th scope="row">월–금</th><td class="t-latin">08:30 – 18:30</td></tr>
@@ -44,13 +93,29 @@ const regions = [
           <tr><th scope="row">일요일</th><td>휴무</td></tr>
         </tbody>
       </table>
-      <a href={`tel:${business.phone.tel}`} class="loc-phone t-body-strong t-latin">전화 {business.phone.display}</a>
-      <p class="loc-info-cap t-caption">방문 전 전화 주시면 대기 없이 안내해 드립니다.</p>
       <p class="loc-parking t-body">주차 — 정비 베이 앞에 주차하실 수 있습니다.</p>
+
+      <div class="loc-badges"><TrustBadgeRow /></div>
     </div>
   </section>
 
-  {/* [3] 지역별 접근 */}
+  {/* [3] 첫 방문 안내 */}
+  <section class="loc-firstvisit">
+    <div class="container">
+      <h2 class="t-display-md">처음이신가요? 이렇게 진행됩니다</h2>
+      <ol class="firstvisit-grid">
+        {steps.map((s) => (
+          <li class="firstvisit-card">
+            <span class="firstvisit-n t-latin">{s.n}</span>
+            <h3 class="t-body-strong">{s.h}</h3>
+            <p class="t-body">{s.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {/* [4] 지역별 접근 */}
   <section class="loc-regions">
     <div class="container">
       <h2 class="t-display-md">이 지역에서 오시는 분들이 많습니다</h2>
@@ -60,7 +125,20 @@ const regions = [
     </div>
   </section>
 
-  {/* [4] 외관 사진 */}
+  {/* [5] FAQ 전체 */}
+  <section class="loc-faq">
+    <div class="container">
+      <h2 class="t-display-md">자주 묻는 질문</h2>
+      {faqs.map((f) => (
+        <div class="faq-item">
+          <h3 class="t-body-strong">{f.q}</h3>
+          <p class="t-body">{f.a}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  {/* [6] 외관 사진 */}
   <section class="loc-exterior">
     <div class="container">
       <ImageSlot id="IMG-013" label="동탄 수입차 정비소 모터리페어 외관 간판" ratio="16 / 9" />
@@ -68,7 +146,7 @@ const regions = [
     </div>
   </section>
 
-  {/* [5] 최종 CTA */}
+  {/* [7] 최종 CTA */}
   <CtaSection text="출발 전에 전화 한 통이면 준비하고 기다리겠습니다." caption="대차 2대 운용 — 필요하시면 예약 시 말씀해 주세요." />
 </BaseLayout>
 
@@ -78,18 +156,42 @@ const regions = [
   .loc-address { color: var(--color-ink); margin: var(--space-lg) 0 var(--space-md); }
   .loc-maplinks { display: flex; flex-wrap: wrap; gap: 12px; }
 
-  .loc-info { background: var(--color-canvas-parchment); padding-block: var(--space-section); }
-  .hours-table { border-collapse: collapse; margin: 0 0 var(--space-lg); }
+  /* [2] 전화·예약 + 핵심 정보 */
+  .loc-contact { background: var(--color-canvas-parchment); padding-block: var(--space-section); }
+  .loc-contact h2 { color: var(--color-ink); margin: 0 0 var(--space-md); }
+  .loc-contact-sub { color: var(--color-ink-muted-80); margin: 0 0 var(--space-xl); }
+  .loc-actions { display: flex; flex-direction: column; gap: var(--space-lg); margin-bottom: var(--space-xl); }
+  .loc-action { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+  .loc-action-cap { color: var(--color-ink-muted-48); margin: 0; }
+  .hours-table { border-collapse: collapse; margin: 0 0 var(--space-md); }
   .hours-table th { text-align: left; color: var(--color-ink-muted-48); font-weight: 400; padding: 6px 24px 6px 0; }
   .hours-table td { color: var(--color-ink); padding: 6px 0; }
-  .loc-phone { display: inline-block; color: var(--color-ink); }
-  .loc-info-cap { color: var(--color-ink-muted-48); margin: var(--space-sm) 0 0; }
-  .loc-parking { color: var(--color-ink-muted-80); margin: var(--space-md) 0 0; }
+  .loc-parking { color: var(--color-ink-muted-80); margin: 0 0 var(--space-xl); }
 
-  .loc-regions { background: var(--color-canvas); padding-block: var(--space-section); }
+  .loc-firstvisit { background: var(--color-canvas); padding-block: var(--space-section); }
+  .loc-firstvisit h2 { color: var(--color-ink); margin: 0 0 var(--space-xl); }
+  .firstvisit-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: var(--space-lg); }
+  .firstvisit-card { border: 1px solid var(--color-hairline); border-radius: var(--rounded-lg); padding: var(--space-lg); }
+  .firstvisit-n { display: inline-block; color: var(--color-primary); font-size: 28px; font-weight: 600; margin-bottom: 8px; }
+  .firstvisit-card h3 { margin: 0 0 6px; color: var(--color-ink); }
+  .firstvisit-card p { margin: 0; color: var(--color-ink-muted-80); }
+
+  .loc-regions { background: var(--color-canvas-parchment); padding-block: var(--space-section); }
   .loc-regions h2 { color: var(--color-ink); margin: 0 0 var(--space-lg); }
   .region-list { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 8px; color: var(--color-ink-muted-80); }
 
+  .loc-faq { background: var(--color-canvas); padding-block: var(--space-section); }
+  .loc-faq h2 { color: var(--color-ink); margin: 0 0 var(--space-lg); }
+  .faq-item { padding: var(--space-md) 0; border-top: 1px solid var(--color-hairline); }
+  .faq-item h3 { margin: 0 0 6px; color: var(--color-ink); }
+  .faq-item p { margin: 0; color: var(--color-ink-muted-80); }
+
   .loc-exterior { background: var(--color-canvas-parchment); padding-block: var(--space-section); }
   .loc-exterior-cap { color: var(--color-ink-muted-48); margin: var(--space-sm) 0 0; }
+
+  @media (min-width: 641px) {
+    .firstvisit-grid { grid-template-columns: repeat(3, 1fr); }
+    .loc-actions { flex-direction: row; }
+    .loc-action { flex: 1; }
+  }
 </style>
