@@ -1,18 +1,48 @@
 ---
-// 서비스 — 확정본: docs/기획/page_services.md (단일 페이지 + 앵커)
+// 서비스 — 메인터넌스(소모품 교환) 대표 + 고장 진단 보조 구조.
+// 기준: docs/기획/page_services.md (문서도 이 방향으로 동기화 예정)
 import BaseLayout from '../layouts/BaseLayout.astro';
 import RecentCases from '../components/RecentCases.astro';
 import CtaSection from '../components/CtaSection.astro';
 import ImageSlot from '../components/ImageSlot.astro';
 
-const title = '수입차 경고등·엔진·미션 정비 | 동탄 모터리페어';
+const title = '수입차 소모품 교환·정기 점검 | 동탄 모터리페어';
 const description =
-  '경고등 진단부터 엔진·미션 중정비까지. BMW·벤츠·아우디·포르쉐 전용 진단기로 원인을 확인한 뒤, 견적을 안내하고 승인 후 작업합니다.';
+  '엔진오일·미션오일·브레이크·냉각수 등 소모품을 제조사 규격대로 교환합니다. 경고등·고장은 전용 진단기로 진단하고, 작업 전 견적을 안내합니다.';
 
 const steps = [
-  { n: '1', h: '진단', body: '전용 진단기와 계측 장비로 원인을 먼저 확인합니다.' },
+  { n: '1', h: '점검', body: '교환 시기와 상태를 먼저 확인합니다. 원인 모를 증상은 전용 진단기로 진단합니다.' },
   { n: '2', h: '견적 안내', body: '교환이 필요한 부위를 사진으로 보여드리고, 작업 전에 견적을 안내합니다. 승인 후에 작업합니다.' },
   { n: '3', h: '정비·기록', body: '정비 과정을 사진으로 기록하고, 출고 시 함께 설명해 드립니다.' },
+];
+
+// ① 메인터넌스(소모품 교환) — 5개 그룹 (교환주기가 정해진 정비)
+const maintenanceGroups = [
+  {
+    title: '오일류',
+    items: '엔진오일 · 미션오일 · 디퍼렌셜오일 · 트랜스퍼케이스오일',
+    note: '차종별 제조사 규격 오일로 교환합니다. 규격에 맞지 않는 오일은 고장의 원인이 되기도 합니다.',
+  },
+  {
+    title: '유체 · 냉각',
+    items: '브레이크액 · 냉각수(부동액) · 에어컨 냉매',
+    note: '수분·비등점 등 상태를 확인하고 규격에 맞춰 보충·교환합니다.',
+  },
+  {
+    title: '필터류',
+    items: '에어컨 필터 · 연료 필터',
+    note: '주행 환경에 따라 교환 시기가 달라집니다. 상태를 보고 안내해 드립니다.',
+  },
+  {
+    title: '브레이크',
+    items: '브레이크 패드 · 브레이크 로터(디스크)',
+    note: '잔량이 남은 부품은 남은 수치를 그대로 알려드립니다. 아직 쓸 수 있는 부품을 교환하자고 권하지 않습니다.',
+  },
+  {
+    title: '벨트 · 펌프',
+    items: '구동벨트 · 타이밍벨트 · 워터펌프 · 써머스탯',
+    note: '교환주기가 길지만 방치하면 큰 고장으로 이어지는 부품입니다. 주행거리에 맞춰 점검·교환합니다.',
+  },
 ];
 ---
 
@@ -20,8 +50,8 @@ const steps = [
   {/* [1] 페이지 헤드 */}
   <section class="svc-head">
     <div class="container">
-      <h1 class="t-display-lg">증상만 말씀하셔도 됩니다</h1>
-      <p class="svc-head-sub t-lead">전용 진단기로 원인을 확인하고, 견적을 안내한 뒤 승인받고 작업합니다.</p>
+      <h1 class="t-display-lg">제때 교환하고, 정확히 진단합니다</h1>
+      <p class="svc-head-sub t-lead">교환주기가 된 소모품은 제조사 규격대로, 원인 모를 증상은 전용 진단기로. 작업 전 견적을 안내하고 승인 후 진행합니다.</p>
     </div>
   </section>
 
@@ -42,11 +72,44 @@ const steps = [
     </div>
   </section>
 
-  {/* [3] 진단 #diagnosis */}
+  {/* ── ① 메인터넌스(소모품 교환) — 대표 섹션 ── */}
+  <section id="maintenance" class="svc-maint">
+    <div class="container">
+      <p class="svc-eyebrow t-caption-strong">정기 점검 · 소모품 교환</p>
+      <h2 class="t-display-md">때가 된 소모품, 제조사 규격 그대로 교환합니다</h2>
+      <p class="svc-maint-intro t-body">
+        모터리페어 정비의 대부분은 교환주기가 정해진 소모품 정비입니다. 엔진오일부터 벨트·워터펌프까지 차종별 제조사 규격에 맞춰 교환하고, 교환 전 상태를 사진으로 보여드립니다. 오일류·소모품은 대부분 당일 정비로 진행됩니다.
+      </p>
+
+      <div class="maint-grid">
+        {maintenanceGroups.map((g) => (
+          <div class="maint-card">
+            <h3 class="maint-card-title t-body-strong">{g.title}</h3>
+            <p class="maint-card-items t-body">{g.items}</p>
+            <p class="maint-card-note t-caption">{g.note}</p>
+          </div>
+        ))}
+      </div>
+
+      <p id="oil" class="svc-item-cap t-caption">
+        교환 부품 A/S: 차량 제작사 기준과 동일 (1년 / 2만km) · 오일류·소모품은 대부분 당일 가능합니다.
+      </p>
+    </div>
+  </section>
+
+  {/* ── ② 고장 점검 진단 (트러블슈팅) — 보조 섹션 ── */}
+  <section class="svc-trouble-head">
+    <div class="container">
+      <p class="svc-eyebrow t-caption-strong">증상이 있을 때 · 고장 진단</p>
+      <h2 class="t-display-md">원인 모를 증상은 진단부터 시작합니다</h2>
+    </div>
+  </section>
+
+  {/* 진단 #diagnosis */}
   <section id="diagnosis" class="svc-item">
     <div class="container svc-item-grid">
       <div class="svc-item-text">
-        <h2 class="t-display-md">경고등이 떴어요 · 원인을 모르겠어요</h2>
+        <h3 class="t-display-md svc-item-h">경고등이 떴어요 · 원인을 모르겠어요</h3>
         <p class="t-body">
           계기판 경고등, 시동 불량, 원인 모를 이상 증상은 추측으로 고치면 비용만 늘어납니다. 모터리페어는 BMW ISTA+, 벤츠 Xentry, 아우디 ODIS, 포르쉐 PIWIS로 차량 데이터를 직접 읽고, 필요하면 Picoscope(전기 신호 계측기)로 센서·배선 신호까지 확인해 원인을 짚습니다.
         </p>
@@ -56,22 +119,31 @@ const steps = [
     </div>
   </section>
 
-  {/* [4] 오일류 #oil */}
-  <section id="oil" class="svc-item parchment">
+  {/* 브레이크·서스펜션 #brake-suspension */}
+  <section id="brake-suspension" class="svc-item parchment">
     <div class="container">
-      <h2 class="t-display-md">오일 교환 시기가 됐어요</h2>
+      <h3 class="t-display-md svc-item-h">주행 중 소음이 나요 · 승차감이 이상해요</h3>
       <p class="t-body svc-item-body">
-        엔진오일·미션오일·브레이크액을 차종별 제조사 규격에 맞춰 교환합니다. 수입차는 규격에 맞지 않는 오일이 고장의 원인이 되기도 합니다. 교환 전 상태를 확인해 사진으로 보여드리고, 당일 정비로 진행됩니다.
+        소음과 승차감 문제는 원인 부위를 특정하는 게 먼저입니다. 리프트에 올려 하부를 점검하고, 마모 상태를 사진으로 보여드립니다. 브레이크 패드처럼 잔량이 남은 부품은 남은 수치를 그대로 알려드립니다 — 아직 쓸 수 있는 부품을 교환하자고 권하지 않습니다.
       </p>
-      <p class="svc-item-cap t-caption">오일류·소모품 정비는 당일 가능합니다.</p>
     </div>
   </section>
 
-  {/* [5] 엔진·미션 #powertrain — 다크 타일 */}
+  {/* 냉·난방 #hvac */}
+  <section id="hvac" class="svc-item">
+    <div class="container">
+      <h3 class="t-display-md svc-item-h">에어컨이 안 나와요 · 냉각수가 부족하다고 떠요</h3>
+      <p class="t-body svc-item-body">
+        에어컨 성능 저하, 냉각수 감소 경고는 여름철 가장 잦은 입고 증상입니다. 냉매 압력과 누설 부위를 계측 장비로 확인하고, 냉각 계통은 압력 테스트로 새는 지점을 찾은 뒤 수리합니다. 임시 보충이 아니라 원인 부위를 잡는 게 목표입니다.
+      </p>
+    </div>
+  </section>
+
+  {/* 엔진·미션 중정비 #powertrain — 다크 타일 */}
   <section id="powertrain" class="svc-item dark">
     <div class="container svc-item-grid">
       <div class="svc-item-text">
-        <h2 class="t-display-md">큰 수리, 사설에서 될까 고민되시죠</h2>
+        <h3 class="t-display-md svc-item-h">큰 수리, 사설에서 될까 고민되시죠</h3>
         <p class="t-body">
           엔진·미션 정비는 분해 경험이 결과를 좌우합니다. 대표는 수입차 서비스센터와 엔진 전문회사에서 20년 넘게 정비해 왔고, 진단부터 분해·조립까지 직접 진행합니다. 작업 과정은 단계별로 사진에 남겨 정비 사례로 공개합니다.
         </p>
@@ -81,37 +153,17 @@ const steps = [
     </div>
   </section>
 
-  {/* [6] 브레이크·서스펜션 #brake-suspension */}
-  <section id="brake-suspension" class="svc-item">
-    <div class="container">
-      <h2 class="t-display-md">주행 중 소음이 나요 · 승차감이 이상해요</h2>
-      <p class="t-body svc-item-body">
-        소음과 승차감 문제는 원인 부위를 특정하는 게 먼저입니다. 리프트에 올려 하부를 점검하고, 마모 상태를 사진으로 보여드립니다. 브레이크 패드처럼 잔량이 남은 부품은 남은 수치를 그대로 알려드립니다 — 아직 쓸 수 있는 부품을 교환하자고 권하지 않습니다.
-      </p>
-    </div>
-  </section>
-
-  {/* [7] 냉·난방 #hvac */}
-  <section id="hvac" class="svc-item parchment">
-    <div class="container">
-      <h2 class="t-display-md">에어컨이 안 나와요 · 냉각수가 부족하다고 떠요</h2>
-      <p class="t-body svc-item-body">
-        에어컨 성능 저하, 냉각수 감소 경고는 여름철 가장 잦은 입고 증상입니다. 냉매 압력과 누설 부위를 계측 장비로 확인하고, 냉각 계통은 압력 테스트로 새는 지점을 찾은 뒤 수리합니다. 임시 보충이 아니라 원인 부위를 잡는 게 목표입니다.
-      </p>
-    </div>
-  </section>
-
-  {/* [8] 최근 정비 사례 */}
+  {/* 최근 정비 사례 */}
   <RecentCases heading="실제로 이렇게 진행됩니다" tone="canvas" />
 
-  {/* [9] 최종 CTA */}
-  <CtaSection text="어떤 증상이든, 전화로 먼저 말씀해 주세요." caption="대차 2대 운용 — 예약 시 말씀해 주세요." />
+  {/* 최종 CTA */}
+  <CtaSection text="어떤 정비든, 전화로 먼저 말씀해 주세요." caption="대차 2대 운용 — 예약 시 말씀해 주세요." />
 </BaseLayout>
 
 <style>
   .svc-head { background: var(--color-canvas-parchment); padding-block: var(--space-section); }
   .svc-head h1 { color: var(--color-ink); margin: 0 0 var(--space-md); }
-  .svc-head-sub { color: var(--color-ink-muted-80); margin: 0; max-width: 48ch; }
+  .svc-head-sub { color: var(--color-ink-muted-80); margin: 0; max-width: 52ch; }
 
   .svc-process { background: var(--color-canvas); padding-block: var(--space-section); }
   .svc-process h2 { color: var(--color-ink); margin: 0 0 var(--space-xl); }
@@ -122,11 +174,28 @@ const steps = [
   .process-card p { margin: 0; color: var(--color-ink-muted-80); }
   .process-note { color: var(--color-ink-muted-48); margin: 0; }
 
-  .svc-item { background: var(--color-canvas); padding-block: var(--space-section); scroll-margin-top: 64px; }
+  /* 카테고리 eyebrow */
+  .svc-eyebrow { display: block; color: var(--color-primary); margin: 0 0 8px; letter-spacing: 0.02em; }
+
+  /* ① 메인터넌스 — 대표 섹션 */
+  .svc-maint { background: var(--color-canvas); padding-block: var(--space-section); scroll-margin-top: 64px; }
+  .svc-maint h2 { color: var(--color-ink); margin: 0 0 var(--space-md); }
+  .svc-maint-intro { color: var(--color-ink-muted-80); max-width: 68ch; margin: 0 0 var(--space-xl); }
+  .maint-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-lg); margin-bottom: var(--space-lg); }
+  .maint-card { border: 1px solid var(--color-hairline); border-radius: var(--rounded-lg); padding: var(--space-lg); }
+  .maint-card-title { color: var(--color-primary); margin: 0 0 8px; font-size: 19px; }
+  .maint-card-items { color: var(--color-ink); margin: 0 0 10px; }
+  .maint-card-note { color: var(--color-ink-muted-48); margin: 0; }
+
+  /* ② 트러블슈팅 헤더 */
+  .svc-trouble-head { background: var(--color-canvas-parchment); padding-block: var(--space-xxl) var(--space-lg); }
+  .svc-trouble-head h2 { color: var(--color-ink); margin: 0; }
+
+  .svc-item { background: var(--color-canvas); padding-block: var(--space-xxl); scroll-margin-top: 64px; }
   .svc-item.parchment { background: var(--color-canvas-parchment); }
   .svc-item.dark { background: var(--color-surface-tile-1); color: var(--color-on-dark); }
-  .svc-item h2 { color: var(--color-ink); margin: 0 0 var(--space-md); }
-  .svc-item.dark h2 { color: var(--color-on-dark); }
+  .svc-item-h { margin: 0 0 var(--space-md); color: var(--color-ink); }
+  .svc-item.dark .svc-item-h { color: var(--color-on-dark); }
   .svc-item .t-body { color: var(--color-ink-muted-80); }
   .svc-item.dark .t-body { color: var(--color-body-muted); }
   .svc-item-body { max-width: 68ch; margin: 0 0 var(--space-md); }
@@ -138,6 +207,12 @@ const steps = [
   .svc-item-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-xl); align-items: center; }
   .svc-item-text { display: flex; flex-direction: column; }
 
-  @media (min-width: 641px) { .process-grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (min-width: 835px) { .svc-item-grid { grid-template-columns: 1.2fr 1fr; } }
+  @media (min-width: 641px) {
+    .process-grid { grid-template-columns: repeat(3, 1fr); }
+    .maint-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 835px) {
+    .svc-item-grid { grid-template-columns: 1.2fr 1fr; }
+    .maint-grid { grid-template-columns: repeat(3, 1fr); }
+  }
 </style>
