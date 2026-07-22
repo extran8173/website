@@ -34,7 +34,7 @@ import { navItems, business, cta } from '../data/business.ts';
 
   <!-- 최하단 법정·SEO 행 -->
   <div class="container footer-legal t-fine-print">
-    <p>{business.certifications.join(' · ')} 취득</p>
+    <p>{business.certifications.join(' · ')} 취득 · {business.awards.join(' · ')}</p>
     <p>{business.warranty.text}</p>
     <p>{business.serviceAreaText} — {business.brands.join(' · ')}</p>
   </div>

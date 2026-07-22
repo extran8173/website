@@ -7,13 +7,13 @@ import ImageSlot from '../components/ImageSlot.astro';
 
 const title = '브랜드 전용 진단기 · ISO 인증 | 동탄 모터리페어';
 const description =
-  'BMW ISTA+, 벤츠 Xentry, 아우디 ODIS, 포르쉐 PIWIS, Picoscope 보유. 20년 경력 대표가 직접 진단하는 동탄 수입차 정비소. ISO 9001·14001·45001 취득.';
+  'BMW ISTA+, 벤츠 Xentry, 아우디 ODIS, VCDS, 포르쉐 PIWIS, Picoscope 보유. 20년 경력 전문 정비사가 진단하는 동탄 수입차 정비소. ISO 9001·14001·45001 취득.';
 
 const tools = [
-  { brand: 'BMW · 미니', tool: 'ISTA+', desc: '모터리페어는 BMW 공식 진단 시스템 ISTA+를 보유하고, BMW·미니의 고장 코드 판독과 코딩·프로그래밍에 사용합니다.' },
-  { brand: '벤츠', tool: 'Xentry', desc: '모터리페어는 벤츠 공식 진단 시스템 Xentry를 보유하고, 벤츠 전 차종의 제어기 진단과 기능 설정에 사용합니다.' },
-  { brand: '아우디 · 폭스바겐', tool: 'ODIS', desc: '모터리페어는 아우디·폭스바겐 공식 진단 시스템 ODIS를 보유하고, 두 브랜드의 고장 진단과 부품 적응 작업에 사용합니다.' },
-  { brand: '포르쉐', tool: 'PIWIS', desc: '모터리페어는 포르쉐 공식 진단 시스템 PIWIS를 보유하고, 포르쉐 전 차종의 진단과 정비 이력 관리에 사용합니다.' },
+  { brand: 'BMW · 미니', tool: 'ISTA+', desc: '모터리페어는 BMW 공식 진단 시스템 ISTA+를 보유하고, BMW·미니의 고장 코드 판독과 코딩·프로그래밍에 사용합니다.', img: 'IMG-017-01', imgAlt: 'BMW ISTA+ 진단 화면' },
+  { brand: '벤츠', tool: 'Xentry', desc: '모터리페어는 벤츠 공식 진단 시스템 Xentry를 보유하고, 벤츠 전 차종의 제어기 진단과 기능 설정에 사용합니다.', img: 'IMG-017-02', imgAlt: '벤츠 Xentry 진단 화면' },
+  { brand: '아우디 · 폭스바겐', tool: 'ODIS, VCDS', desc: '모터리페어는 아우디·폭스바겐 공식 진단 시스템 ODIS, VCDS를 보유하고, 두 브랜드의 고장 진단과 부품 적응 작업에 사용합니다.', img: 'IMG-017-03', imgAlt: '아우디 폭스바겐 VCDS 진단 화면' },
+  { brand: '포르쉐', tool: 'PIWIS', desc: '모터리페어는 포르쉐 공식 진단 시스템 PIWIS를 보유하고, 포르쉐 전 차종의 진단과 정비 이력 관리에 사용합니다.', img: 'IMG-004', imgAlt: '포르쉐 PIWIS 전용 진단 화면' },
 ];
 ---
 
@@ -34,15 +34,14 @@ const tools = [
       <div class="tool-grid">
         {tools.map((t) => (
           <div class="tool-card">
+            <div class="tool-img">
+              <ImageSlot id={t.img} label={t.imgAlt} alt={t.imgAlt} ratio="16 / 10" />
+            </div>
             <p class="tool-brand t-caption">{t.brand}</p>
             <p class="tool-name t-body-strong t-latin">{t.tool}</p>
             <p class="tool-desc t-body">{t.desc}</p>
           </div>
         ))}
-      </div>
-      <div class="eq-tools-imgs">
-        <ImageSlot id="IMG-008" label="수입차 브랜드별 전용 진단기 노트북 세트" alt="수입차 브랜드별 전용 진단기 노트북 세트" ratio="16 / 9" />
-        <ImageSlot id="IMG-009" label="포르쉐 PIWIS 전용 진단 화면" alt="포르쉐 PIWIS 전용 진단 화면" ratio="1 / 1" />
       </div>
     </div>
   </section>
@@ -66,7 +65,7 @@ const tools = [
       <div>
         <h2 class="t-display-md">장비는 도구입니다. 판단은 경력이 합니다</h2>
         <p class="t-body eq-person-body">
-          대표 장용석은 수입차 서비스센터와 엔진 전문회사에서 20년 넘게 정비해 왔습니다. 진단 데이터를 읽는 것과 원인을 판단하는 것은 다른 일입니다. 모든 차량의 진단과 판단을 대표가 직접 합니다.
+          우리는 수입차 서비스센터와 엔진 전문회사에서 20년 넘게 정비해 왔습니다. 진단 데이터를 읽는 것과 원인을 판단하는 것은 다른 일입니다. 차량의 진단과 판단을 함께합니다.
         </p>
       </div>
       <ImageSlot id="IMG-011" label="동탄 수입차 정비소 차량 상태 사진 설명" alt="동탄 수입차 정비소 차량 상태 사진 설명" ratio="4 / 3" tone="dark" />
@@ -84,6 +83,7 @@ const tools = [
         <li class="iso-badge t-caption">ISO 9001 · 품질경영</li>
         <li class="iso-badge t-caption">ISO 14001 · 환경경영</li>
         <li class="iso-badge t-caption">ISO 45001 · 안전보건경영</li>
+        <li class="iso-badge t-caption">2026년 대한민국 고객만족 신뢰도 대상</li>
       </ul>
     </div>
   </section>
@@ -105,10 +105,10 @@ const tools = [
   .eq-tools-intro { color: var(--color-ink-muted-80); max-width: 60ch; margin: 0 0 var(--space-xl); }
   .tool-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-lg); margin-bottom: var(--space-xl); }
   .tool-card { border: 1px solid var(--color-hairline); border-radius: var(--rounded-lg); padding: var(--space-lg); }
+  .tool-img { margin: 0 0 var(--space-md); }
   .tool-brand { color: var(--color-ink-muted-48); margin: 0 0 4px; }
   .tool-name { color: var(--color-primary); margin: 0 0 var(--space-sm); font-size: 20px; }
   .tool-desc { color: var(--color-ink-muted-80); margin: 0; }
-  .eq-tools-imgs { display: grid; grid-template-columns: 1fr; gap: var(--space-lg); }
 
   .eq-pico { background: var(--color-canvas-parchment); padding-block: var(--space-section); }
   .eq-pico h2 { color: var(--color-ink); margin: 0 0 var(--space-md); }
@@ -128,7 +128,6 @@ const tools = [
 
   @media (min-width: 641px) {
     .tool-grid { grid-template-columns: repeat(2, 1fr); }
-    .eq-tools-imgs { grid-template-columns: 2fr 1fr; }
   }
   @media (min-width: 835px) {
     .eq-pico-grid { grid-template-columns: 1.2fr 1fr; }

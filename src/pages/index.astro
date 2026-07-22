@@ -87,8 +87,8 @@ const faqs = [
         <h2 class="t-display-md">모터리페어는 이런 곳입니다</h2>
         <p class="intro-body t-body">
           모터리페어는 경기 화성 동탄에서 BMW·벤츠·아우디·폭스바겐·미니·포르쉐를 정비하는 수입차 전문 정비소입니다.
-          엔진오일·미션오일 등 교환주기가 정해진 소모품 정비를 차종별 제조사 규격에 맞춰 진행하고, 원인 모를 증상은 ISTA+·Xentry·ODIS·PIWIS 등 브랜드 전용 진단기로 진단합니다.
-          점검부터 출고까지 모든 과정을 사진으로 기록해 보여드리며, 서비스센터와 엔진 전문회사에서 20년 넘게 정비해 온 대표가 직접 진단합니다.
+          엔진오일·미션오일 등 교환주기가 정해진 소모품 정비를 차종별 제조사 규격에 맞춰 진행하고, 원인 모를 증상은 ISTA+·Xentry·ODIS·VCDS·PIWIS 등 브랜드 전용 진단기로 진단합니다.
+          점검부터 출고까지 모든 과정을 사진으로 기록해 보여드리며, 서비스센터와 엔진 전문회사에서 20년 넘게 현장을 지켜온 전문 정비사가 고객님의 차량 고민을 함께 나누며, 기본에 충실하게 차근차근 정비합니다.
         </p>
       </div>
       <div class="split-media">
@@ -158,7 +158,7 @@ const faqs = [
       <div class="split-text">
         <h2 class="t-display-md">장비가 진단의 절반입니다</h2>
         <p class="equip-teaser-body t-body">
-          BMW ISTA+, 벤츠 Xentry, 아우디 ODIS, 포르쉐 PIWIS. 브랜드가 쓰는 진단기를 그대로 갖추고, Picoscope로 전기 신호까지 계측합니다.
+          BMW ISTA+, 벤츠 Xentry, 아우디 ODIS, VCDS, 포르쉐 PIWIS. 브랜드가 쓰는 진단기를 그대로 갖추고, Picoscope로 전기 신호까지 계측합니다.
         </p>
         <a href="/equipment/" class="equip-teaser-link t-body">어떤 장비로 진단하는지 보기 →</a>
       </div>
@@ -170,17 +170,16 @@ const faqs = [
           ratio="16 / 10"
           tone="dark"
         />
-        {/* VID-003 — 자체 촬영 클립 확보 전까지 YouTube 링크로 재생 (PicoScope 공식 소개 영상) */}
-        <a
-          class="video-link"
-          href="https://www.youtube.com/watch?v=5L1g5f6iJ7s"
-          target="_blank"
-          rel="noopener"
-        >
-          <span class="video-link-icon" aria-hidden="true">▶</span>
-          <span class="video-link-title">Picoscope 진단 영상 보기</span>
-          <span class="video-link-note">YouTube에서 재생됩니다</span>
-        </a>
+        {/* VID-003 — 자체 촬영 클립 확보 전까지 YouTube 임베드로 사이트 내 재생 (PicoScope 공식 소개 영상) */}
+        <div class="video-embed">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/5L1g5f6iJ7s"
+            title="Picoscope 진단 영상"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
       </div>
     </div>
   </section>
@@ -311,19 +310,14 @@ const faqs = [
   .equip-teaser h2 { color: var(--color-on-dark); margin: 0 0 var(--space-lg); }
   .equip-teaser-body { color: var(--color-body-muted); max-width: 60ch; margin: 0 0 var(--space-lg); }
   .equip-teaser-link { color: var(--color-primary-on-dark); }
-  /* VID-003 자리 — YouTube 링크 타일 (자체 클립 확보 시 영상으로 교체) */
-  .video-link {
+  /* VID-003 자리 — YouTube 사이트 내 재생 (자체 클립 확보 시 영상으로 교체) */
+  .video-embed {
     aspect-ratio: 16 / 9;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
-    border: 1px solid #4a4a4d; border-radius: var(--rounded-lg);
+    border-radius: var(--rounded-lg);
+    overflow: hidden;
     background: var(--color-surface-tile-2);
-    color: var(--color-on-dark); text-align: center; padding: var(--space-lg);
-    transition: border-color 0.12s ease;
   }
-  .video-link:hover { border-color: var(--color-primary-on-dark); }
-  .video-link-icon { font-size: 22px; color: var(--color-primary-on-dark); }
-  .video-link-title { font-size: 15px; font-weight: 600; }
-  .video-link-note { font-size: 12px; color: var(--color-body-muted); }
+  .video-embed iframe { display: block; width: 100%; height: 100%; border: 0; }
 
   .reviews { background: var(--color-canvas-parchment); padding-block: var(--space-section); }
   .reviews h2 { color: var(--color-ink); margin: 0 0 var(--space-sm); }

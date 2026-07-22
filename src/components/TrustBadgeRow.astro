@@ -5,6 +5,7 @@ import { business } from '../data/business.ts';
 const badges = [
   `경력 ${business.careerYears}년`,
   business.certifications.join(' · '),
+  ...business.awards,
   `부품 A/S ${business.warranty.period} / ${business.warranty.distance}`,
 ];
 ---
