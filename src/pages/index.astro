@@ -90,6 +90,9 @@ const faqs = [
           엔진오일·미션오일 등 교환주기가 정해진 소모품 정비를 차종별 제조사 규격에 맞춰 진행하고, 원인 모를 증상은 ISTA+·Xentry·ODIS·VCDS·PIWIS 등 브랜드 전용 진단기로 진단합니다.
           점검부터 출고까지 모든 과정을 사진으로 기록해 보여드리며, 서비스센터와 엔진 전문회사에서 20년 넘게 현장을 지켜온 전문 정비사가 고객님의 차량 고민을 함께 나누며, 기본에 충실하게 차근차근 정비합니다.
         </p>
+        <p class="intro-channel t-body">
+          모터리페어는 [장용석의 내차를 부탁해] 동탄신도시점을 운영하고 있으며, 실제 수리 과정을 유튜브 영상으로 공개합니다.
+        </p>
       </div>
       <div class="split-media">
         <ImageSlot
@@ -98,6 +101,18 @@ const faqs = [
           alt="동탄 수입차 정비소 정비 작업 모습"
           ratio="4 / 5"
         />
+      </div>
+    </div>
+    {/* 채널 대표 영상 — 페이지 내 재생 (벤츠 CLS 350D 수리 과정 풀영상) */}
+    <div class="container">
+      <div class="intro-video">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/h4pLzE6pA10"
+          title="중고차 묻따구매 벤츠 CLS 350D 수리 과정 풀영상 — 장용석의 내차를 부탁해"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+        ></iframe>
       </div>
     </div>
   </section>
@@ -270,6 +285,16 @@ const faqs = [
   .intro { background: var(--color-canvas-parchment); padding-block: var(--space-section); }
   .intro h2 { color: var(--color-ink); margin: 0 0 var(--space-lg); }
   .intro-body { color: var(--color-ink-muted-80); max-width: 68ch; margin: 0; }
+  .intro-channel { color: var(--color-ink-muted-80); max-width: 68ch; margin: var(--space-md) 0 0; }
+  /* 채널 대표 영상 — 페이지 내 재생 */
+  .intro-video {
+    aspect-ratio: 16 / 9;
+    border-radius: var(--rounded-lg);
+    overflow: hidden;
+    background: var(--color-surface-tile-2);
+    margin-top: var(--space-xl);
+  }
+  .intro-video iframe { display: block; width: 100%; height: 100%; border: 0; }
 
   /* [4] 정기 점검·소모품 교환 — 대표 정비 (canvas) */
   .maint-band { background: var(--color-canvas); padding-block: var(--space-section); }
