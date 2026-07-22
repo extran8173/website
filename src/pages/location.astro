@@ -59,8 +59,13 @@ const faqLd = {
   <section class="loc-head">
     <div class="container">
       <h1 class="t-display-lg">오시는 길 · 문의</h1>
-      {/* IMG-014 정적 지도 이미지(제작 필요) — 확보 전 슬롯. 아래 링크는 실제 좌표로 동작 */}
-      <ImageSlot id="IMG-014" label="모터리페어 위치 지도 · 경기 화성 효행로" ratio="16 / 9" />
+      {/* IMG-014 네이버 지도 캡처(핀·주요 도로) — 차후 보강 이미지로 교체 가능. 아래 링크는 실제 좌표로 동작 */}
+      <ImageSlot
+        id="IMG-014"
+        label="모터리페어 위치 지도 · 경기 화성 효행로"
+        alt="모터리페어 위치 지도 경기 화성 효행로"
+        ratio="16 / 9"
+      />
       <p class="loc-address t-body-strong">{business.address.full}</p>
       <div class="loc-maplinks">
         <a href={business.maps.naverPlace} target="_blank" rel="noopener" class="btn btn-naver">네이버 지도로 열기</a>
@@ -141,7 +146,7 @@ const faqLd = {
   {/* [6] 외관 사진 */}
   <section class="loc-exterior">
     <div class="container">
-      <ImageSlot id="IMG-013" label="동탄 수입차 정비소 모터리페어 외관 간판" ratio="16 / 9" />
+      <ImageSlot id="IMG-013" label="동탄 수입차 정비소 모터리페어 외관 간판" alt="동탄 수입차 정비소 모터리페어 외관 간판" ratio="16 / 9" />
       <p class="loc-exterior-cap t-caption">간판이 보이는 정비 베이 3칸 건물입니다.</p>
     </div>
   </section>

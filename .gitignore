@@ -31,3 +31,6 @@ Thumbs.db
 .idea/
 .claude/settings.local.json
 .claude/launch.json
+
+# 이미지 대기 폴더 — 원본 후보·리뷰 캡처(개인정보)·인증서 PDF. 리포에 올리지 않는다
+src/assets/site/_incoming/

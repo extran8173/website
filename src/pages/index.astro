@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import TrustBadgeRow from '../components/TrustBadgeRow.astro';
 import RecentCases from '../components/RecentCases.astro';
 import CtaSection from '../components/CtaSection.astro';
+import ImageSlot from '../components/ImageSlot.astro';
 import { business, cta } from '../data/business.ts';
 
 const title = '동탄 수입차 전문 정비 | 모터리페어';
@@ -53,9 +54,18 @@ const faqs = [
 ---
 
 <BaseLayout title={title} description={description} path="/">
-  {/* [1] 히어로 — IMG-001 사업장 정면(간판) 풀블리드 + 하단 40% 스크림. 사진 확보 전 다크 타일로 대체 */}
+  {/* [1] 히어로 — IMG-001 사업장 정면(간판) 풀블리드 배경 + 하단 스크림. VID-001로 교체 가능 */}
   <section class="hero">
+    <ImageSlot
+      id="IMG-001"
+      label="사업장 정면(간판)·정비 베이 3칸 · 풀블리드 배경"
+      alt="동탄 수입차 정비소 모터리페어 외관"
+      tone="dark"
+      cover={true}
+    />
+    <div class="hero-scrim"></div>
     <div class="container hero-inner">
+      <p class="hero-eyebrow t-caption-strong">동탄·화성·오산·평택 수입차 전문</p>
       <h1 class="t-hero-display">동탄 수입차 전문 정비</h1>
       <p class="hero-sub t-lead">정기 점검·소모품 교환부터 고장 진단까지, 과정을 사진으로 보여드립니다.</p>
       <div class="hero-cta">
@@ -70,26 +80,48 @@ const faqs = [
     <div class="container"><TrustBadgeRow /></div>
   </section>
 
-  {/* [3] 소개 한 문단 — GEO 엔티티 선언 */}
+  {/* [3] 소개 한 문단 — GEO 엔티티 선언 · 50/50 분할 (글 + 작업 컷) */}
   <section class="intro">
-    <div class="container">
-      <h2 class="t-display-md">모터리페어는 이런 곳입니다</h2>
-      <p class="intro-body t-body">
-        모터리페어는 경기 화성 동탄에서 BMW·벤츠·아우디·폭스바겐·미니·포르쉐를 정비하는 수입차 전문 정비소입니다.
-        엔진오일·미션오일 등 교환주기가 정해진 소모품 정비를 차종별 제조사 규격에 맞춰 진행하고, 원인 모를 증상은 ISTA+·Xentry·ODIS·PIWIS 등 브랜드 전용 진단기로 진단합니다.
-        점검부터 출고까지 모든 과정을 사진으로 기록해 보여드리며, 서비스센터와 엔진 전문회사에서 20년 넘게 정비해 온 대표가 직접 진단합니다.
-      </p>
+    <div class="container split">
+      <div class="split-text">
+        <h2 class="t-display-md">모터리페어는 이런 곳입니다</h2>
+        <p class="intro-body t-body">
+          모터리페어는 경기 화성 동탄에서 BMW·벤츠·아우디·폭스바겐·미니·포르쉐를 정비하는 수입차 전문 정비소입니다.
+          엔진오일·미션오일 등 교환주기가 정해진 소모품 정비를 차종별 제조사 규격에 맞춰 진행하고, 원인 모를 증상은 ISTA+·Xentry·ODIS·PIWIS 등 브랜드 전용 진단기로 진단합니다.
+          점검부터 출고까지 모든 과정을 사진으로 기록해 보여드리며, 서비스센터와 엔진 전문회사에서 20년 넘게 정비해 온 대표가 직접 진단합니다.
+        </p>
+      </div>
+      <div class="split-media">
+        <ImageSlot
+          id="IMG-015"
+          label="대표·직원이 실제 정비하는 작업 컷 (얼굴 또는 손)"
+          alt="동탄 수입차 정비소 정비 작업 모습"
+          ratio="4 / 5"
+        />
+      </div>
     </div>
   </section>
 
-  {/* [4] 정기 점검·소모품 교환 — 대표 정비 */}
+  {/* [4] 정기 점검·소모품 교환 — 대표 정비 · 50/50 분할(사진 + 글) 후 칩 그리드 */}
   <section class="maint-band">
+    <div class="container split split--reverse">
+      <div class="split-media">
+        <ImageSlot
+          id="IMG-022"
+          label="소모품 교환 작업 컷 (엔진룸 점검)"
+          alt="동탄 수입차 정비소 엔진룸 점검 작업"
+          ratio="4 / 5"
+        />
+      </div>
+      <div class="split-text">
+        <p class="maint-eyebrow t-caption-strong">정기 점검 · 소모품 교환</p>
+        <h2 class="t-display-md">정비의 대부분은 소모품 교환입니다</h2>
+        <p class="maint-band-body t-body">
+          엔진오일·미션오일부터 브레이크·냉각수, 벨트·워터펌프까지 — 교환주기가 정해진 소모품을 차종별 제조사 규격에 맞춰 교환합니다. 교환 전 상태를 사진으로 보여드리고, 대부분 당일 정비로 진행됩니다.
+        </p>
+      </div>
+    </div>
     <div class="container">
-      <p class="maint-eyebrow t-caption-strong">정기 점검 · 소모품 교환</p>
-      <h2 class="t-display-md">정비의 대부분은 소모품 교환입니다</h2>
-      <p class="maint-band-body t-body">
-        엔진오일·미션오일부터 브레이크·냉각수, 벨트·워터펌프까지 — 교환주기가 정해진 소모품을 차종별 제조사 규격에 맞춰 교환합니다. 교환 전 상태를 사진으로 보여드리고, 대부분 당일 정비로 진행됩니다.
-      </p>
       <ul class="maint-chip-grid">
         {maintenanceGroups.map((g) => (
           <li class="maint-chip">
@@ -120,14 +152,36 @@ const faqs = [
     </div>
   </section>
 
-  {/* [5] 진단 장비 티저 — 다크 타일 */}
+  {/* [6] 진단 장비 티저 — 다크 타일 · 50/50 분할(글 + 진단기 실물 사진) */}
   <section class="equip-teaser">
-    <div class="container">
-      <h2 class="t-display-md">장비가 진단의 절반입니다</h2>
-      <p class="equip-teaser-body t-body">
-        BMW ISTA+, 벤츠 Xentry, 아우디 ODIS, 포르쉐 PIWIS. 브랜드가 쓰는 진단기를 그대로 갖추고, Picoscope로 전기 신호까지 계측합니다.
-      </p>
-      <a href="/equipment/" class="equip-teaser-link t-body">어떤 장비로 진단하는지 보기 →</a>
+    <div class="container split">
+      <div class="split-text">
+        <h2 class="t-display-md">장비가 진단의 절반입니다</h2>
+        <p class="equip-teaser-body t-body">
+          BMW ISTA+, 벤츠 Xentry, 아우디 ODIS, 포르쉐 PIWIS. 브랜드가 쓰는 진단기를 그대로 갖추고, Picoscope로 전기 신호까지 계측합니다.
+        </p>
+        <a href="/equipment/" class="equip-teaser-link t-body">어떤 장비로 진단하는지 보기 →</a>
+      </div>
+      <div class="split-media split-media--stack">
+        <ImageSlot
+          id="IMG-002"
+          label="브랜드 전용 진단 노트북 세트 (ISTA·Xentry·ODIS·PIWIS)"
+          alt="수입차 브랜드 전용 진단기 ISTA Xentry ODIS PIWIS"
+          ratio="16 / 10"
+          tone="dark"
+        />
+        {/* VID-003 — 자체 촬영 클립 확보 전까지 YouTube 링크로 재생 (PicoScope 공식 소개 영상) */}
+        <a
+          class="video-link"
+          href="https://www.youtube.com/watch?v=5L1g5f6iJ7s"
+          target="_blank"
+          rel="noopener"
+        >
+          <span class="video-link-icon" aria-hidden="true">▶</span>
+          <span class="video-link-title">Picoscope 진단 영상 보기</span>
+          <span class="video-link-note">YouTube에서 재생됩니다</span>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -175,17 +229,42 @@ const faqs = [
 </BaseLayout>
 
 <style>
-  /* [1] 히어로 (다크 타일 — IMG-001 사진 배치 시 배경 이미지 + 스크림으로 교체) */
+  /* [1] 히어로 — IMG-001 풀블리드 배경 + 하단 스크림 */
   .hero {
-    background: var(--color-surface-tile-1);
+    position: relative;
     color: var(--color-on-dark);
-    padding-block: 120px;
+    background: var(--color-surface-tile-1);
+    min-height: 78vh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
   }
-  .hero-inner { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
+  /* 하단 40% 검정 단색 스크림 (그라디언트 장식 아님 — 기능적 명도 확보, §3) */
+  .hero-scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.30) 34%, rgba(0,0,0,0) 60%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative;
+    display: flex; flex-direction: column; align-items: flex-start; gap: 18px;
+    padding-block: 56px;
+  }
+  .hero-eyebrow { color: var(--color-body-muted); margin: 0; letter-spacing: 0.04em; }
   .hero :global(.t-hero-display) { color: var(--color-on-dark); }
-  .hero-sub { color: var(--color-body-muted); margin: 0; max-width: 40ch; }
+  .hero-sub { color: #eaeaea; margin: 0; max-width: 40ch; }
   .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
   .hero .btn-naver { color: var(--color-on-dark); border-color: var(--color-on-dark); }
+
+  /* 공통 50/50 분할 (사진 중심 리듬) */
+  .split { display: grid; grid-template-columns: 1fr; gap: var(--space-xl); align-items: center; }
+  .split-text { min-width: 0; }
+  .split-media { min-width: 0; }
+  .split-media--stack { display: flex; flex-direction: column; gap: var(--space-md); }
+  @media (min-width: 835px) {
+    .split { grid-template-columns: 1fr 1fr; gap: var(--space-xxl); }
+    .split--reverse .split-media { order: -1; }
+  }
 
   .badges-band { background: var(--color-canvas); padding-block: var(--space-xl); }
 
@@ -195,9 +274,10 @@ const faqs = [
 
   /* [4] 정기 점검·소모품 교환 — 대표 정비 (canvas) */
   .maint-band { background: var(--color-canvas); padding-block: var(--space-section); }
+  .maint-band .split { margin-bottom: var(--space-xxl); }
   .maint-eyebrow { display: block; color: var(--color-primary); margin: 0 0 8px; letter-spacing: 0.02em; }
   .maint-band h2 { color: var(--color-ink); margin: 0 0 var(--space-md); }
-  .maint-band-body { color: var(--color-ink-muted-80); max-width: 68ch; margin: 0 0 var(--space-xl); }
+  .maint-band-body { color: var(--color-ink-muted-80); margin: 0; }
   .maint-chip-grid {
     list-style: none; margin: 0 0 var(--space-xl); padding: 0;
     display: grid; grid-template-columns: 1fr; gap: var(--space-sm);
@@ -231,6 +311,19 @@ const faqs = [
   .equip-teaser h2 { color: var(--color-on-dark); margin: 0 0 var(--space-lg); }
   .equip-teaser-body { color: var(--color-body-muted); max-width: 60ch; margin: 0 0 var(--space-lg); }
   .equip-teaser-link { color: var(--color-primary-on-dark); }
+  /* VID-003 자리 — YouTube 링크 타일 (자체 클립 확보 시 영상으로 교체) */
+  .video-link {
+    aspect-ratio: 16 / 9;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+    border: 1px solid #4a4a4d; border-radius: var(--rounded-lg);
+    background: var(--color-surface-tile-2);
+    color: var(--color-on-dark); text-align: center; padding: var(--space-lg);
+    transition: border-color 0.12s ease;
+  }
+  .video-link:hover { border-color: var(--color-primary-on-dark); }
+  .video-link-icon { font-size: 22px; color: var(--color-primary-on-dark); }
+  .video-link-title { font-size: 15px; font-weight: 600; }
+  .video-link-note { font-size: 12px; color: var(--color-body-muted); }
 
   .reviews { background: var(--color-canvas-parchment); padding-block: var(--space-section); }
   .reviews h2 { color: var(--color-ink); margin: 0 0 var(--space-sm); }
