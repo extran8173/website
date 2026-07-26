@@ -1,9 +1,10 @@
 ---
-// 하위 페이지 공용 히어로 — 데스크톱(768px+) 좌 텍스트 / 우 이미지, 모바일 세로 1단.
+// 하위 페이지 공용 히어로 — 데스크톱(768px+) 좌 다크 텍스트 패널(full-bleed) / 우 이미지, 모바일 세로 1단.
 // 서비스·정비 사례·진단 장비·오시는 길 4개 페이지가 공유한다. 디자인 변경은 이 파일 한 곳에서.
+// 2026-07-26: 좌측을 다크 패널로 전환(구 진단 장비 헤드의 --color-surface-tile-1 재사용). 사진에는 오버레이 없음.
 import ImageSlot from './ImageSlot.astro';
 interface Props {
-  label: string; // 섹션 라벨 (본문 eyebrow와 동일 스타일)
+  label: string; // 섹션 라벨
   heading: string; // H1
   sub?: string;
   img: string; // ImageSlot id
@@ -13,11 +14,13 @@ const { label, heading, sub, img, imgAlt } = Astro.props;
 ---
 
 <section class="page-hero">
-  <div class="container page-hero-grid">
+  <div class="page-hero-grid">
     <div class="page-hero-text">
-      <p class="page-hero-label t-caption-strong">{label}</p>
-      <h1 class="t-display-lg">{heading}</h1>
-      {sub && <p class="page-hero-sub t-lead">{sub}</p>}
+      <div class="page-hero-text-inner">
+        <p class="page-hero-label t-caption-strong">{label}</p>
+        <h1 class="t-display-lg">{heading}</h1>
+        {sub && <p class="page-hero-sub t-lead">{sub}</p>}
+      </div>
     </div>
     <div class="page-hero-media">
       <ImageSlot id={img} label={imgAlt} alt={imgAlt} ratio="4 / 3" />
@@ -26,12 +29,31 @@ const { label, heading, sub, img, imgAlt } = Astro.props;
 </section>
 
 <style>
-  .page-hero { background: var(--color-canvas-parchment); padding-block: var(--space-section); }
-  .page-hero-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-xl); align-items: center; }
-  .page-hero-label { color: var(--color-primary); margin: 0 0 8px; letter-spacing: 0.02em; }
-  .page-hero-text h1 { color: var(--color-ink); margin: 0 0 var(--space-md); }
-  .page-hero-sub { color: var(--color-ink-muted-80); margin: 0; max-width: 44ch; }
+  .page-hero { background: var(--color-canvas-parchment); }
+  .page-hero-grid { display: grid; grid-template-columns: 1fr; }
+
+  /* 좌측 텍스트 — 다크 패널 (좌측 화면 끝까지 full-bleed) */
+  .page-hero-text {
+    background: var(--color-surface-tile-1);
+    display: flex;
+    align-items: center;
+    padding: var(--space-xxl) 16px;
+  }
+  .page-hero-label { color: var(--color-primary-on-dark); margin: 0 0 8px; letter-spacing: 0.02em; }
+  .page-hero-text h1 { color: var(--color-on-dark); margin: 0 0 var(--space-md); }
+  .page-hero-sub { color: var(--color-body-muted); margin: 0; max-width: 44ch; }
+
+  /* 사진은 오버레이 없이 원본 밝기 유지 · 다크 패널과 직각으로 맞닿음(라운드 제거) */
+  .page-hero-media :global(.img-media),
+  .page-hero-media :global(.img-slot) { border-radius: 0; }
+
+  @media (min-width: 736px) {
+    .page-hero-text { padding-inline: 24px; }
+  }
   @media (min-width: 768px) {
-    .page-hero-grid { grid-template-columns: 1.2fr 1fr; gap: var(--space-xxl); }
+    .page-hero-grid { grid-template-columns: 1.2fr 1fr; }
+    /* 좌측 패딩은 .container 좌측 정렬선과 일치 (max-width 1440 · padding 24) */
+    .page-hero-text { padding: var(--space-xxl) var(--space-xxl) var(--space-xxl) max(24px, calc(50vw - 696px)); }
+    .page-hero-media { align-self: center; padding-right: max(24px, calc(50vw - 696px)); }
   }
 </style>
