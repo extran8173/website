@@ -6,6 +6,13 @@ import CtaSection from '../components/CtaSection.astro';
 import ImageSlot from '../components/ImageSlot.astro';
 import { business } from '../data/business.ts';
 
+// ISO 인증서 실물 (IMG-029~031) — 클릭 시 원본 PDF 새 탭 (public/docs/)
+const isoCerts = [
+  { img: 'IMG-029', pdf: '/docs/iso-9001.pdf', alt: '모터리페어 ISO 9001 품질경영 인증서', cap: 'ISO 9001:2015 · 품질경영 · 인증번호 QI092526' },
+  { img: 'IMG-030', pdf: '/docs/iso-14001.pdf', alt: '모터리페어 ISO 14001 환경경영 인증서', cap: 'ISO 14001:2015 · 환경경영 · 인증번호 EI104426' },
+  { img: 'IMG-031', pdf: '/docs/iso-45001.pdf', alt: '모터리페어 ISO 45001 안전보건경영 인증서', cap: 'ISO 45001:2018 · 안전보건경영 · 인증번호 OHI091326' },
+];
+
 const title = '브랜드 전용 진단기 · ISO 인증 | 동탄 모터리페어';
 const description =
   'BMW ISTA+, 벤츠 Xentry, 아우디 ODIS, VCDS, 포르쉐 PIWIS, Picoscope 보유. 20년 경력 전문 정비사가 진단하는 동탄 수입차 정비소. ISO 9001·14001·45001 취득.';
@@ -78,13 +85,25 @@ const tools = [
     <div class="container">
       <h2 class="t-display-md">숫자로 확인할 수 있는 것들</h2>
       <p class="t-body eq-iso-body">
-        모터리페어는 ISO 9001(품질경영) · ISO 14001(환경경영) · ISO 45001(안전보건경영) 인증을 취득했습니다. 교환한 부품은 차량 제작사 기준과 동일하게 1년 / 2만km 동안 A/S를 적용합니다.
+        모터리페어는 자동차 정비 서비스에 대해 ISO 9001(품질경영), ISO 14001(환경경영), ISO 45001(안전보건경영) 인증을 취득했습니다. 인증기관은 International Certification Registrar(ICR)이며, 유효기간은 2029년 6월까지입니다. 교환한 부품은 차량 제작사 기준과 동일하게 1년 / 2만km 동안 A/S를 적용합니다.
       </p>
       <ul class="iso-badges">
         <li class="iso-badge t-caption">ISO 9001 · 품질경영</li>
         <li class="iso-badge t-caption">ISO 14001 · 환경경영</li>
         <li class="iso-badge t-caption">ISO 45001 · 안전보건경영</li>
         <li class="iso-badge t-caption">{business.awards[0]}</li>
+      </ul>
+
+      {/* 인증서 실물 — 클릭 시 원본 PDF 새 탭 (이미지보다 선명) */}
+      <ul class="iso-certs">
+        {isoCerts.map((c) => (
+          <li class="iso-cert">
+            <a href={c.pdf} target="_blank" rel="noopener" class="iso-cert-link" aria-label={`${c.alt} — 원본 PDF 새 탭에서 열기`}>
+              <ImageSlot id={c.img} label={c.alt} alt={c.alt} ratio="3 / 4" />
+            </a>
+            <p class="iso-cert-cap t-caption">{c.cap}</p>
+          </li>
+        ))}
       </ul>
     </div>
   </section>
@@ -126,6 +145,26 @@ const tools = [
   .eq-iso-body { color: var(--color-ink-muted-80); max-width: 64ch; margin: 0 0 var(--space-lg); }
   .iso-badges { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
   .iso-badge { border: 1px solid var(--color-hairline); border-radius: var(--rounded-pill); padding: 8px 16px; color: var(--color-ink-muted-80); }
+
+  /* 인증서 실물 그리드 — 모바일 1단 / 768px+ 3단 */
+  .iso-certs { list-style: none; margin: var(--space-xl) 0 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: var(--space-lg); }
+  .iso-cert-link {
+    display: block;
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--rounded-md);
+    overflow: hidden;
+    cursor: zoom-in;
+    background: var(--color-canvas-parchment); /* 중립 배경 — 인증서 흰 여백과 구분 */
+  }
+  .iso-cert-link:hover,
+  .iso-cert-link:focus-visible { border-color: var(--color-primary); }
+  .iso-cert-link:focus-visible { outline: 2px solid var(--color-primary-focus); outline-offset: 2px; }
+  /* 가장자리 잘림 방지 — cover 대신 contain */
+  .iso-cert-link :global(.img-media) { object-fit: contain; border-radius: 0; height: 100%; }
+  .iso-cert-cap { color: var(--color-ink-muted-48); margin: var(--space-sm) 0 0; }
+  @media (min-width: 768px) {
+    .iso-certs { grid-template-columns: repeat(3, 1fr); }
+  }
 
   @media (min-width: 641px) {
     .tool-grid { grid-template-columns: repeat(2, 1fr); }

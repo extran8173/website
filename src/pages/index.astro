@@ -65,7 +65,6 @@ const faqs = [
     />
     <div class="hero-scrim"></div>
     <div class="container hero-inner">
-      <p class="hero-eyebrow t-caption-strong">동탄·화성·오산·평택 수입차 전문</p>
       <h1 class="t-hero-display">동탄 수입차 전문 정비</h1>
       <p class="hero-sub t-lead">정기 점검·소모품 교환부터 고장 진단까지, 과정을 사진으로 보여드립니다.</p>
       <div class="hero-cta">
@@ -253,10 +252,17 @@ const faqs = [
     align-items: flex-end;
     overflow: hidden;
   }
-  /* 하단 40% 검정 단색 스크림 (그라디언트 장식 아님 — 기능적 명도 확보, §3) */
+  /* 하단 스크림 (그라디언트 장식 아님 — 기능적 명도 확보, §3)
+     2026-07-26 강화: 배경 사진 정보 밀도(간판·반사)로 흰 텍스트 대비 부족 → 텍스트 블록 범위까지 어둡게 */
   .hero-scrim {
     position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.30) 34%, rgba(0,0,0,0) 60%);
+    background: linear-gradient(
+      to top,
+      rgba(0,0,0,0.88) 0%,
+      rgba(0,0,0,0.80) 45%,
+      rgba(0,0,0,0.40) 64%,
+      rgba(0,0,0,0) 82%
+    );
     pointer-events: none;
   }
   .hero-inner {
@@ -264,9 +270,9 @@ const faqs = [
     display: flex; flex-direction: column; align-items: flex-start; gap: 18px;
     padding-block: 56px;
   }
-  .hero-eyebrow { color: var(--color-body-muted); margin: 0; letter-spacing: 0.04em; }
-  .hero :global(.t-hero-display) { color: var(--color-on-dark); }
-  .hero-sub { color: #eaeaea; margin: 0; max-width: 40ch; }
+  /* 텍스트 그림자 — 그림자 금지 규칙(§3)의 예외: 장식 아닌 가독성 확보 목적, 사용자 승인(2026-07-26) */
+  .hero :global(.t-hero-display) { color: var(--color-on-dark); text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); }
+  .hero-sub { color: #eaeaea; margin: 0; max-width: 40ch; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); }
   .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
   .hero .btn-naver { color: var(--color-on-dark); border-color: var(--color-on-dark); }
 
@@ -374,5 +380,15 @@ const faqs = [
   @media (max-width: 640px) {
     .hero { padding-block: 72px; }
     .hero :global(.t-hero-display) { font-size: 34px; }
+    /* 모바일: 커버 크롭으로 밝은 반사가 텍스트 위까지 올라옴 → 어두운 구간을 더 높이 확보 */
+    .hero-scrim {
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.90) 0%,
+        rgba(0,0,0,0.84) 62%,
+        rgba(0,0,0,0.42) 80%,
+        rgba(0,0,0,0) 94%
+      );
+    }
   }
 </style>
