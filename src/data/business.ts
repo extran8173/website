@@ -80,7 +80,7 @@ export const business = {
 
   // ── 인증 / 경력 / A/S ─────────────────────────────────
   certifications: ['ISO 9001', 'ISO 14001', 'ISO 45001'] as const, // 취득
-  awards: ['2026년 대한민국 고객만족 신뢰도 대상'] as const,
+  awards: ['2026 대한민국 고객만족 신뢰도 대상 (한국기자협회)'] as const,
   careerYears: 20,
   warranty: {
     // 부품 — 차량 제작사 기준 동일, 1년 / 2만km

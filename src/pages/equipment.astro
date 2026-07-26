@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import RecentCases from '../components/RecentCases.astro';
 import CtaSection from '../components/CtaSection.astro';
 import ImageSlot from '../components/ImageSlot.astro';
+import { business } from '../data/business.ts';
 
 const title = '브랜드 전용 진단기 · ISO 인증 | 동탄 모터리페어';
 const description =
@@ -83,7 +84,7 @@ const tools = [
         <li class="iso-badge t-caption">ISO 9001 · 품질경영</li>
         <li class="iso-badge t-caption">ISO 14001 · 환경경영</li>
         <li class="iso-badge t-caption">ISO 45001 · 안전보건경영</li>
-        <li class="iso-badge t-caption">2026년 대한민국 고객만족 신뢰도 대상</li>
+        <li class="iso-badge t-caption">{business.awards[0]}</li>
       </ul>
     </div>
   </section>
