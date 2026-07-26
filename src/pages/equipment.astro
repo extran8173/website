@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import RecentCases from '../components/RecentCases.astro';
 import CtaSection from '../components/CtaSection.astro';
 import ImageSlot from '../components/ImageSlot.astro';
+import PageHero from '../components/PageHero.astro';
 import { business } from '../data/business.ts';
 
 // ISO 인증서 실물 (IMG-029~031) — 클릭 시 원본 PDF 새 탭 (public/docs/)
@@ -26,13 +27,14 @@ const tools = [
 ---
 
 <BaseLayout title={title} description={description} path="/equipment/">
-  {/* [1] 페이지 헤드 — 다크 타일 (IMG-007 배경, 확보 전 다크 타일) */}
-  <section class="eq-head">
-    <div class="container">
-      <h1 class="t-hero-display">장비가 진단의 절반입니다</h1>
-      <p class="eq-head-sub t-lead">공식 서비스센터가 쓰는 진단기를 그대로 갖췄습니다.</p>
-    </div>
-  </section>
+  {/* [1] 페이지 헤드 — 공용 PageHero (다크 타일 폐기, 4개 하위 페이지 통일 2026-07-26) */}
+  <PageHero
+    label="브랜드 전용 진단기"
+    heading="장비가 진단의 절반입니다"
+    sub="공식 서비스센터가 쓰는 진단기를 그대로 갖췄습니다."
+    img="IMG-010"
+    imgAlt="Picoscope 정밀 진단 장비 엔진룸 계측"
+  />
 
   {/* [2] 브랜드별 진단기 — 카드 4개 */}
   <section class="eq-tools">
@@ -116,10 +118,6 @@ const tools = [
 </BaseLayout>
 
 <style>
-  .eq-head { background: var(--color-surface-tile-1); color: var(--color-on-dark); padding-block: 100px; }
-  .eq-head :global(.t-hero-display) { color: var(--color-on-dark); }
-  .eq-head-sub { color: var(--color-body-muted); margin: 16px 0 0; }
-
   .eq-tools { background: var(--color-canvas); padding-block: var(--space-section); }
   .eq-tools h2 { color: var(--color-ink); margin: 0 0 var(--space-md); }
   .eq-tools-intro { color: var(--color-ink-muted-80); max-width: 60ch; margin: 0 0 var(--space-xl); }

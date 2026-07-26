@@ -1,0 +1,37 @@
+---
+// 하위 페이지 공용 히어로 — 데스크톱(768px+) 좌 텍스트 / 우 이미지, 모바일 세로 1단.
+// 서비스·정비 사례·진단 장비·오시는 길 4개 페이지가 공유한다. 디자인 변경은 이 파일 한 곳에서.
+import ImageSlot from './ImageSlot.astro';
+interface Props {
+  label: string; // 섹션 라벨 (본문 eyebrow와 동일 스타일)
+  heading: string; // H1
+  sub?: string;
+  img: string; // ImageSlot id
+  imgAlt: string;
+}
+const { label, heading, sub, img, imgAlt } = Astro.props;
+---
+
+<section class="page-hero">
+  <div class="container page-hero-grid">
+    <div class="page-hero-text">
+      <p class="page-hero-label t-caption-strong">{label}</p>
+      <h1 class="t-display-lg">{heading}</h1>
+      {sub && <p class="page-hero-sub t-lead">{sub}</p>}
+    </div>
+    <div class="page-hero-media">
+      <ImageSlot id={img} label={imgAlt} alt={imgAlt} ratio="4 / 3" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-hero { background: var(--color-canvas-parchment); padding-block: var(--space-section); }
+  .page-hero-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-xl); align-items: center; }
+  .page-hero-label { color: var(--color-primary); margin: 0 0 8px; letter-spacing: 0.02em; }
+  .page-hero-text h1 { color: var(--color-ink); margin: 0 0 var(--space-md); }
+  .page-hero-sub { color: var(--color-ink-muted-80); margin: 0; max-width: 44ch; }
+  @media (min-width: 768px) {
+    .page-hero-grid { grid-template-columns: 1.2fr 1fr; gap: var(--space-xxl); }
+  }
+</style>

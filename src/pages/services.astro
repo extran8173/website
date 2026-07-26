@@ -6,6 +6,7 @@ import RecentCases from '../components/RecentCases.astro';
 import CtaSection from '../components/CtaSection.astro';
 import ImageSlot from '../components/ImageSlot.astro';
 import ProcessFlow from '../components/ProcessFlow.astro';
+import PageHero from '../components/PageHero.astro';
 
 const title = '수입차 소모품 교환·정기 점검 | 동탄 모터리페어';
 const description =
@@ -59,13 +60,14 @@ const maintenanceGroups = [
 ---
 
 <BaseLayout title={title} description={description} path="/services/">
-  {/* [1] 페이지 헤드 */}
-  <section class="svc-head">
-    <div class="container">
-      <h1 class="t-display-lg">제때 교환하고, 정확히 진단합니다</h1>
-      <p class="svc-head-sub t-lead">교환주기가 된 소모품은 제조사 스펙대로, 원인 모를 증상은 전용 진단기로. 작업 전 견적을 안내하고 승인 후 진행합니다.</p>
-    </div>
-  </section>
+  {/* [1] 페이지 헤드 — 공용 PageHero (좌 텍스트 / 우 이미지) */}
+  <PageHero
+    label="소모품 교환 · 고장 진단"
+    heading="제때 교환하고, 정확히 진단합니다"
+    sub="교환주기가 된 소모품은 제조사 스펙대로, 원인 모를 증상은 전용 진단기로. 작업 전 견적을 안내하고 승인 후 진행합니다."
+    img="IMG-026"
+    imgAlt="동탄 수입차 정비소 벤츠 브레이크 패드 교환 부품"
+  />
 
   {/* [2] 진행 방식 3단계 */}
   <section class="svc-process">
@@ -169,10 +171,6 @@ const maintenanceGroups = [
 </BaseLayout>
 
 <style>
-  .svc-head { background: var(--color-canvas-parchment); padding-block: var(--space-section); }
-  .svc-head h1 { color: var(--color-ink); margin: 0 0 var(--space-md); }
-  .svc-head-sub { color: var(--color-ink-muted-80); margin: 0; max-width: 52ch; }
-
   .svc-process { background: var(--color-canvas); padding-block: var(--space-section); }
   .svc-process h2 { color: var(--color-ink); margin: 0 0 var(--space-xl); }
   /* 3단계 다이어그램 스타일은 ProcessFlow.astro 컴포넌트에 있다 */

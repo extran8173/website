@@ -6,6 +6,7 @@ import TrustBadgeRow from '../components/TrustBadgeRow.astro';
 import CtaSection from '../components/CtaSection.astro';
 import ImageSlot from '../components/ImageSlot.astro';
 import ProcessFlow from '../components/ProcessFlow.astro';
+import PageHero from '../components/PageHero.astro';
 import { business, cta } from '../data/business.ts';
 
 const title = '오시는 길 · 문의 예약 | 동탄 모터리페어';
@@ -56,10 +57,18 @@ const faqLd = {
 <BaseLayout title={title} description={description} path="/location/">
   <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(faqLd)} />
 
-  {/* [1] 헤드 + 지도 */}
+  {/* [1] 페이지 헤드 — 공용 PageHero (4개 하위 페이지 통일 2026-07-26 신설) */}
+  <PageHero
+    label="동탄 · 화성 · 오산 · 평택"
+    heading="오시는 길 · 문의"
+    sub="병점역 인근, 동탄에서 차로 10~20분 거리입니다."
+    img="IMG-021"
+    imgAlt="동탄 수입차 정비소 봄 외관"
+  />
+
+  {/* [2] 지도 */}
   <section class="loc-head">
     <div class="container">
-      <h1 class="t-display-lg">오시는 길 · 문의</h1>
       {/* 인터랙티브 지도 — URL은 business.maps.googleEmbed 단일 소스 (Embed API 전환 시 상수만 교체) */}
       <div class="loc-map">
         <iframe
@@ -158,7 +167,6 @@ const faqLd = {
 
 <style>
   .loc-head { background: var(--color-canvas); padding-block: var(--space-section); }
-  .loc-head h1 { color: var(--color-ink); margin: 0 0 var(--space-lg); }
 
   /* 지도 임베드 — 모바일 4:3(화면 높이 50% 이내), 768px 이상 16:9 */
   .loc-map {
