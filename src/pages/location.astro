@@ -5,6 +5,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import TrustBadgeRow from '../components/TrustBadgeRow.astro';
 import CtaSection from '../components/CtaSection.astro';
 import ImageSlot from '../components/ImageSlot.astro';
+import ProcessFlow from '../components/ProcessFlow.astro';
 import { business, cta } from '../data/business.ts';
 
 const title = '오시는 길 · 문의 예약 | 동탄 모터리페어';
@@ -22,9 +23,9 @@ const regions = [
 
 // 첫 방문 3단계 (문의 §2). ⚠️ 1단계 "준비물 없음"은 사장님 확인값
 const steps = [
-  { n: '1', h: '연락', body: '전화 또는 네이버 예약으로 증상과 차종을 알려주세요. 차량등록증 등 따로 준비하실 것은 없습니다.' },
-  { n: '2', h: '입고·진단', body: '예약 시간에 오시면 전용 진단기로 원인부터 확인합니다. 대기실에서 기다리시거나, 대차가 필요하시면 미리 말씀해 주세요.' },
-  { n: '3', h: '견적·작업', body: '확인된 원인과 견적을 사진과 함께 설명해 드리고, 승인해 주시면 작업을 시작합니다. 과정은 사진으로 기록됩니다.' },
+  { n: '1', h: '연락', sub: '증상과 차종 안내', body: '전화 또는 네이버 예약으로 증상과 차종을 알려주세요. 차량등록증 등 따로 준비하실 것은 없습니다.' },
+  { n: '2', h: '입고 · 진단', sub: '전용 진단기로 확인', body: '예약 시간에 오시면 전용 진단기로 원인부터 확인합니다. 대기실에서 기다리시거나, 대차가 필요하시면 미리 말씀해 주세요.' },
+  { n: '3', h: '견적 · 작업', sub: '사진과 함께 설명', body: '확인된 원인과 견적을 사진과 함께 설명해 드리고, 승인해 주시면 작업을 시작합니다. 과정은 사진으로 기록됩니다.' },
 ];
 
 // FAQ 전체 (문의 §FAQ) — 자기완결형
@@ -111,15 +112,7 @@ const faqLd = {
   <section class="loc-firstvisit">
     <div class="container">
       <h2 class="t-display-md">처음이신가요? 이렇게 진행됩니다</h2>
-      <ol class="firstvisit-grid">
-        {steps.map((s) => (
-          <li class="firstvisit-card">
-            <span class="firstvisit-n t-latin">{s.n}</span>
-            <h3 class="t-body-strong">{s.h}</h3>
-            <p class="t-body">{s.body}</p>
-          </li>
-        ))}
-      </ol>
+      <ProcessFlow steps={steps} arrowLabel="승인 후" band="차량등록증 등 따로 준비하실 것은 없습니다" />
     </div>
   </section>
 
@@ -191,11 +184,7 @@ const faqLd = {
 
   .loc-firstvisit { background: var(--color-canvas); padding-block: var(--space-section); }
   .loc-firstvisit h2 { color: var(--color-ink); margin: 0 0 var(--space-xl); }
-  .firstvisit-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: var(--space-lg); }
-  .firstvisit-card { border: 1px solid var(--color-hairline); border-radius: var(--rounded-lg); padding: var(--space-lg); }
-  .firstvisit-n { display: inline-block; color: var(--color-primary); font-size: 28px; font-weight: 600; margin-bottom: 8px; }
-  .firstvisit-card h3 { margin: 0 0 6px; color: var(--color-ink); }
-  .firstvisit-card p { margin: 0; color: var(--color-ink-muted-80); }
+  /* 3단계 다이어그램 스타일은 ProcessFlow.astro 컴포넌트에 있다 */
 
   .loc-regions { background: var(--color-canvas-parchment); padding-block: var(--space-section); }
   .loc-regions h2 { color: var(--color-ink); margin: 0 0 var(--space-lg); }
@@ -211,7 +200,6 @@ const faqLd = {
   .loc-exterior-cap { color: var(--color-ink-muted-48); margin: var(--space-sm) 0 0; }
 
   @media (min-width: 641px) {
-    .firstvisit-grid { grid-template-columns: repeat(3, 1fr); }
     .loc-actions { flex-direction: row; }
     .loc-action { flex: 1; }
   }

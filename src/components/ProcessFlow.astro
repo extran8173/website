@@ -1,0 +1,86 @@
+---
+// 3단계 프로세스 다이어그램 — 서비스·오시는 길 공용 컴포넌트.
+// 디자인(배지·화살표·하단 띠)은 이 파일 한 곳에서만 수정한다. 페이지별로는 내용만 주입.
+interface Step {
+  n: string; // 배지 숫자
+  h: string; // 단계 제목
+  sub: string; // 짧은 설명 (카드 상단)
+  body: string; // 본문 문장 (카드 하단 유지)
+}
+interface Props {
+  steps: Step[];
+  arrowLabel?: string; // 2→3 화살표 옆 표기 (예: '승인 후')
+  band: string; // 하단 전체 폭 띠 문구
+}
+const { steps, arrowLabel, band } = Astro.props;
+---
+
+<ol class="process-flow">
+  {steps.map((s, i) => (
+    <li class="process-step">
+      {i > 0 && (
+        <span class="process-arrow">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M2 10h14m0 0-5-5m5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          {i === 2 && arrowLabel && <em class="process-arrow-label t-caption-strong">{arrowLabel}</em>}
+        </span>
+      )}
+      <div class="process-card">
+        <span class="process-badge t-latin" aria-hidden="true">{s.n}</span>
+        <h3 class="t-body-strong">{s.h}</h3>
+        <p class="process-sub t-body">{s.sub}</p>
+        <p class="process-body t-caption">{s.body}</p>
+      </div>
+    </li>
+  ))}
+</ol>
+<p class="process-as t-body-strong">{band}</p>
+
+<style>
+  /* 모바일: 세로 1단, 아래 방향 화살표 */
+  .process-flow { list-style: none; margin: 18px 0 var(--space-xl); padding: 0; display: grid; grid-template-columns: 1fr; row-gap: 48px; }
+  .process-step { position: relative; }
+  .process-card {
+    position: relative; height: 100%;
+    background: var(--color-surface-pearl);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--rounded-md);
+    /* 상단 padding은 배지 반지름(18px) 이상 확보 */
+    padding: var(--space-xl) var(--space-lg) var(--space-lg);
+  }
+  .process-badge {
+    position: absolute; top: -18px; left: var(--space-lg);
+    width: 36px; height: 36px; border-radius: var(--rounded-full);
+    background: var(--color-primary); color: var(--color-on-primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; font-weight: 600;
+  }
+  .process-card h3 { margin: 0 0 4px; color: var(--color-ink); }
+  .process-sub { margin: 0 0 var(--space-sm); color: var(--color-ink-muted-80); }
+  .process-body { margin: 0; color: var(--color-ink-muted-80); }
+  .process-arrow {
+    position: absolute; top: -24px; left: 50%; transform: translate(-50%, -50%);
+    color: var(--color-ink-muted-48); display: flex; align-items: center;
+  }
+  .process-arrow svg { transform: rotate(90deg); }
+  .process-arrow-label {
+    position: absolute; left: calc(100% + 8px); top: 50%; transform: translateY(-50%);
+    font-style: normal; white-space: nowrap; color: var(--color-ink-muted-48);
+  }
+  .process-as {
+    margin: 0; padding: var(--space-md) var(--space-lg);
+    background: var(--color-primary); color: var(--color-on-primary);
+    border-radius: var(--rounded-md); text-align: center;
+  }
+
+  /* 데스크톱: 가로 3단, 오른쪽 방향 화살표 */
+  @media (min-width: 768px) {
+    .process-flow { grid-template-columns: repeat(3, 1fr); column-gap: 56px; row-gap: 0; }
+    .process-arrow { top: 50%; left: -28px; transform: translate(-50%, -50%); }
+    .process-arrow svg { transform: none; }
+    .process-arrow-label {
+      left: 50%; top: auto; bottom: calc(100% + 6px); transform: translateX(-50%);
+    }
+  }
+</style>
