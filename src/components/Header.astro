@@ -1,6 +1,8 @@
 ---
 // 헤더 — sub-nav-frosted (parchment 80% + backdrop-blur, 높이 52px, sticky)
 // 기준: 03_common_ui §1 · DESIGN-motorrepair §5
+// ⚠️ 모바일 메뉴 패널은 반드시 <header> 밖(body 직속)에 둔다.
+//    헤더의 backdrop-filter가 fixed 포지션 기준을 헤더로 바꿔 패널 높이가 붕괴하는 버그 방지.
 import { navItems, business, cta } from '../data/business.ts';
 
 const current = Astro.url.pathname;
@@ -28,7 +30,7 @@ const isActive = (href: string) =>
     <!-- 데스크톱 우측: 전화 상담 + 번호 -->
     <div class="header-cta-desktop">
       <a href={cta.callHref} class="btn btn-call header-call">전화 상담</a>
-      <a href={cta.callHref} class="header-phone t-caption t-latin">{business.phone.display}</a>
+      <a href={cta.callHref} class="header-phone t-caption t-latin" aria-label={`전화 걸기 ${business.phone.display}`}>{business.phone.display}</a>
     </div>
 
     <!-- 모바일 우측: 전화 아이콘 + 햄버거 -->
@@ -45,26 +47,34 @@ const isActive = (href: string) =>
       </button>
     </div>
   </div>
-
-  <!-- 모바일 오버레이 메뉴 -->
-  <div id="mobile-menu" class="mobile-menu" hidden>
-    <nav aria-label="모바일 메뉴">
-      {navItems.map((item) => (
-        <a
-          href={item.href}
-          class="mobile-link t-body-strong"
-          aria-current={isActive(item.href) ? 'page' : undefined}
-        >
-          {item.label}
-        </a>
-      ))}
-    </nav>
-    <div class="mobile-cta">
-      <a href={cta.callHref} class="btn btn-call">{cta.callLabel}</a>
-      <a href={cta.naverHref} target="_blank" rel="noopener" class="btn btn-naver">{cta.naverLabel}</a>
-    </div>
-  </div>
 </header>
+
+<!-- 모바일 전체화면 오버레이 메뉴 — header 밖(body 직속). 열림/닫힘은 opacity+translate만 사용 -->
+<div id="mobile-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="모바일 메뉴">
+  <div class="mobile-menu-top">
+    <span class="logo t-latin" aria-hidden="true">MOTOR REPAIR</span>
+    <button id="nav-close" class="icon-btn" aria-label="메뉴 닫기">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+  <nav aria-label="모바일 메뉴">
+    {navItems.map((item) => (
+      <a
+        href={item.href}
+        class="mobile-link t-body-strong"
+        aria-current={isActive(item.href) ? 'page' : undefined}
+      >
+        {item.label}
+      </a>
+    ))}
+  </nav>
+  <div class="mobile-cta">
+    <a href={cta.callHref} class="btn btn-call">{cta.callLabel}</a>
+    <a href={cta.naverHref} target="_blank" rel="noopener" class="btn btn-naver">{cta.naverLabel}</a>
+  </div>
+</div>
 
 <style>
   .site-header {
@@ -116,20 +126,40 @@ const isActive = (href: string) =>
   }
   .icon-btn:active { transform: scale(0.95); }
 
+  /* 전체화면 오버레이 패널 — 높이 애니메이션 금지, opacity+transform만 */
   .mobile-menu {
     position: fixed;
-    inset: 52px 0 0 0;
+    inset: 0;
+    z-index: 9999;
+    height: 100dvh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     background: var(--color-canvas);
-    padding: 8px 16px 24px;
+    padding: env(safe-area-inset-top) 16px calc(24px + env(safe-area-inset-bottom));
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
+    opacity: 0;
+    transform: translateY(-8px);
+    visibility: hidden;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
   }
-  .mobile-menu[hidden] { display: none; }
+  .mobile-menu.is-open {
+    opacity: 1;
+    transform: none;
+    visibility: visible;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .mobile-menu-top {
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
   .mobile-link {
     display: flex;
     align-items: center;
-    height: 56px;
+    min-height: 56px;
     color: var(--color-ink);
     border-bottom: 1px solid var(--color-hairline);
   }
@@ -148,21 +178,46 @@ const isActive = (href: string) =>
 
 <script>
   const toggle = document.getElementById('nav-toggle');
+  const closeBtn = document.getElementById('nav-close');
   const menu = document.getElementById('mobile-menu');
+  let savedScrollY = 0;
+
+  function openMenu() {
+    if (!menu || !toggle) return;
+    savedScrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${savedScrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    menu.classList.add('is-open');
+    toggle.setAttribute('aria-expanded', 'true');
+    closeBtn?.focus();
+  }
+
+  function closeMenu() {
+    if (!menu || !toggle) return;
+    menu.classList.remove('is-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    window.scrollTo(0, savedScrollY);
+    toggle.focus();
+  }
+
   if (toggle && menu) {
     toggle.addEventListener('click', () => {
-      const open = menu.hasAttribute('hidden');
-      if (open) {
-        menu.removeAttribute('hidden');
-        toggle.setAttribute('aria-expanded', 'true');
-        toggle.setAttribute('aria-label', '메뉴 닫기');
-        document.body.style.overflow = 'hidden';
-      } else {
-        menu.setAttribute('hidden', '');
-        toggle.setAttribute('aria-expanded', 'false');
-        toggle.setAttribute('aria-label', '메뉴 열기');
-        document.body.style.overflow = '';
-      }
+      menu.classList.contains('is-open') ? closeMenu() : openMenu();
+    });
+    closeBtn?.addEventListener('click', closeMenu);
+    // ESC로 닫기
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.classList.contains('is-open')) closeMenu();
+    });
+    // 배경(링크·버튼 밖) 탭으로 닫기
+    menu.addEventListener('click', (e) => {
+      if (e.target === menu) closeMenu();
     });
   }
 </script>
