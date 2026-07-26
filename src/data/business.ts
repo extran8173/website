@@ -76,6 +76,8 @@ export const business = {
 
   // ── 취급 브랜드 / 진단 장비 ───────────────────────────
   brands: ['BMW', '벤츠', '아우디', '폭스바겐', '미니', '포르쉐'] as const,
+  // 전용 진단기 없이 정비하는 확장 브랜드 — 표기 시 주력 6개와 반드시 구분 (과장 방지)
+  brandsExtended: ['재규어', '랜드로버', '마세라티'] as const,
   equipment: ['ISTA+', 'Xentry', 'ODIS', 'PIWIS', 'Picoscope'] as const,
 
   // ── 인증 / 경력 / A/S ─────────────────────────────────
