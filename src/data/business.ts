@@ -8,6 +8,9 @@
  * ⚠️ 확인 대기(placeholder) 값은 TODO 로 표시했다 — 실제 값 확정 시 이 파일만 고치면 전 페이지 반영.
  */
 
+// WGS84 좌표 — 주소 geo·지도 링크·임베드 URL이 전부 이 값 하나를 참조한다
+const geo = { lat: 37.2121627, lng: 127.0515001 } as const;
+
 export const business = {
   // ── 상호 ──────────────────────────────────────────────
   name: '모터리페어',
@@ -26,14 +29,17 @@ export const business = {
     region: '경기도',
     postalCode: '18413',
     country: 'KR',
-    geo: { lat: 37.2121627, lng: 127.0515001 }, // WGS84 — 오시는길 지도·JSON-LD geo (05 §3)
+    geo, // WGS84 — 오시는길 지도·JSON-LD geo (05 §3)
   },
 
   // ── 지도 바로가기 (오시는 길 페이지용) ────────────────
   maps: {
     naverPlace: 'https://map.naver.com/p/entry/place/1323147007',
-    google: 'https://www.google.com/maps/search/?api=1&query=37.2121627,127.0515001',
-    kakao: 'https://map.kakao.com/link/map/37.2121627,127.0515001',
+    google: `https://www.google.com/maps/search/?api=1&query=${geo.lat},${geo.lng}`,
+    // 카카오 정식 포맷: /link/map/장소명,위도,경도 (장소명 URL 인코딩)
+    kakao: `https://map.kakao.com/link/map/${encodeURIComponent('모터리페어')},${geo.lat},${geo.lng}`,
+    // 오시는길 임베드 지도. 키 불필요하나 비공식 방식 — 차후 Google Maps Embed API(키 발급) 전환 시 이 값만 교체
+    googleEmbed: `https://www.google.com/maps?q=${geo.lat},${geo.lng}&hl=ko&z=17&output=embed`,
   },
 
   // ── 전화 ──────────────────────────────────────────────

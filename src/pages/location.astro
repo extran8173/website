@@ -59,13 +59,16 @@ const faqLd = {
   <section class="loc-head">
     <div class="container">
       <h1 class="t-display-lg">오시는 길 · 문의</h1>
-      {/* IMG-014 네이버 지도 캡처(핀·주요 도로) — 차후 보강 이미지로 교체 가능. 아래 링크는 실제 좌표로 동작 */}
-      <ImageSlot
-        id="IMG-014"
-        label="모터리페어 위치 지도 · 경기 화성 효행로"
-        alt="모터리페어 위치 지도 경기 화성 효행로"
-        ratio="16 / 9"
-      />
+      {/* 인터랙티브 지도 — URL은 business.maps.googleEmbed 단일 소스 (Embed API 전환 시 상수만 교체) */}
+      <div class="loc-map">
+        <iframe
+          src={business.maps.googleEmbed}
+          title="모터리페어 위치 지도"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen
+        ></iframe>
+      </div>
       <p class="loc-address t-body-strong">{business.address.full}</p>
       <div class="loc-maplinks">
         <a href={business.maps.naverPlace} target="_blank" rel="noopener" class="btn btn-naver">네이버 지도로 열기</a>
@@ -158,6 +161,19 @@ const faqLd = {
 <style>
   .loc-head { background: var(--color-canvas); padding-block: var(--space-section); }
   .loc-head h1 { color: var(--color-ink); margin: 0 0 var(--space-lg); }
+
+  /* 지도 임베드 — 모바일 4:3(화면 높이 50% 이내), 768px 이상 16:9 */
+  .loc-map {
+    aspect-ratio: 4 / 3;
+    max-height: 50vh;
+    border-radius: var(--rounded-lg);
+    overflow: hidden;
+    border: 1px solid var(--color-hairline);
+  }
+  .loc-map iframe { display: block; width: 100%; height: 100%; border: 0; }
+  @media (min-width: 768px) {
+    .loc-map { aspect-ratio: 16 / 9; max-height: none; }
+  }
   .loc-address { color: var(--color-ink); margin: var(--space-lg) 0 var(--space-md); }
   .loc-maplinks { display: flex; flex-wrap: wrap; gap: 12px; }
 
