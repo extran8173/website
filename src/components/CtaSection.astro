@@ -15,7 +15,7 @@ const { text, caption } = Astro.props;
     <p class="cta-text t-tagline">{text}</p>
     <div class="cta-buttons">
       <a href={cta.callHref} class="btn btn-call">{cta.callLabel}</a>
-      <a href={cta.naverHref} target="_blank" rel="noopener" class="btn btn-naver">{cta.naverLabel}</a>
+      <a href={cta.naverHref} target="_blank" rel="noopener noreferrer" class="btn btn-naver">{cta.naverLabel}</a>
     </div>
     {caption && <p class="cta-caption t-caption">{caption}</p>}
   </div>

@@ -7,7 +7,7 @@ import { cta } from '../data/business.ts';
 <div id="fab-contact" class="fab" data-open="false">
   <div class="fab-actions" hidden>
     <a href={cta.callHref} class="btn btn-call fab-action">{cta.callLabel}</a>
-    <a href={cta.naverHref} target="_blank" rel="noopener" class="btn btn-naver fab-action">{cta.naverLabel}</a>
+    <a href={cta.naverHref} target="_blank" rel="noopener noreferrer" class="btn btn-naver fab-action">{cta.naverLabel}</a>
   </div>
   <button id="fab-toggle" class="fab-main" aria-label="연락 방법 열기" aria-expanded="false" aria-controls="fab-contact">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">

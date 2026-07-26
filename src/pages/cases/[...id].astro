@@ -87,7 +87,7 @@ const faqLd = {
       <p class="t-tagline">비슷한 증상이신가요? 증상을 말씀해 주시면 원인부터 확인해 드립니다.</p>
       <div class="case-cta-buttons">
         <a href={cta.callHref} class="btn btn-call">{cta.callLabel}</a>
-        <a href={cta.naverHref} target="_blank" rel="noopener" class="btn btn-naver">{cta.naverLabel}</a>
+        <a href={cta.naverHref} target="_blank" rel="noopener noreferrer" class="btn btn-naver">{cta.naverLabel}</a>
       </div>
       <p class="case-cta-note t-caption">예: {d.symptom_customer.map((s) => `“${s}”`).join(' · ')} 같은 증상</p>
     </section>

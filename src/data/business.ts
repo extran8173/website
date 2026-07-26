@@ -59,7 +59,7 @@ export const business = {
   // ── 예약·채널 ─────────────────────────────────────────
   booking: {
     // 네이버 플레이스(예약 기능 연동) — CTA "네이버로 예약하기" 목적지
-    naverUrl: 'https://map.naver.com/p/entry/place/1323147007',
+    naverUrl: 'https://map.naver.com/p/entry/place/1323147007?placePath=/ticket', // 예약 탭 직행. 길찾기는 maps.naverPlace 사용
     naverBlogUrl: 'https://blog.naver.com/extran',
   },
 
