@@ -27,10 +27,10 @@ const isActive = (href: string) =>
       ))}
     </nav>
 
-    <!-- 데스크톱 우측: 전화 상담 + 번호 -->
+    <!-- 데스크톱 우측: 전화 링크는 버튼 1개만, 번호는 일반 텍스트 (중복 링크 방지) -->
     <div class="header-cta-desktop">
-      <a href={cta.callHref} class="btn btn-call header-call">전화 상담</a>
-      <a href={cta.callHref} class="header-phone t-caption t-latin" aria-label={`전화 걸기 ${business.phone.display}`}>{business.phone.display}</a>
+      <a href={cta.callHref} class="btn btn-call header-call" aria-label={`전화 상담 ${business.phone.display}`}>전화 상담</a>
+      <span class="header-phone t-caption t-latin">{business.phone.display}</span>
     </div>
 
     <!-- 모바일 우측: 전화 아이콘 + 햄버거 -->
