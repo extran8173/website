@@ -17,31 +17,42 @@ const steps = [
 ];
 
 // ① 메인터넌스(소모품 교환) — 5개 그룹 (교환주기가 정해진 정비)
+// img: src/assets/site/{img}.* 파일 드롭인 시 플레이스홀더에서 자동 교체 (ImageSlot)
 const maintenanceGroups = [
   {
     title: '오일류',
     items: '엔진오일 · 미션오일 · 디퍼렌셜오일 · 트랜스퍼케이스오일',
     note: '차종별 제조사 스펙 오일로 교환합니다. 스펙에 맞지 않는 오일은 고장의 원인이 되기도 합니다.',
+    img: 'IMG-023',
+    alt: '동탄 수입차 정비소 BMW 순정 규격 오일',
   },
   {
     title: '유체 · 냉각',
     items: '브레이크액 · 냉각수(부동액) · 에어컨 냉매',
-    note: '수분·비등점 등 상태를 확인하고 스펙에 맞춰 보충·교환합니다.',
+    note: '수분·비등점 등 상태를 확인하고 스펙에 맞춰 보충·교환합니다. 냉각수는 전용 교환 장비로 순환시켜 교환합니다.',
+    img: 'IMG-024',
+    alt: '동탄 수입차 정비소 냉각수 교환 장비',
   },
   {
     title: '필터류',
     items: '에어컨 필터 · 연료 필터',
     note: '주행 환경에 따라 교환 시기가 달라집니다. 상태를 보고 안내해 드립니다.',
+    img: 'IMG-025',
+    alt: '동탄 수입차 정비소 에어컨 연료 오일 필터',
   },
   {
     title: '브레이크',
     items: '브레이크 패드 · 브레이크 로터(디스크)',
     note: '잔량이 남은 부품은 남은 수치를 그대로 알려드립니다. 아직 쓸 수 있는 부품을 교환하자고 권하지 않습니다.',
+    img: 'IMG-026',
+    alt: '동탄 수입차 정비소 벤츠 브레이크 패드 교환 부품',
   },
   {
     title: '벨트 · 펌프',
     items: '구동벨트 · 타이밍벨트 · 워터펌프 · 써머스탯',
     note: '교환주기가 길지만 방치하면 큰 고장으로 이어지는 부품입니다. 주행거리에 맞춰 점검·교환합니다.',
+    img: 'IMG-027',
+    alt: '동탄 수입차 정비소 타이밍벨트 워터펌프 교환 부품',
   },
 ];
 ---
@@ -95,9 +106,14 @@ const maintenanceGroups = [
       <div class="maint-grid">
         {maintenanceGroups.map((g) => (
           <div class="maint-card">
-            <h3 class="maint-card-title t-body-strong">{g.title}</h3>
-            <p class="maint-card-items t-body">{g.items}</p>
-            <p class="maint-card-note t-caption">{g.note}</p>
+            <div class="maint-media">
+              <ImageSlot id={g.img} label={g.title} alt={g.alt} ratio="4 / 3" />
+            </div>
+            <div class="maint-card-body">
+              <h3 class="maint-card-title t-body-strong">{g.title}</h3>
+              <p class="maint-card-items t-body">{g.items}</p>
+              <p class="maint-card-note t-caption">{g.note}</p>
+            </div>
           </div>
         ))}
       </div>
@@ -222,8 +238,17 @@ const maintenanceGroups = [
   .svc-maint { background: var(--color-canvas); padding-block: var(--space-section); scroll-margin-top: 64px; }
   .svc-maint h2 { color: var(--color-ink); margin: 0 0 var(--space-md); }
   .svc-maint-intro { color: var(--color-ink-muted-80); max-width: 68ch; margin: 0 0 var(--space-xl); }
+  /* 소모품 이미지 카드 — 3단계 프로세스 카드와 동일 처리(pearl 배경 + hairline + rounded-md) */
   .maint-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-lg); margin-bottom: var(--space-lg); }
-  .maint-card { border: 1px solid var(--color-hairline); border-radius: var(--rounded-lg); padding: var(--space-lg); }
+  .maint-card {
+    background: var(--color-surface-pearl);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--rounded-md);
+    overflow: hidden;
+  }
+  .maint-media { aspect-ratio: 4 / 3; } /* 이미지/플레이스홀더 모두 4:3 고정 — CLS 방지 */
+  .maint-media :global(.img-media) { border-radius: 0; height: 100%; }
+  .maint-card-body { padding: var(--space-lg); }
   .maint-card-title { color: var(--color-primary); margin: 0 0 8px; font-size: 19px; }
   .maint-card-items { color: var(--color-ink); margin: 0 0 10px; }
   .maint-card-note { color: var(--color-ink-muted-48); margin: 0; }
@@ -248,9 +273,6 @@ const maintenanceGroups = [
   .svc-item-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-xl); align-items: center; }
   .svc-item-text { display: flex; flex-direction: column; }
 
-  @media (min-width: 641px) {
-    .maint-grid { grid-template-columns: repeat(2, 1fr); }
-  }
   /* 데스크톱: 가로 3단, 오른쪽 방향 화살표 */
   @media (min-width: 768px) {
     .process-flow { grid-template-columns: repeat(3, 1fr); column-gap: 56px; row-gap: 0; }
@@ -259,9 +281,13 @@ const maintenanceGroups = [
     .process-arrow-label {
       left: 50%; top: auto; bottom: calc(100% + 6px); transform: translateX(-50%);
     }
+    .maint-grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (min-width: 835px) {
     .svc-item-grid { grid-template-columns: 1.2fr 1fr; }
+  }
+  /* 소모품 카드: 1024px 이상 3단 — 5개는 3+2, 마지막 줄 좌측 정렬(grid 기본 흐름) */
+  @media (min-width: 1024px) {
     .maint-grid { grid-template-columns: repeat(3, 1fr); }
   }
 </style>
