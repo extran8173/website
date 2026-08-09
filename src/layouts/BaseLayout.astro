@@ -50,7 +50,7 @@ const jsonLd: Record<string, unknown> = {
       closes: business.hours.saturday.closes,
     },
   ],
-  areaServed: [...business.serviceAreas],
+  areaServed: [...business.seoRegions], // A계열 — SEO 키워드 축
   geo: {
     '@type': 'GeoCoordinates',
     latitude: business.address.geo.lat,
