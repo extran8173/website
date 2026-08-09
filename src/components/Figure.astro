@@ -1,6 +1,6 @@
 ---
 // 캡션 달린 최적화 이미지 — 명세: Astro_정비사례_파이프라인.md §3
-// 디자인: 그림자·보더 없음(다큐 컷), rounded.lg(18px), 캡션 caption + ink-muted-48
+// 디자인: 그림자·보더 없음(다큐 컷), 각진 모서리(radius 0), 캡션 caption + ink-muted-48
 // 두 가지 소스를 받는다:
 //  - img(ImageMetadata): astro:assets 최적화 경로 (주간 신규 발행 글)
 //  - src(string) + width/height: 사전 최적화된 public/ 정적 파일 (워드프레스 이전 글 — 빌드 시간 관리)
@@ -41,7 +41,7 @@ if (src && (!width || !height)) throw new Error('Figure: src 사용 시 width/he
     width: 100%;
     height: auto;
     display: block;
-    border-radius: var(--rounded-lg); /* 18px, 그림자·보더 없음 */
+    border-radius: 0; /* 각진 모서리 — 그림자·보더 없음 */
   }
   .case-figure figcaption {
     margin-top: var(--space-xs); /* 8px */
