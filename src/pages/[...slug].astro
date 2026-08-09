@@ -68,7 +68,7 @@ const faqLd = {
     <header class="case-head">
       <h1 class="t-display-lg">{d.title}</h1>
       <p class="case-meta t-caption">
-        <time datetime={d.date.toISOString()}>{dateText}</time> · {d.brand} · 주행 {d.mileage_km.toLocaleString()}km
+        <time datetime={d.date.toISOString()}>{dateText}</time> · {d.brand}{d.mileage_km != null && ` · 주행 ${d.mileage_km.toLocaleString()}km`}
       </p>
     </header>
 
@@ -76,7 +76,7 @@ const faqLd = {
     <aside class="case-summary">
       <p class="lead t-body-strong">{d.summary_lead}</p>
       <dl>
-        <div><dt>차종</dt><dd>{d.car_model} / {d.mileage_km.toLocaleString()}km</dd></div>
+        <div><dt>차종</dt><dd>{d.car_model}{d.mileage_km != null && ` / ${d.mileage_km.toLocaleString()}km`}</dd></div>
         <div><dt>증상</dt><dd>{d.symptom_customer.join(' · ')}</dd></div>
         <div><dt>진단</dt><dd>{d.diagnostic.join(' · ')}</dd></div>
         <div><dt>원인</dt><dd>{d.diagnosis_cause}</dd></div>

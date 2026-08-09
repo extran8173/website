@@ -17,7 +17,8 @@ const cases = defineCollection({
       description: z.string().max(160),
       brand: z.string(),
       car_model: z.string(),
-      mileage_km: z.number(),
+      mileage_km: z.number().optional(), // 원문에 주행거리가 없는 이전 글 대응 — 값을 지어내지 않는다
+
       symptom_customer: z.array(z.string()), // 고객 언어 증상
       symptom_tech: z.string(),
       category: z.string(),
