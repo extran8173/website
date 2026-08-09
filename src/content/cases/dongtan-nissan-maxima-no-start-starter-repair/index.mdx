@@ -1,0 +1,113 @@
+---
+title: "닛산 맥시마 시동불능, 스타트모터·릴레이 교환 정비"
+seo_title: "동탄 닛산 맥시마 시동불능 진단 및 스타트모터 교환 사례"
+slug: "dongtan-nissan-maxima-no-start-starter-repair"
+date: 2025-11-24
+focus_keyword: "닛산 맥시마 스타트모터 고장"
+description: "닛산 맥시마 시동불능 원인 진단부터 IPDM 오류 분석, 스타팅 릴레이·스타트모터 교환, BG 진공 냉각수 교환까지 전체 정비 과정을 상세히 안내합니다."
+brand: "닛산"
+car_model: "닛산 맥시마 (2017년식)"
+mileage_km: 120000
+symptom_customer: ["시동이 안 걸려요", "긴급출동 점검을 받았는데도 해결이 안 됐어요"]
+symptom_tech: "시동불능 — 배터리 전압 정상이나 크랭킹 신호 미생성, IPDM에 스타트 계통 오류 저장"
+category: "고장 진단(시동 계통)"
+diagnostic: ["이그니션 반응·기본 전원 공급 상태 점검", "IPDM 진단·저장 오류 확인", "회로 분석·직렬 전원 인가 테스트"]
+parts_used: ["스타팅 릴레이(제조사 파츠)", "스타트모터(애프터 신품)", "냉각수"]
+result: "교환 후 시동 테스트에서 정상 크랭킹·시동성 회복, 냉각수 레벨링·팬 작동 로직·라인 압력 점검 후 출고 대기"
+tags: [bg장비, diagnosis, engine-no-start, ipdm오류, nissan, relay-fault, starter-motor, starter-repair, starting-system, vehicle-repair, 냉각수교환, 동탄모터리페어, 동탄수입차전문, 동탄정비, 동탄정비소, 맥시마, 수입차수리, 수입차정비, 스타트모터교환, 스타팅릴레이, 시동불능, 엔진시동불량, 엔진정비, 자동차전기계통, 자동차정비사례, 전원계통고장, 전자제어시스템, 정비기록, 회로점검]
+thumbnail: ./images/thumb.webp
+figcaption: false
+summary_lead: "모터리페어는 경기 화성 동탄의 수입차 전문 정비소로, 닛산 맥시마(주행 120,000km)의 시동불능을 IPDM 진단과 회로 분석·직렬 전원 인가 테스트로 진단해 스타팅 릴레이와 스타트모터를 교환하고 BG 진공순환 방식 냉각수 교환까지 진행했습니다."
+diagnosis_cause: "스타팅 릴레이 출력 신호 불안정과 스타트모터 회전 응답 부족 — 두 항목 복합 원인"
+faq:
+  - q: "배터리는 정상인데 시동이 안 걸리는 이유는 무엇인가요?"
+    a: "이 차량은 배터리 전압이 정상 범위였지만 크랭킹 신호 자체가 생성되지 않았습니다. IPDM 진단에서 스타트 계통 오류가 확인됐고, 회로 분석과 직렬 전원 인가 테스트로 스타팅 릴레이 출력 불안정과 스타트모터 회전 응답 부족이 원인으로 판정됐습니다."
+  - q: "긴급출동 점검으로 해결되지 않으면 어떻게 해야 하나요?"
+    a: "긴급출동은 현장에서 배터리 등 기본 항목 위주로 점검합니다. 이번처럼 IPDM 오류 확인, 회로 분석, 직렬 전원 인가 테스트가 필요한 경우는 정비소에서 시스템 진단을 받아 원인을 특정하는 것이 정확합니다."
+  - q: "BG 진공순환 방식 냉각수 교환은 일반 교환과 무엇이 다른가요?"
+    a: "냉각라인을 진공 상태로 만든 뒤 신유를 충전하는 방식이라 공기 유입을 방지해 냉각수 흐름을 안정적으로 복원할 수 있습니다. 교환 후에는 레벨링 조정, 라디에이터 팬 작동 로직 확인, 라인 압력 점검으로 마무리합니다."
+---
+import Figure from '../../../components/Figure.astro';
+
+안녕하세요?
+동탄 수입차 전문정비 모터 리페어입니다.
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/02.webp" width={1600} height={1200} alt="시동불능으로 견인 입고된 닛산 맥시마" />
+
+이번 사례는 2017년 닛산 맥시마(120,000km) 시동불능으로 견인 입고된 차량의 진단 및 정비 과정입니다.
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/03.webp" width={1600} height={1200} alt="닛산 맥시마 전면" />
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/04.webp" width={1600} height={1200} alt="닛산 맥시마 측면" />
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/05.webp" width={1600} height={1200} alt="입고된 닛산 맥시마 점검 준비" />
+
+보험사 긴급출동을 통해 점검을 받았지만 문제 해결이 되지 않아 정확한 시스템 진단을 위해 예약 후 방문해 주셨네요.
+
+접수 후에는 차주 문진을 통해 증상 발생 패턴을 정리하고 외부에서 사전 점검을 진행하게되죠.
+
+먼저 이그니션 반응 확인 후 기본 전원 공급 상태 점검하게됩니다.
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/06.webp" width={1600} height={1200} alt="닛산 맥시마 이그니션 반응 확인" />
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/07.webp" width={1600} height={1200} alt="배터리 전압·기본 전원 공급 상태 점검" />
+
+배터리 전압은 정상 범위였지만 크랭킹 신호가 생성되지 않는 점을 기준으로 시스템 점검사항중IPDM 진단을 진행합니다.
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/08.webp" width={466} height={350} alt="IPDM 진단 스타트 계통 오류 확인 화면" />
+
+IPDM 내부 펄트에는 스타트 계통 관련 오류가 저장되어 있었고, 이를 기반으로 실제 신호 흐름을 비교하기 위한 회로분석과 직렬 전원 인가 테스트로 이어가게되죠.
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/09.webp" width={1600} height={1200} alt="스타팅 회로 분석 작업" />
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/10.webp" width={1600} height={1200} alt="직렬 전원 인가 테스트" />
+
+직렬 테스트 과정에서는 스타팅 릴레이 출력 신호가 기준보다 불안정하고, 스타트모터 메커니즘도 입력 대비 회전 응답이 부족한 것이 확인되는군요.
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/11.webp" width={1600} height={1200} alt="스타팅 릴레이 출력 신호 점검" />
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/12.webp" width={1600} height={1200} alt="스타트모터 회전 응답 점검" />
+
+두 항목 모두 시동불능의 직접적인 원인으로 판단되며 차주분과 상담 후 릴레이는 제조사 파츠, 스타트모터는 애프터 신품으로 구성해 파츠 오더를 진행하게됩니다.
+
+입고된 파츠로 정비는 순차적으로 진행됩니다.
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/10.webp" width={1600} height={1200} alt="직렬 전원 인가 테스트" />
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/13.webp" width={1600} height={1200} alt="신품 스타팅 릴레이 교환" />
+
+먼저 스타팅 릴레이를 새 파츠로 교환해 회로 구성부터 안정화시키고,
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/14.webp" width={1600} height={1200} alt="스타트모터 탈거 작업" />
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/15.webp" width={1600} height={1200} alt="신품 스타트모터 장착" />
+
+이어 스타트모터를 탈거해 분비된 신품으로 교체합니다.
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/16.webp" width={1600} height={1200} alt="배선·커넥터 체결 상태·토크 확인" />
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/17.webp" width={1600} height={1200} alt="시동 테스트 정상 크랭킹 확인" />
+
+배선·커넥터 체결 상태 및 체결 토크를 기준값으로 맞추고 조립한 후 시동 테스트를 진행하니 즉시 정상적인 크랭킹이 형성되며 시동성이 회복됩니다.
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/18.webp" width={1600} height={1200} alt="냉각수 교환 정비 준비" />
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/19.webp" width={1600} height={1200} alt="냉각라인 점검" />
+
+다음 진도를 나가 냉각수 교환정비는 BG 진공순환 방식으로 정비가 진행됩니다.
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/20.webp" width={1400} height={1050} alt="BG 진공순환 냉각수 교환 장비" />
+
+냉각라인 진공 상태에서 신유를 충전하는 방식으로 공기 유입을 방지해 냉각수 흐름을 안정적으로 복원하게됩니다.
+
+냉각수 레벨링 조정, 라디에이터 팬 작동 로직 확인, 라인 압력 점검을 마무리하며 전체 냉각계 컨디션을 확인하며 마치죠.
+
+이제 정비를 마친 맥시마는 시동성, 냉각계 모두 정상 범위에서 안정적으로 작동하며 출고 대기에 들어갑니다.
+
+회로 분석과 실차 테스트가 필요한 과정이었지만 명확한 원인 진단 덕분에 빠르고 정확한 정비가 가능했던 사례였습니다.
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/21.webp" width={1400} height={1050} alt="정비를 마치고 출고 대기 중인 닛산 맥시마" />
+
+<Figure src="/img/cases/dongtan-nissan-maxima-no-start-starter-repair/22.webp" width={1400} height={1050} alt="동탄 수입차 정비소 모터리페어 워크베이" />
+
+매장 위치와 문의 방법은 [오시는 길](/location/)에서 확인하실 수 있습니다.

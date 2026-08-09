@@ -1,0 +1,126 @@
+---
+title: "티구안 SCR 경고등 점검과 SCR 탱크 교환 사례"
+seo_title: "티구안 SCR 경고등 원인과 SCR 탱크 교환 절차 | 동탄 모터 리페어"
+slug: "tiguan-scr-warning-diagnosis-scr-tank-replacement"
+date: 2025-12-10
+focus_keyword: "tiguan scr warning"
+description: "티구안 SCR 경고등, SCR 레벨센서 오류, SCR 탱크 교환, VCDS 요소수 시스템 점검"
+brand: "폭스바겐"
+car_model: "폭스바겐 티구안 2.0 TDI (2018년식)"
+symptom_customer: ["AdBlue 경고등이 점점 자주 떠요", "주행거리 제한 메시지가 반복돼요"]
+symptom_tech: "AdBlue 주행거리 제한 경고 점등 — SCR 레벨센서 계측 오류·통신 불안정 코드 반복 저장"
+category: "고장 진단(SCR 계통)"
+diagnostic: ["요소수 잔량·라인 누수·배선 체결 사전 점검", "VCDS SCR 제어모듈 고장코드·실시간 데이터 수집", "SCR 시스템 어댑테이션·실차 테스트 주행 검증"]
+parts_used: ["SCR 탱크 어셈블리(신품)", "요소수 규정량 충전"]
+result: "탱크 교환·어댑테이션 후 레벨센서값·SCR 준비상태 정상 범위 안정, 제한 주행거리 메시지 소거·경고등 재점등 없음"
+tags: [adblue-fault, adblue-system, diesel-maintenance, diesel-scr, dongtan-repair, emission-system, motorrepair, scr-adaptation, scr-level-sensor, scr-module, scr-tank, scr-warning, tiguan, vcds-diagnosis, vw-tiguan]
+thumbnail: ./images/thumb.webp
+figcaption: false
+summary_lead: "모터리페어는 경기 화성 동탄의 수입차 전문 정비소로, 폭스바겐 티구안 2.0 TDI의 AdBlue 주행거리 제한 경고를 VCDS로 진단해 SCR 레벨센서 오류를 확인하고 SCR 탱크 어셈블리를 교환했습니다."
+diagnosis_cause: "SCR 레벨센서 내부 손상 — 레벨센서·온도센서·히터 일체형 구조라 탱크 어셈블리 교환으로 정비"
+faq:
+  - q: "티구안 AdBlue 경고등이 뜨면 왜 주행거리가 제한되나요?"
+    a: "티구안·아우디·폭스바겐 계열의 SCR 시스템은 레벨센서 오류가 발생하면 경고등과 주행거리 제한 기능이 강하게 개입하는 구조입니다. 센서 회로 이상과 통신 오류가 함께 나타나는 경우에는 빠른 조치가 차량 관리에 도움이 됩니다."
+  - q: "SCR 레벨센서만 따로 교환할 수는 없나요?"
+    a: "티구안 SCR 탱크는 레벨센서·온도센서·히터가 일체형 구조로 제작되어 있어 단품 교환이 불가능합니다. 이번 차량도 센서 내부 손상으로 유효한 레벨 데이터를 내보내지 못해 SCR 탱크 어셈블리 교환으로 정비를 진행했습니다."
+  - q: "SCR 탱크 교환 후에는 어떤 검증을 하나요?"
+    a: "요소수를 규정량으로 충전한 뒤 VCDS로 SCR 시스템 어댑테이션을 진행합니다. 레벨센서 보정, SCR 모듈 업데이트, 압력·온도·레벨값 정상화를 확인하고 실차 테스트 주행으로 경고등 재점등 여부까지 검증합니다."
+---
+import Figure from '../../../components/Figure.astro';
+
+안녕하세요?
+동탄 수입차 전문정비 모터 리페어입니다.
+
+<Figure src="/img/cases/tiguan-scr-warning-diagnosis-scr-tank-replacement/02.webp" width={1428} height={1071} alt="동탄 수입차 정비소에 입고된 폭스바겐 티구안 2.0 TDI" />
+
+AdBlue 주행거리 제한 경고등 점등 문제로 2018년식 폭스바겐 티구안 2.0 TDI 차량이 입고되었네요.
+
+<Figure src="/img/cases/tiguan-scr-warning-diagnosis-scr-tank-replacement/03.webp" width={1428} height={1071} alt="폭스바겐 티구안 2.0 TDI 전면" />
+
+<Figure src="/img/cases/tiguan-scr-warning-diagnosis-scr-tank-replacement/04.webp" width={1428} height={1071} alt="폭스바겐 티구안 측면" />
+
+<Figure src="/img/cases/tiguan-scr-warning-diagnosis-scr-tank-replacement/05.webp" width={1428} height={1071} alt="티구안 계기판 AdBlue 주행거리 제한 경고 메시지" />
+
+차주분께서는 경고등이 점점 자주 나타나고, 제한 주행거리가 감소하는 메시지가 반복되어 정확한 진단과 SCR 시스템 점검을 요청하셨습니다.
+
+티구안 계열에서는 SCR 레벨센서 계측 이상으로 인한 경고가 대표적인 고장 유형 중 하나라
+
+오늘도 정비 절차를 차근차근 진행하게 됩니다.
+
+<Figure src="/img/cases/tiguan-scr-warning-diagnosis-scr-tank-replacement/06.webp" width={1428} height={1071} alt="워크베이에 입고된 티구안 요소수 잔량·라인 사전 점검" />
+
+<Figure src="/img/cases/tiguan-scr-warning-diagnosis-scr-tank-replacement/07.webp" width={1428} height={1071} alt="VCDS 연결 SCR 제어모듈 고장코드 점검" />
+
+차량을 워크베이에 입고한 후 사전 점검을 통해 요소수 잔량, 라인 누수 여부, 배선 체결 상태 등을 먼저 확인합니다.
+
+이어 VCDS를 이용해 SCR 제어모듈의 고장코드와 실시간 데이터를 수집하면, 레벨센서 계측 오류와 통신 불안정 코드가 반복 저장되어 있는 것을 확인할 수 있습니다.
+
+<Figure src="/img/cases/tiguan-scr-warning-diagnosis-scr-tank-replacement/08.webp" width={466} height={350} alt="VCDS 진단기 SCR 레벨센서 실시간 데이터 화면" />
+
+정상적인 레벨센서는 수위 변화에 따라 값이 일정 범위 내에서 변화하지만, 고장 시 0% 또는 100%로 고정되거나 수온센서와 함께 비정상값을 출력하는 패턴을 보입니다.
+
+<Figure src="/img/cases/tiguan-scr-warning-diagnosis-scr-tank-replacement/09.webp" width={484} height={676} alt="SCR 레벨센서 고장 패턴 데이터" />
+
+이번 차량은 이러한 대표적 오류 패턴이 그대로 나타나는 사례이군요.
+
+티구안 SCR 탱크는 레벨센서·온도센서·히터가 일체형 구조로 제작되어 있어 단품 교환이 불가능합니다.
+
+따라서 SCR 탱크 어셈블리 교환이 시스템 정상화를 위한 유일한 정비 방향으로 판단되었고,
+
+차주분께 점검 결과를 안내한 뒤 파츠 오더가 진행됩니다.
+
+<Figure src="/img/cases/tiguan-scr-warning-diagnosis-scr-tank-replacement/10.webp" width={1428} height={1056} alt="입고된 신품 SCR 탱크 어셈블리" />
+
+센터 물류팀을 통해 탱크 어셈블리가 입고되면 하부 보호패널을 탈거한 후
+
+기존 SCR 탱크를 분리하는 작업이 시작됩니다.
+
+<Figure src="/img/cases/tiguan-scr-warning-diagnosis-scr-tank-replacement/11.webp" width={1428} height={1071} alt="티구안 하부 보호패널 탈거" />
+
+<Figure src="/img/cases/tiguan-scr-warning-diagnosis-scr-tank-replacement/12.webp" width={1428} height={1071} alt="기존 SCR 탱크 분리 작업" />
+
+SCR 라인과 배선은 구조상 손상되기 쉬운 구간이 있어 분리 과정에서 크림프 부위, 히터 라인, LIN 통신 배선을 하나씩 점검하며 탈거가 진행됩니다.
+
+<Figure src="/img/cases/tiguan-scr-warning-diagnosis-scr-tank-replacement/13.webp" width={1428} height={1071} alt="탈거한 기존 SCR 탱크" />
+
+기존 탱크는 센서 내부 손상으로 인해 유효한 레벨 데이터를 내보내지 못하고 있었고,
+
+시스템 보정 또한 더 이상 가능하지 않은 상태였습니다.
+
+<Figure src="/img/cases/tiguan-scr-warning-diagnosis-scr-tank-replacement/14.webp" width={1428} height={1071} alt="신품 SCR 탱크 장착 작업" />
+
+신품 SCR 탱크를 장착하고 조립은 분해의 역순으로 고정 토크와 배선 체결 상태를 세부적으로 확인합니다.
+
+<Figure src="/img/cases/tiguan-scr-warning-diagnosis-scr-tank-replacement/15.webp" width={1428} height={1056} alt="SCR 탱크 조립 완료 후 요소수 충전" />
+
+조립이 완료되면 요소수를 규정량으로 충전하고
+
+VCDS를 통해 SCR 시스템 어댑테이션을 진행합니다.
+
+이 과정에서는 레벨센서 보정, SCR 모듈 업데이트, 전체 계통의 압력·온도·레벨값 정상화 확인이 함께 이루어지죠.
+
+데이터가 기준 범위로 회복되면 실차 테스트 주행을 통해 경고등 재점등 여부와 SCR 계통의 반응성을 확인하게 됩니다.
+
+주행 테스트 결과 레벨센서값과 SCR 준비상태 모두 정상 범위로 안정되었고,
+
+제한 주행거리 메시지도 소거되며 경고등이 재점등되지 않는군요. 다행입니다.
+
+<Figure src="/img/cases/tiguan-scr-warning-diagnosis-scr-tank-replacement/08.webp" width={466} height={350} alt="VCDS SCR 시스템 정상 데이터 확인 화면" />
+
+SCR 제어모듈의 반응 역시 규정값을 충족하는 것을 확인하여 정비는 마무리되며
+
+차량은 출고 대기에 들어갑니다.
+
+티구안·아우디·폭스바겐 계열의 SCR 시스템은 구조상
+
+레벨센서 오류가 발생하면 경고등과 주행거리 제한 기능이 강하게 개입하기 때문에 정확한 진단과 탱크 교환이 매우 중요합니다.
+
+<Figure src="/img/cases/tiguan-scr-warning-diagnosis-scr-tank-replacement/03.webp" width={1428} height={1071} alt="정비를 마친 폭스바겐 티구안" />
+
+이번 차량처럼 센서 회로 이상과 통신 오류가 함께 나타나는 경우에는 빠른 조치가 차량 관리에 도움이 됩니다.
+
+<Figure src="/img/cases/tiguan-scr-warning-diagnosis-scr-tank-replacement/16.webp" width={1400} height={1050} alt="출고 대기 중인 폭스바겐 티구안" />
+
+<Figure src="/img/cases/tiguan-scr-warning-diagnosis-scr-tank-replacement/08.webp" width={466} height={350} alt="동탄 수입차 정비소 모터리페어 시스템 진단 장비" />
+
+매장 위치와 문의 방법은 [오시는 길](/location/)에서 확인하실 수 있습니다.

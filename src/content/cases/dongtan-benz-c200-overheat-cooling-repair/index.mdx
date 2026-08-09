@@ -1,0 +1,123 @@
+---
+title: "동탄 벤츠 C200 오버히트 원인과 냉각계 정비 과정"
+seo_title: "동탄 벤츠 C200 오버히트 원인과 냉각계 정비 과정"
+slug: "동탄-벤츠-c200-오버히트-냉각계-정비"
+date: 2025-08-29
+focus_keyword: "벤츠 C200 오버히트 냉각수 온도 상승 정비"
+description: "동탄 모터 리페어에서 진행한 벤츠 C200 오버히트 정비 사례입니다. 워터펌프 회전율 저하, 서모스탯 개도 불량, 구동벨트 세트 교환, 브레이크 패드 정비까지 종합 점검 과정을 상세히 안내합니다. 냉각계 온도 상승 문제 해결 절차와 예방정비 팁을 확인해보세요."
+brand: "벤츠"
+car_model: "벤츠 C200 (2018년식)"
+mileage_km: 150000
+symptom_customer: ["주행 중 엔진이 과열됐어요", "경고등이 떴어요"]
+symptom_tech: "주행 중 오버히트·경고등 점등 — 가속 시 냉각수 온도 110°C 부근 급상승, 워터펌프 회전율 PID 저하·압력 유지 불안정"
+category: "고장 진단(냉각 계통)"
+diagnostic: ["시스템 진단기 엔진·냉각 모듈 스캔·라이브 데이터 확인", "냉각계 압력 유지 점검", "실차 구동벨트 상태 점검"]
+parts_used: ["워터펌프", "서모스탯 어셈블리", "구동벨트·아이들러·텐셔너 세트", "전·후 브레이크 패드·마모 센서", "규격 냉각수"]
+result: "아이들링·시내·고속 3구간 약 25km 시운전에서 냉각수 온도 90~98°C 안정 유지, 누수·압력·경고등 재점등 없음 확인 후 출고"
+tags: [M274엔진정비, W205정비, 구동벨트교환, 냉각계오버홀, 냉각계점검, 냉각수교환, 냉각수부족, 냉각수온도상승, 동탄벤츠정비, 동탄수입차정비, 모터리페어, 벤츠C200, 벤츠오버히트, 벤츠정비사례, 벤츠정비추천, 브레이크정비, 브레이크패드교환, 서모스탯불량, 수입차정비, 아이들러교환, 엔진경고등, 엔진냉각수온도, 엔진오버히트, 워터펌프고장, 워터펌프교환, 자동차과열원인, 자동차냉각계, 차량과열증상, 텐셔너교환, 화성벤츠정비]
+thumbnail: ./images/thumb.webp
+figcaption: false
+summary_lead: "모터리페어는 경기 화성 동탄의 수입차 전문 정비소로, 벤츠 C200(주행 150,000km)의 주행 중 오버히트·경고등 점등을 시스템 진단기 라이브 데이터로 진단해 워터펌프·서모스탯 교환과 구동벨트 세트·브레이크 패드 정비를 진행했습니다."
+diagnosis_cause: "워터펌프 작동 불량·회전율 저하와 서모스탯 개도 불량 — 구동벨트 크랙·장력 저하 동반"
+faq:
+  - q: "벤츠 C200 오버히트의 원인은 무엇이었나요?"
+    a: "이 차량은 워터펌프 작동 불량으로 회전율이 떨어지고 서모스탯 개도 불량이 겹쳐 가속 시 냉각수 온도가 110°C 부근까지 상승했습니다. 실차 점검에서 구동벨트 크랙과 장력 저하도 함께 확인되어 세트로 정비했습니다."
+  - q: "워터펌프를 교환하면서 벨트·아이들러·텐셔너까지 함께 교환하는 이유는요?"
+    a: "실차 점검에서 구동벨트 크랙과 장력 저하가 확인됐기 때문입니다. 벨트 계통은 세트로 교환해야 장력과 라우팅을 표준값으로 맞출 수 있어 예방 차원에서 동시 교환을 진행했습니다."
+  - q: "C클래스(W205) M274 엔진 냉각계는 언제 점검해야 하나요?"
+    a: "4~6만km 주기로 점검을 권장드리고, 초기 온도 상승이나 벨트 소음 징후가 보이면 세트 점검이 필요합니다. 정비 후에는 시운전과 라이브 데이터로 온도 안정 여부를 교차 확인합니다."
+---
+import Figure from '../../../components/Figure.astro';
+
+안녕하세요?
+동탄 수입차 전문정비 모터 리페어입니다.
+
+주행 중 엔진 오버히트와 경고등 점등으로 2018 벤츠 C200(150,000km) 차량이 입고되었네요.
+
+사전 예약된 내용대로 냉각계 점검과 함께 구동벨트 세트, 브레이크 패드 교환까지 연계 정비를 진행하게됩니다.
+
+<Figure src="/img/cases/dongtan-benz-c200-overheat-cooling-repair/02.webp" width={1600} height={1200} alt="동탄 수입차 정비소 워크베이에 입고된 벤츠 C200" />
+
+차량을 워크베이에 안전하게 올리고 오늘도 루틴대로 사전 체크를 시작합니다.
+
+차주분 문진으로 증상을 정리한 뒤 시스템 진단기로 엔진·냉각 관련 모듈을 스캔하고 라이브 데이터를 확인하게되죠.
+
+<Figure src="/img/cases/dongtan-benz-c200-overheat-cooling-repair/03.webp" width={1600} height={1200} alt="리프트에 올린 벤츠 C200 전면" />
+
+<Figure src="/img/cases/dongtan-benz-c200-overheat-cooling-repair/04.webp" width={1600} height={1200} alt="벤츠 C200 트렁크 엠블럼" />
+
+<Figure src="/img/cases/dongtan-benz-c200-overheat-cooling-repair/05.webp" width={1600} height={1200} alt="벤츠 C200 M274 엔진룸" />
+
+가속 시 냉각수 온도는 110°C 부근까지 급상승하는데, 팬 커맨드는 증가함에도 워터펌프 회전율 PID가 기대치보다 낮게 나타나는군요.
+
+<Figure src="/img/cases/dongtan-benz-c200-overheat-cooling-repair/06.webp" width={1600} height={1200} alt="엔진 커버를 열고 진행한 M274 엔진룸 냉각계 실차 점검" />
+
+<Figure src="/img/cases/dongtan-benz-c200-overheat-cooling-repair/07.webp" width={466} height={350} alt="시스템 진단기 워크스테이션" />
+
+압력 유지도 불안정해 서모스탯 개도 이상과 펌프 성능 저하가 함께 의심되었고, 실차 점검에서 구동벨트 크랙과 장력 저하가 확인됩니다.
+
+결론은 워터펌프 작동 불량, 회전율 저하, 서모스탯 펄트였고, 예방 차원에서 벨트·아이들러·텐셔너 세트와 브레이크 패드도 동시 교환이 진행됩니다.
+
+<Figure src="/img/cases/dongtan-benz-c200-overheat-cooling-repair/08.webp" width={1038} height={658} alt="M274 워터펌프·서모스탯 부품 구성도" />
+
+<Figure src="/img/cases/dongtan-benz-c200-overheat-cooling-repair/09.webp" width={984} height={700} alt="M274 냉각 호스·라인 부품 구성도" />
+
+파츠 오더는 센터 OE, 신뢰도 높은 OEM, 비용 효율의 애프터마켓을 항목별로 구성해 제안드렸고,
+
+핵심 냉각 파츠는 OE/OEM으로, 벨트 계통은 OEM으로, 패드는 운전 성향에 맞춘 애프터 파츠로 선택했습니다.
+
+<Figure src="/img/cases/dongtan-benz-c200-overheat-cooling-repair/10.webp" width={1440} height={1072} alt="신품 워터펌프·냉각 파이프·구동벨트·텐셔너 세트" />
+
+<Figure src="/img/cases/dongtan-benz-c200-overheat-cooling-repair/11.webp" width={1600} height={1200} alt="신품 전·후 브레이크 패드와 마모 센서" />
+
+이제 파츠가 하나씩 입고 됩니다. 접근성을 확보하기 위해 인터쿨러와 흡기 매니폴드 주변을 탈거하고 냉각수를 배출하죠.
+
+<Figure src="/img/cases/dongtan-benz-c200-overheat-cooling-repair/12.webp" width={1600} height={1200} alt="벤츠 C200 인터쿨러·흡기 매니폴드 주변 탈거 작업" />
+
+<Figure src="/img/cases/dongtan-benz-c200-overheat-cooling-repair/13.webp" width={1600} height={1200} alt="매니폴드 탈거 후 드러난 서모스탯·냉각 라인 교환 부위" />
+
+먼저 서모스탯 어셈블리를 교환하고,
+
+<Figure src="/img/cases/dongtan-benz-c200-overheat-cooling-repair/14.webp" width={1600} height={1200} alt="신품 워터펌프 장착 상태" />
+
+이어 워터펌프를 분리해 임펠러 마모와 축 유격 상태를 확인한 뒤 신품으로 장착합니다.
+
+구동벨트·아이들러·텐셔너는 세트로 교환해 장력과 라우팅을 표준값으로 맞추고,
+
+<Figure src="/img/cases/dongtan-benz-c200-overheat-cooling-repair/15.webp" width={1600} height={1200} alt="리프트에 올려 정비 중인 벤츠 C200 전면" />
+
+전·후 브레이크 패드와 마모 센서도 동시에 교체합니다. 캘리퍼 가이드 핀 윤활을 정리한 후 조립은 분해의 역순입니다.
+
+<Figure src="/img/cases/dongtan-benz-c200-overheat-cooling-repair/16.webp" width={1400} height={1050} alt="냉각수 순환 충전 장비(쿨런트 익스체인저)" />
+
+<Figure src="/img/cases/dongtan-benz-c200-overheat-cooling-repair/17.webp" width={1440} height={1080} alt="규격 냉각수 라베놀 C12+ 프리믹스" />
+
+진공 충전 장비로 냉각 라인을 채우고 에어 블리딩을 진행, 규격 냉각수로 희석 비율을 맞춰 순환리필 합니다.
+
+정비 검증은 데이터와 실주행으로 교차 확인합니다.
+
+아이들링, 시내, 고속의 3구간으로 약 25km 시운전하며 모니터링했고, 냉각수 온도는 90~98°C 범위에서 안정적으로 유지가 잘되는군요.
+
+펌프 회전율과 팬 스텝 응답도 정상 범위로 복귀했으며,
+
+히터 코어 토출 온도 상승도 일정하게 따라옵니다.
+
+브레이크는 초기 응답과 페달 필링이 고르게 형성되어 안정적인 제동모션을 보여주게되죠.
+
+<Figure src="/img/cases/dongtan-benz-c200-overheat-cooling-repair/18.webp" width={1600} height={1200} alt="정비를 마친 벤츠 C200 전면" />
+
+누수 흔적 없음, 압력 유지 정상, 경고등 재점등 없음까지 확인하고 출고 전 최종 점검을 마칩니다.
+
+<Figure src="/img/cases/dongtan-benz-c200-overheat-cooling-repair/19.webp" width={1600} height={1200} alt="시운전 후 벤츠 C200 계기판 냉각수 온도·경고등 확인" />
+
+요약하면, 워터펌프 성능 저하와 서모스탯 개도 불량으로 인한 오버히트였고,
+
+구동벨트 계통과 제동 소모품을 동시에 정비해 신뢰성을 회복했습니다.
+
+C클래스(W205) M274 엔진은 4~6만 km 주기로 점검하시고 초기 온도 상승이나 벨트 소음 징후가 보이면 세트 점검을 권장드립니다.
+
+<Figure src="/img/cases/dongtan-benz-c200-overheat-cooling-repair/20.webp" width={1400} height={1050} alt="동탄 수입차 정비소 모터리페어 외관" />
+
+<Figure src="/img/cases/dongtan-benz-c200-overheat-cooling-repair/21.webp" width={1400} height={1050} alt="모터리페어 매장 전경과 워크베이" />
+
+매장 위치와 문의 방법은 [오시는 길](/location/)에서 확인하실 수 있습니다.

@@ -1,0 +1,116 @@
+---
+title: "동탄 폭스바겐 티구안 TDI 금속음·출력저하 원인 점검과 터보 신품 교환, DPF 버닝 리빌드"
+seo_title: "동탄 폭스바겐 티구안 터보 금속음·가속저하 원인과 정비 과정"
+slug: "동탄-티구안-터보금속음-가속저하-정비"
+date: 2025-08-26
+focus_keyword: "티구안터보교환"
+description: "동탄 수입차 전문정비 모터 리페어의 폭스바겐 티구안 2.0 TDI 터보 금속음 및 가속 저하 문제 진단·터보차저 교환·DPF 버닝 리빌드·타이밍벨트·워터펌프 동시교환 작업 사례. VCDS 진단 기반의 데이터 분석과 신품 파츠 적용으로 안정적인 출력과 부스트 복원 과정을 담았습니다."
+brand: "폭스바겐"
+car_model: "폭스바겐 티구안 2.0 TDI 블루모션 (2013년식)"
+mileage_km: 180000
+symptom_customer: ["주행 중에 금속음이 나요", "가속이 잘 안 돼요"]
+symptom_tech: "요구 대비 부스트 형성 지연, 재가속 시 금속성 마찰음 동반 — 터보 축계·VNT 작동 이상"
+category: "고장 진단(터보·과급 계통)"
+diagnostic: ["테스트 드라이브 증상 재현", "VCDS/VAS 계열 전용 스캐너 파워트레인 서비스 데이터 로깅", "부스트 제어 학습값·DPF 차압·배기 온도 확인"]
+parts_used: ["OEM 신품 터보차저", "오일·냉각·배기 플랜지 가스켓", "타이밍 벨트 키트(벨트·텐셔너·아이들러)", "워터펌프", "A/C 냉매·냉매오일", "브레이크 램프 벌브"]
+result: "실차 검증 주행에서 등판·재가속 구간 요구/실제 부스트 추종성 정상 회복, 안정적인 구동음·응답성 확인 후 출고"
+tags: [DPF버닝리빌드, 동탄디젤정비, 동탄모터리페어, 동탄티구안정비, 동탄폭스바겐정비, 디젤터보정비, 수원티구안정비, 수입차전문정비, 수입차터보고장, 워터펌프교환, 워터펌프누수, 타이밍벨트교환, 터보차저교환, 티구안DPF, 티구안DPF정비, 티구안VNT, 티구안가속저하, 티구안금속음, 티구안베어링마모, 티구안부스트저하, 티구안오일라인세정, 티구안정비사례, 티구안출력저하, 티구안타이밍벨트, 티구안터보고장, 티구안터보교환, 티구안흡기점검, 폭스바겐TDI정비, 폭스바겐정비, 화성티구안정비]
+thumbnail: ./images/thumb.webp
+figcaption: false
+summary_lead: "모터리페어는 경기 화성 동탄의 수입차 전문 정비소로, 폭스바겐 티구안 2.0 TDI(주행 180,000km)의 주행 중 금속음·가속 저하를 전용 스캐너 데이터 로깅으로 진단해 터보차저 OEM 신품 교환과 DPF 버닝 리빌드, 타이밍 벨트·워터펌프 동시 교환을 진행했습니다."
+diagnosis_cause: "터보 축계·VNT 작동 불량(축 유격·베인 카본 적층)에 따른 부스트 형성 지연과 금속성 마찰음 — 점검 중 워터펌프 워프홀 주변 누수 동반 확인"
+faq:
+  - q: "터보에서 금속음이 나고 가속이 둔해지면 어떤 원인을 의심하나요?"
+    a: "고주행 디젤 터보 차량에서 잦은 패턴은 터보 축·베어링 마모, VNT 베인 카본 누적, DPF 포집량 증가입니다. 이 차량도 요구 대비 부스트 형성 지연과 재가속 시 금속성 마찰음이 확인되어 터보차저를 OEM 신품으로 교환했습니다."
+  - q: "DPF 버닝 리빌드는 어떤 작업인가요?"
+    a: "DPF를 차량에서 분리해 열처리·에어블로잉·역세 방식으로 내부 포집물을 제거하는 작업입니다. 재장착 후 스캐너로 DPF 차압과 배기 온도 데이터를 다시 확인해 상태를 검증합니다."
+  - q: "터보 정비 때 타이밍 벨트와 워터펌프를 함께 교환한 이유는요?"
+    a: "점검 중 워터펌프 워프홀 주변 누수가 확인되었고, 2.0 TDI는 구조상 해당 항목을 한 번에 처리하는 것이 유지비와 신뢰성 측면에서 유리합니다. 그래서 타이밍 벨트 키트(벨트·텐셔너·아이들러)와 워터펌프를 동시 교환했습니다."
+---
+import Figure from '../../../components/Figure.astro';
+
+안녕하세요? 동탄 수입차 전문정비 모터 리페어입니다.
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/02.webp" width={1440} height={1080} alt="동탄 수입차 정비소 모터리페어에 입고된 폭스바겐 티구안 2.0 TDI" />
+
+2013년식 폭스바겐 티구안 2.0 TDI 블루모션(180,000km)이 주행 중 금속음과 가속 저하로 입고되어 정밀 진단과 리페어를 진행합니다.
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/03.webp" width={1440} height={1080} alt="폭스바겐 티구안 전면 그릴" />
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/04.webp" width={1440} height={1080} alt="티구안 블루모션 테크놀로지 리어 엠블럼" />
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/05.webp" width={1440} height={1080} alt="티구안 계기판 엔진 경고등과 주행거리 표시" />
+
+입고 직후 테스트 드라이브로 재현 조건을 확보하고, VCDS/VAS 계열 전용 스캐너로 파워트레인 서비스 데이터를 로깅하게되죠.
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/06.webp" width={934} height={1200} alt="티구안 2.0 TDI 터보차저·배기 매니폴드 부품 구성도" />
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/07.webp" width={1161} height={1200} alt="티구안 DPF·배기 라인 부품 구성도" />
+
+요구 대비 실제 부스트 형성 지연과 재가속 시 금속성 마찰음이 동반되어 터보 축계·VNT 작동 상태를 중심으로 분석을 이어갑니다.
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/08.webp" width={1440} height={1080} alt="폭스바겐 티구안 2.0 TDI 엔진룸" />
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/09.webp" width={466} height={350} alt="정비소 진단 데이터 로깅용 워크스테이션" />
+
+정비 진도는 엔진 서브프레임 탈착으로 접근성을 확보하고 배기 라인의 DPF를 분리해 외부 버닝 리빌드(열처리·에어블로잉·역세)로 포집물 제거를 수행하는 방식으로 설정하게되죠.
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/10.webp" width={1440} height={1080} alt="리프트에서 확인한 티구안 하부 배기 열차폐 커버" />
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/11.webp" width={1440} height={1080} alt="서브프레임 탈착 후 티구안 하부 구동계 접근" />
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/12.webp" width={1440} height={1080} alt="터보차저 탈거를 위한 엔진 측면 분해 상태" />
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/13.webp" width={900} height={1200} alt="OEM 신품 터보차저 컴프레서 휠" />
+
+동시에 터보차저는 OEM 신품으로 교환하며,
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/14.webp" width={1440} height={1080} alt="배기 매니폴드 일체형 신품 터보차저 어셈블리" />
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/15.webp" width={1440} height={1080} alt="신품 터보차저 제조사 라벨과 컴프레서 휠" />
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/16.webp" width={1440} height={1080} alt="신품 터보차저 터빈 하우징 내부" />
+
+오일·냉각·배기 플랜지 가스켓은 규격 신품으로 일괄 대체합니다.
+
+임펠라·샤프트 유격 가능성과 베인 구간 카본 적층을 고려해 오일 라인 내부 세정과 프라이밍을 실시하고, 액추에이터 링크 포지션을 신품 규격에 맞춰 점검합니다. 재조립은 분해의 역순이죠, 서브프레임 및 하부 링크 계열은 규정 토크 적용 후 위치 보정을 마치게되죠.
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/17.webp" width={1440} height={1080} alt="티구안 타이밍 벨트 구동부 분해 점검" />
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/18.webp" width={1440} height={1080} alt="워터펌프 워프홀 주변 냉각수 누수 흔적" />
+
+다음은 차주 요청사항에 따라 타이밍 벨트 계열을 분해 점검하고,
+
+워터펌프 워프홀 주변 누수를 확인해 차주 설명후 타이밍 벨트 키트(벨트·텐셔너·아이들러)와 워터펌프를 동시 교환하게됩니다.
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/19.webp" width={1440} height={1080} alt="타이밍 벨트 키트와 신품 워터펌프 구성품" />
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/20.webp" width={981} height={1200} alt="2.0 TDI 타이밍 벨트 정렬·체결 토크 도해" />
+
+2.0 TDI는 구조상 해당 항목을 한 번에 처리하는 것이 유지비와 신뢰성 측면에서 유리합니다.
+
+DPF 버닝 리빌드 완료품 재장착, 냉각수 에어 블리딩, 엔진오일 상태 확인 후 스캐너로 부스트 제어 학습값과 DPF 차압·배기 온도 계열을 다시 확인하죠.
+
+실차 검증 주행에서는 등판 가속과 재가속 구간에서 요구/실제 부스트 추종성이 정상으로 회복되었어, 무척이나 만족스럽군요.
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/21.webp" width={1440} height={1080} alt="브레이크 램프 교환을 위한 리어 램프 하우징 탈거" />
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/22.webp" width={1440} height={1080} alt="리어 브레이크 램프 벌브 신품 교환" />
+
+부가 서비스로 A/C 냉매와 냉매오일을 신유 리필하여 공조 성능을 정비하고, 조수석 뒤 브레이크 램프 벌브 미점등은 신품 벌브로 교환 처리하게되죠.
+
+최종 검수까지 마친 뒤 안정적인 구동음과 응답성을 확인하며
+
+차량은 안정적인 모션으로 왔던길을 되돌아가게 됩니다.
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/23.webp" width={1440} height={1080} alt="정비를 마친 티구안 블루모션 리어 엠블럼" />
+
+고주행 디젤 터보 차량에서 잦은 패턴은 터보 축·베어링 마모, VNT 베인 카본 누적, DPF 포집량 증가입니다.
+
+예방을 위해 규격 오일 사용과 적정 교환 주기 준수, 부스트/흡기 라인 점검, DPF 재생 관리, 타이밍 벨트·워터펌프 정기 점검을 권장드립니다.
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/24.webp" width={1400} height={1050} alt="동탄 수입차 정비소 모터리페어 외관" />
+
+<Figure src="/img/cases/dongtan-tiguan-turbo-noise-acceleration-loss/25.webp" width={1400} height={1050} alt="모터리페어 정비소 워크베이 전경" />
+
+매장 위치와 문의 방법은 [오시는 길](/location/)에서 확인하실 수 있습니다.

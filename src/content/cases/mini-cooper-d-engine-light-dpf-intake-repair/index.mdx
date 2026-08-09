@@ -1,0 +1,126 @@
+---
+title: "미니쿠퍼D 엔진경고등 점등 문제 진단과 정비 과정"
+seo_title: "동탄 미니쿠퍼D 엔진경고등·흡배기·DPF 정비 전문"
+slug: "mini-cooper-d-engine-light-dpf-intake-repair"
+date: 2025-12-05
+focus_keyword: "미니쿠퍼D 엔진경고등 점검"
+description: "미니쿠퍼D 엔진경고등 점등 원인, 배기압력 이상, 흡기매니폴드 교환 정비 안내"
+brand: "미니"
+car_model: "미니 쿠퍼D (2015년식)"
+mileage_km: 120000
+symptom_customer: ["엔진 경고등이 떴어요", "예약하고 점검받으러 왔어요"]
+symptom_tech: "엔진경고등 점등 — 흡기량 목표 대비 부족, 배기 전단·후단 압력 차 과다, 스월 플랩 작동 이상 의심"
+category: "고장 진단(흡배기 계통)"
+diagnostic: ["육안 하부·누유·구동벨트 점검", "MINI 전용 진단기(ISTA 계열) 시스템 데이터 확인", "20km 실차 테스트·라이브 데이터 로깅"]
+parts_used: ["구동벨트 세트(텐셔너·아이들러풀리·메인벨트)", "크랭크샤프트 댐퍼풀리", "흡기매니폴드 어셈블리(엑추레이터 포함 일체형 애프터 파츠)", "배기압력센서(센터 발주 신품)"]
+result: "흡기량·배기압력·스월 플랩 반응값·차압 데이터 정상 범위 회복 확인, 20km 실차 테스트 후 출고"
+tags: [DPF리빌드, 구동벨트교환, 댐퍼풀리, 동탄미니, 동탄정비소, 디젤정비, 모터리페어, 미니정비, 미니쿠퍼D, 미니흡배기정비, 배기압력센서, 수입차정비, 스월플랩, 엔진경고등, 흡기매니폴드]
+thumbnail: ./images/thumb.webp
+figcaption: false
+summary_lead: "모터리페어는 경기 화성 동탄의 수입차 전문 정비소로, 미니 쿠퍼D(주행 120,000km)의 엔진경고등 점등을 진단기 데이터로 흡기 스월 플랩 이상과 배기압력 상승으로 진단해 구동벨트·댐퍼풀리·흡기매니폴드 교환과 DPF 버닝 리빌드로 정비했습니다."
+diagnosis_cause: "흡기 스월 플랩 작동 이상과 카본 적층에 따른 배기압력 상승, 구동벨트·댐퍼풀리 노후"
+faq:
+  - q: "미니쿠퍼D 엔진경고등은 왜 켜지나요?"
+    a: "이 차량은 흡기 스월 플랩 작동 이상과 배기라인 전단·후단 압력 차 상승이 원인이었습니다. 미니 디젤 모델 특성상 흡기·배기 카본 적층과 구동벨트 계열 노후화는 10만km 전후로 자주 관찰되는 사항입니다."
+  - q: "DPF는 교환하지 않고 재생할 수 있나요?"
+    a: "이 차량은 DPF 내부 포집량이 높아 버닝 리빌드 공정으로 재생을 진행했습니다. 정비 공정을 거친 뒤 차압 데이터가 정상 범위로 회복된 것을 확인했습니다."
+  - q: "정비 후 어떤 검증을 거치나요?"
+    a: "20km 실차 테스트와 라이브 데이터 로깅으로 흡기량, 배기압력, 스월 플랩 반응값, 차압 데이터가 모두 정상 범위에 들어오는지 확인한 뒤 출고합니다."
+---
+import Figure from '../../../components/Figure.astro';
+
+**안녕하세요? 동탄 수입차 전문정비 모터 리페어입니다.**
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/02.webp" width={1440} height={1080} alt="동탄 수입차 정비소에 입고된 미니 쿠퍼D" />
+
+이번에는 엔진경고등 점등 문제로 예약 후 입고된 2015년 미니 쿠퍼D(120,000km) 차량의 정비 사례를 안내드립니다.
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/03.webp" width={1440} height={1080} alt="미니 쿠퍼D 전면" />
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/04.webp" width={1440} height={1080} alt="미니 쿠퍼D 측면" />
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/05.webp" width={1440} height={1080} alt="미니 쿠퍼D 계기판 엔진경고등 점등 상태" />
+
+주행거리 특성상 흡배기 라인, 구동계, 전자식 스월 플랩 시스템에 노후화가 누적되는 시기이므로 초기 점검부터 천천히 절차를 밟게 됩니다.
+
+워크베이에 차량을 올리고 기본적인 누유·누수, 구동벨트 상태, 라인 체결 상태를 점검하며 진단을 시작합니다.
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/06.webp" width={1440} height={1080} alt="미니 쿠퍼D 워크베이 리프트 하부 육안 점검" />
+
+초기 육안 점검 결과, 구동벨트에는 다량의 크랙이 발생해 있었고
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/07.webp" width={1440} height={1080} alt="크랙이 발생한 미니 쿠퍼D 구동벨트" />
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/08.webp" width={1440} height={1080} alt="노후 구동벨트 크랙 근접 상태" />
+
+크랭크샤프트 댐퍼풀리 진동 편차가 관찰되는군요.
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/09.webp" width={1440} height={1080} alt="크랭크샤프트 댐퍼풀리 상태 점검" />
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/10.webp" width={1440} height={1080} alt="MINI 전용 진단기 시스템 데이터 점검" />
+
+뒤를이어 MINI 전용 진단기(ISTA 계열)로 시스템 데이터를 확인해 보니 흡기량은 목표 대비 실제측정값이 부족했고,
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/11.webp" width={1440} height={1080} alt="진단기 흡기량 목표값·실측값 데이터" />
+
+배기라인은 전단·후단 압력 차이가 큰 값으로 기록됩니다.
+
+매우 중요한 사안이죠.
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/12.webp" width={1440} height={1102} alt="배기라인 전단·후단 압력 차이 데이터" />
+
+즉, 흡기 스월 플랩 작동 이상과 배기압력 상승을 동시에 의심해야 하는 전형적인 노후 패턴이 확인된 셈이죠.
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/12.webp" width={1440} height={1102} alt="흡기 스월 플랩·배기압력 진단 데이터" />
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/13.webp" width={1440} height={1086} alt="미니 쿠퍼D 흡기매니폴드 상태 점검" />
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/14.webp" width={1440} height={1095} alt="흡기 스월 플랩 작동부 확인" />
+
+정비 방향은 차주 설명후 구동벨트세트·댐퍼풀리, 흡기매니폴드 어셈블리는 엑추레이터 포함 일체형 애프터 파츠로 교환하기로 결정합니다.
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/15.webp" width={1440} height={1080} alt="교환용 신품 파츠 입고 확인" />
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/16.webp" width={1440} height={1080} alt="구동벨트·텐셔너·아이들러풀리 탈착 작업" />
+
+파츠가 입고되면 텐셔너, 아이들러풀리, 메인벨트를 순차적으로 탈착하고 규정 토크로 조립하며 구동계 라인을 안정화합니다.
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/17.webp" width={1600} height={1200} alt="신품 흡기매니폴드 어셈블리 장착 작업" />
+
+이어 흡기매니폴드 교환 과정에서는 스월 플랩 작동 로드, 전자식 엑추레이터, 하네스 체결부까지 정돈하며 설치를 마칩니다.
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/18.webp" width={1440} height={1080} alt="흡기매니폴드 엑추레이터·하네스 체결부 정돈" />
+
+조립은 분해의 역순이죠.
+
+이제 다음진도로 문제가 남아 있던 배기압력 관련 정비는
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/19.webp" width={1440} height={1080} alt="배기압력 라인 탈착 작업" />
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/20.webp" width={1600} height={1200} alt="카본 적층으로 막힌 압력라인 클리닝" />
+
+카본 적층으로 막힘이 발생한 압력라인을 탈착·클리닝하고,
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/21.webp" width={1600} height={1200} alt="신품 배기압력센서 교환" />
+
+압력센서는 센터 발주한 신품으로 교환하며 기준값을 복원합니다.
+
+DPF는 내부 포집량이 높아 버닝 리빌드 공정으로 재생이 진행되었습니다.
+
+정비 공정을 거친 뒤 차압 데이터가 정상 범위로 회복된 것이 확인됩니다.
+
+교환정비후 마무리는 20km 실차 테스트와 라이브 데이터 로깅이죠.
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/22.webp" width={1440} height={1080} alt="실차 테스트 라이브 데이터 로깅 화면" />
+
+흡기량, 배기압력, 스월 플랩 반응값, 차압 데이터가 모두 정상 범위에 들어오며 엔진 모션도 안정적으로 회복되어 다행입니다.
+
+미니 디젤 모델 특성상 흡기·배기 카본 적층과 구동벨트 계열 노후화는
+
+10만km 전후로 자주 관찰되는 사항으로, 주기적인 관리가 큰 이점으로 이어지는 시스템입니다.
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/23.webp" width={1400} height={1050} alt="정비를 마친 미니 쿠퍼D 출고 대기" />
+
+<Figure src="/img/cases/mini-cooper-d-engine-light-dpf-intake-repair/24.webp" width={466} height={350} alt="동탄 수입차 정비소 모터리페어 워크베이" />
+
+매장 위치와 문의 방법은 [오시는 길](/location/)에서 확인하실 수 있습니다.

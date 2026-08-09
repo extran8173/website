@@ -1,0 +1,141 @@
+---
+title: "BMW X1 출력저하 원인 진단과 상부 터보차저 정비"
+seo_title: "BMW X1 출력저하 원인 진단과 상부 터보차저 정비"
+slug: "dongtan-bmw-x1-turbo-dpf-repair"
+date: 2025-11-23
+focus_keyword: "동탄 BMW X1 출력저하 터보차저 정비"
+description: "동탄 모터리페어에서 BMW X1 출력저하·엔진경고등 문제를 정밀 진단하고 상부 터보차저 교환과 DPF 리빌드를 진행한 전체 정비 과정을 소개합니다."
+brand: "BMW"
+car_model: "BMW X1 (2018년식)"
+mileage_km: 118000
+symptom_customer: ["엔진 경고등이 떴어요", "가속을 해도 차가 안 나가요"]
+symptom_tech: "엔진경고등 점등·가속 입력 대비 출력 부족 — 부스트 목표값·실제값 편차, 상부 터보차저 노후·DPF 포집량 기준치 초과"
+category: "고장 진단(흡배기 계통)"
+diagnostic: ["실차 테스트 출력 패턴 확인", "BMW ISTA+ 부스트 목표값·실제값 편차 점검", "내시경 터보 임펠러 유격·베어링 점검", "부스트 로깅 재검증"]
+parts_used: ["OEM 신품 터보차저", "DPF 센서류", "가스켓 세트"]
+result: "터보차저 교환·DPF 버닝 리빌드 후 부스트 목표값·실제값 일치 확인, 엔진경고등 소거 후 출고"
+tags: [BMW X1, BMW 디젤, BMW 서비스, BMW 진단, BMW 터보, DPF 리빌드, DPF 정비, DPF 차압, ISTA 데이터, OEM 터보, X1 출력저하, 가스켓 세트, 동탄 BMW, 동탄 모터리페어, 동탄 정비소, 디젤 출력부족, 배기계통 점검, 부스트압 문제, 상부터보 점검, 센서 교환, 수입차 출력회복, 수입차정비, 스캐너 점검, 실차 테스트, 엔진 부스트, 엔진경고등, 출력문제, 터보차저 교환, 흡기계통 점검, 흡배기 정비]
+thumbnail: ./images/thumb.webp
+figcaption: false
+summary_lead: "모터리페어는 경기 화성 동탄의 수입차 전문 정비소로, BMW X1(주행 118,000km)의 엔진경고등·출력 부족을 ISTA+ 부스트 데이터와 내시경 점검으로 진단해 상부 터보차저를 OEM 신품으로 교환하고 DPF를 버닝 리빌드로 복원했습니다."
+diagnosis_cause: "상부 터보차저 노후(임펠러 유격·베어링 마모)와 DPF 내부 포집량 기준치 초과"
+faq:
+  - q: "출력이 떨어지면 터보차저 문제인지 어떻게 확인하나요?"
+    a: "먼저 실차 테스트로 가속 입력 대비 출력 패턴을 확인하고, 스캐너로 부스트 목표값과 실제값의 편차를 점검합니다. 이후 흡배기·인터쿨러 라인을 순차 점검하고 내시경으로 터보 임펠러 유격과 베어링 상태를 직접 확인해 판정합니다."
+  - q: "DPF는 꼭 신품으로 교환해야 하나요?"
+    a: "이 차량은 신품 교환 대신 DPF를 탈거해 포집물 제거, 열처리, 에어블로잉으로 이어지는 버닝 리빌드 공정으로 복원했습니다. 재장착 시에는 가스켓과 센서류를 함께 교환해 체결했습니다."
+  - q: "터보차저 교환 작업은 왜 시간이 오래 걸리나요?"
+    a: "오일라인·냉각수라인·흡기라인을 순서대로 분리하고 엔진 하부 서브프레임을 탈착해 작업 공간을 확보한 뒤에야 배기라인 정리와 터보·DPF 탈거가 가능한 구조라, 분해와 조립 절차에 시간이 소요됩니다."
+---
+import Figure from '../../../components/Figure.astro';
+
+안녕하세요?
+동탄 수입차 전문정비 모터 리페어입니다.
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/02.webp" width={1428} height={1071} alt="동탄 수입차 정비소에 입고된 BMW X1" />
+
+이번에는 엔진경고등 점등과 가속 불량 문제로 BMW X1(2018년식, 118,000km) 차량이 입고되었네요.
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/03.webp" width={1428} height={1071} alt="BMW X1 전면" />
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/04.webp" width={1428} height={1071} alt="BMW X1 측면" />
+
+차량을 워크베이에 입고해 사전 점검을 진행한 뒤
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/05.webp" width={1428} height={1071} alt="BMW X1 워크베이 사전 점검" />
+
+실차 테스트로 증상을 재확인하면, 가속 입력 대비 실제 출력이 전혀 따라오지 않는 패턴이 명확히 나타나더군요.
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/06.webp" width={1428} height={1071} alt="BMW X1 실차 테스트 출력 확인" />
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/07.webp" width={1600} height={1200} alt="실차 테스트 가속 구간 데이터 확인" />
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/08.webp" width={466} height={350} alt="시스템 진단 장비 데이터 화면" />
+
+이 결과를 바탕으로 본격적인 진단에 들어가게 됩니다.
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/09.webp" width={1428} height={1071} alt="BMW ISTA+ 전용 스캐너 연결" />
+
+BMW ISTA+ 전용 스캐너를 연결해 부스트 목표값과 실제값의 편차를 먼저 확인하고, 흡배기 라인·인터쿨러 라인을 순차적으로 점검합니다.
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/10.webp" width={640} height={480} alt="흡기·인터쿨러 라인 점검" />
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/11.webp" width={640} height={480} alt="내시경 터보 임펠러 유격·베어링 점검" />
+
+이어 내시경 장비를 사용해 터보 임펠러 유격과 베어링 상태를 살펴보니 상부 터보차저의 노후가 분명해졌고, DPF 역시 내부 포집량이 기준치를 크게 초과한 상태였습니다.
+
+차주분과 상담을 마친 뒤 정비 방향은 명확해집니다.
+
+터보차저는 OEM 신품으로 교환하고, DPF는 탈거 후 버닝 리빌드 공정을 통해 복원하는 방향이죠.
+
+추가적으로 DPF 센서류와 가스켓 세트도 함께 교환되며 파츠 오더가 진행됩니다.
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/12.webp" width={653} height={528} alt="OEM 신품 터보차저" />
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/13.webp" width={661} height={525} alt="교환용 DPF 센서류" />
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/14.webp" width={646} height={554} alt="교환용 가스켓 세트" />
+
+이 차량은 작업 절차에 시간이 꽤 소요되는 구조입니다.
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/15.webp" width={1600} height={1200} alt="BMW X1 엔진룸 분해 작업" />
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/16.webp" width={1600} height={1200} alt="오일라인·냉각수라인·흡기라인 분리" />
+
+오일라인·냉각수라인·흡기라인을 순서대로 분리하고
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/17.webp" width={1600} height={1200} alt="엔진 하부 서브프레임 탈착" />
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/18.webp" width={1600} height={1200} alt="배기라인 정리·DPF 탈거" />
+
+엔진 하부 서브프레임을 탈착해 작업 공간을 확보한 뒤, 배기라인을 정리하면서 먼저 DPF가 탈거됩니다.
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/19.webp" width={1600} height={1200} alt="탈거된 DPF" />
+
+탈착된 DPF는 포집물 제거 → 열처리 → 에어블로잉까지 리빌드 공정이 그대로 진행됩니다.
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/20.webp" width={1600} height={1197} alt="DPF 포집물 제거·열처리 리빌드 공정" />
+
+이후 상부 터보차저도 엔진에서 분리되어 내려오며, 작업대에서 노후 상태를 다시 한번 확인하게 되죠.
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/21.webp" width={1600} height={1200} alt="엔진에서 분리한 상부 터보차저" />
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/22.webp" width={1600} height={1200} alt="작업대에서 확인한 터보차저 노후 상태" />
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/23.webp" width={1600} height={1200} alt="터보차저 장착부 정리" />
+
+파츠가 하나둘 입고되면 조립은 분해의 역순으로 이어집니다.
+
+신품 터보차저는 규정 토크에 맞춰 장착하고 흡배기 라인을 밀폐 상태로 정리합니다.
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/24.webp" width={1600} height={1200} alt="신품 터보차저 규정 토크 장착" />
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/25.webp" width={1600} height={1197} alt="흡배기 라인 조립" />
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/26.webp" width={1600} height={1200} alt="리빌드를 마친 DPF 재장착 준비" />
+
+리빌드가 완료된 DPF는 준비된 가스켓·센서류와 함께 제 위치에 정확히 체결되며 전체 조립공정이 마무리됩니다.
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/27.webp" width={1428} height={1056} alt="DPF 가스켓·센서류 체결" />
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/28.webp" width={1428} height={1071} alt="조립을 마친 BMW X1 엔진룸" />
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/29.webp" width={1600} height={1200} alt="조립 완료 후 하부 점검" />
+
+이제 차량은 최종 검증 단계로 넘어가죠.
+
+실차 테스트와 부스트 로깅을 다시 진행해보면 목표값과 실제값이 안정적으로 일치하며 출력 부족 문제도 완전히 해결되었습니다.
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/04.webp" width={1428} height={1071} alt="최종 검증 실차 테스트에 나서는 BMW X1" />
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/06.webp" width={1428} height={1071} alt="부스트 로깅 재확인 주행" />
+
+엔진경고등도 정상적으로 소거되고 BMW X1은 안정적인 주행 성능을 되찾아 출고 대기에 들어갑니다.
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/30.webp" width={1428} height={1071} alt="정비를 마친 BMW X1" />
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/31.webp" width={1400} height={1050} alt="출고 대기 중인 BMW X1" />
+
+<Figure src="/img/cases/dongtan-bmw-x1-turbo-dpf-repair/32.webp" width={1400} height={1050} alt="동탄 수입차 정비소 모터리페어 워크베이" />
+
+매장 위치와 문의 방법은 [오시는 길](/location/)에서 확인하실 수 있습니다.
