@@ -1,0 +1,95 @@
+---
+// 업체 소개 — 워드프레스 소개 글 이전 (슬러그 원문 보존, 최상위 경로).
+// 사례 컬렉션이 아닌 일반 페이지 (2026-08-09 결정). 회사 정보는 business.ts 단일 소스로 렌더.
+// 원문 대비 손질: 로고 스트립 이미지(346×64) 2회 제외 · 지도 블록 → 오시는 길 링크 · 회사 정보 상수화.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Figure from '../components/Figure.astro';
+import { business, cta } from '../data/business.ts';
+
+const title = '동탄 수입차 전문정비 모터 리페어｜브랜드별 전용 진단 장비로 정확한 점검과 정비 제공';
+// 원문 메타에서 확장 브랜드(재규어·랜드로버)가 전용 진단 장비 나열에 섞여 있던 부분만 정정 (과장 방지)
+const description =
+  '동탄 수입차 전문정비 모터 리페어는 BMW·벤츠·아우디·폭스바겐·포르쉐 등 주요 브랜드 전용 진단 장비(ISTA+, Xentry, ODIS, PIWIS)와 Picoscope 기반의 정밀 진단을 통해 정확한 원인 분석과 투명한 정비 서비스를 제공합니다.';
+const ytId = 'h4pLzE6pA10';
+---
+
+<BaseLayout title={title} description={description} path="/dongtan-import-car-specialty-motor-repair-introduction/">
+  <article class="intro container">
+    <header class="intro-head">
+      <h1 class="t-display-lg">안녕하세요 모터리페어 입니다.</h1>
+    </header>
+
+    <div class="intro-body">
+      <p>안녕하세요?<br />동탄 수입차 전문정비 <strong>모터 리페어</strong>입니다.</p>
+
+      <p>저희 모터 리페어는 수입차 오너분들의 안전하고 쾌적한 주행을 위해 전문적인 정비 서비스를 제공하고 있습니다. BMW, 벤츠, 아우디, 폭스바겐, 포르쉐, 재규어, 랜드로버, 피아트/지프 등 다양한 브랜드의 차량을 전문 진단 장비와 정비 매뉴얼에 따라 정확하고 투명하게 관리해 드리고 있습니다.</p>
+
+      <Figure src="/img/about/02.webp" width={1064} height={661} alt="차량 엔진룸에 연결된 Picoscope 오실로스코프 본체" />
+      <Figure src="/img/about/03.webp" width={800} height={533} alt="Picoscope와 노트북을 연결한 파형 진단 작업" />
+
+      <p>각 브랜드별 전용 진단 장비를 활용하여 보다 정밀하고 체계적인 점검이 가능합니다. BMW 차량에는 <strong>ISTA+</strong>, 메르세데스-벤츠에는 <strong>Xentry(Star Diagnosis)</strong>, 아우디에는 <strong>ODIS</strong>, 포르쉐에는 <strong>PIWIS</strong> 시스템을 사용하며,</p>
+
+      <p>여기에 더해 <strong>Picoscope</strong> 등 오실로스코프 장비를 활용해 파워트레인과 전자 신호까지 세밀하게 분석하려 노력합니다. 이러한 정밀 진단 과정을 통해 단순 부품 교환이 아닌, 근본적인 원인 파악과 예방 정비까지 책임지고 있습니다.</p>
+
+      <Figure src="/img/about/04.webp" width={659} height={505} alt="BMW G30 520i 바노스 진단 데이터 화면" />
+      <Figure src="/img/about/05.webp" width={952} height={1200} alt="포르쉐 박스터 S 실린더헤드 오버홀 작업" />
+      <Figure src="/img/about/06.webp" width={530} height={719} alt="재규어 E-PACE 진단 화면" />
+
+      <p>저희는 OEM·OE·애프터마켓 파츠를 상황과 예산에 맞게 안내하며, 정비 과정은 데이터 기반으로 기록하여 고객님께 이해하기 쉽게 설명드리고 있습니다.</p>
+
+      <Figure src="/img/about/07.webp" width={1289} height={900} alt="유튜브 채널 장용석의 내차를 부탁해 페이지" />
+
+      <p>또한 차량 진단과 정비 과정을 영상으로도 담아 유튜브 채널 ‘장용석의 내차를 부탁해'를 운영하고 있습니다. 실제 정비 현장과 데이터를 확인하실 수 있어 많은 분들께 신뢰를 얻고 있습니다.</p>
+
+      <p>항상 찾아주시는 모든 고객님들께 감사드리며, 앞으로도 안전한 운행과 즐거운 드라이빙을 위해 최선을 다하겠습니다.</p>
+
+      <p>언제나 안전운전입니다.</p>
+
+      <p>모터 리페어</p>
+
+      <section class="intro-info">
+        <h2 class="t-body-strong">회사 정보</h2>
+        <p>상호명: {business.name} (Motor Repair)</p>
+        <p>주소: {business.address.region} {business.address.locality} {business.address.street} ({business.address.lotBased})</p>
+        <p>연락처: <a href={cta.callHref}>{business.phone.display}</a></p>
+        <p>유튜브 채널: 장용석의 내차를 부탁해</p>
+      </section>
+
+      <figure class="intro-video">
+        <div class="video-frame">
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${ytId}`}
+            title="중고차 묻따구매 Benz CLS 350D 4Matic 수리과정 풀영상 몰아보기"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <figcaption>중고차 묻따구매 Benz CLS 350D 4Matic 수리과정 풀영상 몰아보기_수입차수리 헤이딜러</figcaption>
+      </figure>
+
+      <Figure src="/img/about/08.webp" width={1400} height={1050} alt="모터리페어 매장 전경" />
+      <Figure src="/img/about/09.webp" width={1400} height={1050} alt="모터리페어 워크베이" />
+
+      <p>매장 위치와 문의 방법은 <a href="/location/">오시는 길</a>에서 확인하실 수 있습니다.</p>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  /* 사례 상세와 동일한 리딩 컬럼 규격 */
+  .intro { max-width: var(--reading-max); padding-block: var(--space-xxl); }
+  .intro-head h1 { color: var(--color-ink); margin: 0 0 var(--space-xl); }
+  .intro-body { font-size: 17px; line-height: 1.6; letter-spacing: -0.01em; color: var(--color-body); }
+  .intro-body p { margin: 0 0 var(--space-md); }
+  .intro-body a { color: var(--color-primary); }
+
+  .intro-info { margin: var(--space-xl) 0; padding: var(--space-lg); background: var(--color-canvas-parchment); border-radius: var(--rounded-lg); }
+  .intro-info h2 { margin: 0 0 var(--space-sm); color: var(--color-ink); }
+  .intro-info p { margin: 0 0 4px; }
+
+  .intro-video { margin: var(--space-xl) 0; }
+  .video-frame { aspect-ratio: 16 / 9; }
+  .video-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .intro-video figcaption { margin-top: var(--space-xs); font-size: 14px; color: var(--color-ink-muted-48); }
+</style>
