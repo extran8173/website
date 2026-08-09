@@ -1,0 +1,107 @@
+---
+// cases-list-page — 사례 목록 공용 섹션 (전체·브랜드 필터 경로가 공유).
+// 필터 바 건수는 컬렉션에서 계산한다 (하드코딩 금지). 명세: page_cases + 2026-08-09 목록 구축 지시.
+import { getCollection } from 'astro:content';
+import type { Page } from 'astro';
+import CaseCard from './CaseCard.astro';
+import Pagination from './Pagination.astro';
+import PageHero from './PageHero.astro';
+import { BRAND_GROUPS, filterByGroup } from '../data/caseBrands.ts';
+import { cta } from '../data/business.ts';
+
+interface Props {
+  page: Page<any>;
+  currentKey: 'all' | string; // 'all' 또는 BRAND_GROUPS key
+  basePath: string; // 현재 필터의 1페이지 경로
+  intro: string; // GEO용 자기완결형 소개 문장 (1~2줄)
+}
+const { page, currentKey, basePath, intro } = Astro.props;
+
+const all = await getCollection('cases');
+const totalCount = all.length;
+const filters = [
+  { key: 'all', label: '전체', href: '/cases/', count: totalCount },
+  ...BRAND_GROUPS.map((g) => ({
+    key: g.key,
+    label: g.label,
+    href: `/cases/${g.key}/`,
+    count: filterByGroup(all, g.key).length,
+  })),
+];
+---
+
+<PageHero
+  label="차종 · 증상 · 원인 · 수리"
+  heading="정비 기록"
+  sub="모든 정비를 차종 · 증상 · 원인 · 수리 · 결과 순서로, 사진과 함께 기록합니다."
+  img="IMG-011"
+  imgAlt="동탄 수입차 정비소 차량 상태 사진 설명"
+/>
+
+<section class="cases-body container">
+  <p class="cases-intro t-body">{intro}</p>
+
+  <nav class="cases-filter" aria-label="브랜드 필터">
+    {filters.map((f) =>
+      f.key === currentKey ? (
+        <span class="filter-chip is-current" aria-current="page">{f.label} ({f.count})</span>
+      ) : (
+        <a class="filter-chip" href={f.href}>{f.label} ({f.count})</a>
+      )
+    )}
+  </nav>
+
+  <div class="cases-grid">
+    {page.data.map((entry) => <CaseCard entry={entry} />)}
+  </div>
+
+  <Pagination page={page} basePath={basePath} />
+</section>
+
+<section class="cases-cta">
+  <div class="container">
+    <p class="t-tagline">비슷한 증상이신가요? 차종과 증상을 말씀해 주세요.</p>
+    <div class="cases-cta-buttons">
+      <a href={cta.callHref} class="btn btn-call">{cta.callLabel}</a>
+      <a href={cta.naverHref} target="_blank" rel="noopener noreferrer" class="btn btn-naver">{cta.naverLabel}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cases-body { padding-block: var(--space-section); }
+  .cases-intro { color: var(--color-ink-muted-80); margin: 0 0 var(--space-lg); max-width: 62ch; }
+
+  .cases-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-xl);
+  }
+  .filter-chip {
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 16px;
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--rounded-sm);
+    color: var(--color-ink);
+    font-size: 15px;
+    transition: border-color 0.12s ease;
+  }
+  a.filter-chip:hover { border-color: var(--color-ink-muted-48); }
+  .filter-chip.is-current {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-on-dark);
+  }
+
+  .cases-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-lg); }
+  @media (min-width: 641px) { .cases-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .cases-grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .cases-cta { background: var(--color-surface-tile-1); color: var(--color-on-dark); padding-block: var(--space-section); text-align: center; }
+  .cases-cta .t-tagline { margin: 0 0 var(--space-lg); }
+  .cases-cta-buttons { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .cases-cta :global(.btn-naver) { color: var(--color-on-dark); border-color: var(--color-on-dark); }
+</style>

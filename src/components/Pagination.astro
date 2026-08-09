@@ -1,0 +1,68 @@
+---
+// pagination — 사례 목록 페이지 분할 내비게이션. Astro paginate()의 Page 객체를 받는다.
+// URL 규칙: 1페이지 = basePath, n페이지 = `${basePath}${n}/`
+import type { Page } from 'astro';
+
+interface Props {
+  page: Page<any>;
+  basePath: string; // 예: '/cases/' · '/cases/bmw/'
+}
+const { page, basePath } = Astro.props;
+const pageUrl = (n: number) => (n === 1 ? basePath : `${basePath}${n}/`);
+const numbers = Array.from({ length: page.lastPage }, (_, i) => i + 1);
+---
+
+{page.lastPage > 1 && (
+  <nav class="pagination" aria-label="페이지 이동">
+    {page.url.prev ? (
+      <a class="page-link" href={pageUrl(page.currentPage - 1)} rel="prev">← 이전</a>
+    ) : (
+      <span class="page-link is-disabled">← 이전</span>
+    )}
+    {numbers.map((n) =>
+      n === page.currentPage ? (
+        <span class="page-num is-current" aria-current="page">{n}</span>
+      ) : (
+        <a class="page-num" href={pageUrl(n)}>{n}</a>
+      )
+    )}
+    {page.url.next ? (
+      <a class="page-link" href={pageUrl(page.currentPage + 1)} rel="next">다음 →</a>
+    ) : (
+      <span class="page-link is-disabled">다음 →</span>
+    )}
+  </nav>
+)}
+
+<style>
+  .pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    margin-top: var(--space-xl);
+  }
+  .page-num,
+  .page-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--rounded-sm);
+    color: var(--color-ink);
+    font-size: 15px;
+    transition: border-color 0.12s ease;
+  }
+  a.page-num:hover,
+  a.page-link:hover { border-color: var(--color-ink-muted-48); }
+  .page-num.is-current {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-on-dark);
+  }
+  .page-link.is-disabled { color: var(--color-ink-muted-48); pointer-events: none; }
+</style>

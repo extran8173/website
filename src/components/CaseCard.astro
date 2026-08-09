@@ -1,6 +1,7 @@
 ---
 // case-card — 사례 카드 (store-utility-card 규격: hairline · 18px · 24px 패딩)
 // 사용: 사례 목록 · recent-cases · 관련 사례. 명세: 03_common_ui §5 · page_cases
+// 카드 핵심: 방문자는 차종보다 증상으로 자기 상황을 찾는다 — symptom_customer를 인용문으로 노출.
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 
@@ -12,14 +13,16 @@ const d = entry.data;
 // 사례 상세는 사이트 최상위 경로 — 프론트매터 slug만 사용 (워드프레스 URL 승계 방침)
 const href = `/${d.slug}/`;
 const dateText = d.date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+const symptom = d.symptom_customer[0];
 ---
 
 <a class="case-card" href={href}>
   <div class="case-card-thumb">
     <Image src={d.thumbnail} alt={`${d.region} ${d.brand} 정비 사례 ${d.car_model}`} widths={[400, 800]} sizes="(max-width: 640px) 100vw, 400px" loading="lazy" />
   </div>
+  <p class="case-card-meta t-caption">{d.brand} · {d.car_model}</p>
   <h3 class="case-card-title t-body-strong">{d.title}</h3>
-  <p class="case-card-result t-caption">{d.result}</p>
+  {symptom && <p class="case-card-symptom t-caption">“{symptom}”</p>}
   <time class="case-card-date t-caption" datetime={d.date.toISOString()}>{dateText}</time>
 </a>
 
@@ -31,17 +34,34 @@ const dateText = d.date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'l
     border-radius: var(--rounded-lg);
     padding: var(--space-lg);
     color: var(--color-ink);
-    transition: transform 0.12s ease;
+    transition: border-color 0.12s ease, transform 0.12s ease;
   }
+  .case-card:hover { border-color: var(--color-ink-muted-48); }
+  .case-card:hover .case-card-title { color: var(--color-primary); }
   .case-card:active { transform: scale(0.99); }
   .case-card-thumb {
-    border-radius: var(--rounded-sm);
+    border-radius: 0; /* 각진 모서리 — 사례 본문 이미지와 통일 */
     overflow: hidden;
     margin-bottom: var(--space-sm);
-    aspect-ratio: 3 / 2;
+    aspect-ratio: 4 / 3;
   }
   .case-card-thumb :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .case-card-title { margin: 0 0 6px; color: var(--color-ink); }
-  .case-card-result { margin: 0 0 12px; color: var(--color-ink-muted-80); }
+  .case-card-meta { margin: 0 0 4px; color: var(--color-ink-muted-48); }
+  .case-card-title {
+    margin: 0 0 6px;
+    color: var(--color-ink);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    transition: color 0.12s ease;
+  }
+  .case-card-symptom {
+    margin: 0 0 12px;
+    color: var(--color-ink-muted-80);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .case-card-date { color: var(--color-ink-muted-48); }
 </style>

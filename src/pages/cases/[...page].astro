@@ -1,0 +1,27 @@
+---
+// 정비 사례 목록 (전체) — 12건 페이지 분할. /cases/ · /cases/2/ · …
+// 브랜드 필터 경로는 src/pages/cases/[brand]/[...page].astro
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CasesListPage from '../../components/CasesListPage.astro';
+
+export async function getStaticPaths({ paginate }) {
+  const cases = (await getCollection('cases')).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+  );
+  return paginate(cases, { pageSize: 12 });
+}
+
+const { page } = Astro.props;
+const n = page.currentPage;
+const title =
+  n > 1 ? `수입차 정비 사례 — ${n}페이지 | 동탄 모터리페어` : '수입차 정비 사례 | 동탄 모터리페어';
+const description =
+  'BMW·벤츠·아우디·포르쉐 등 유럽 수입차 정비 기록. 차종, 증상, 원인, 수리 과정과 결과를 사진과 함께 남깁니다.';
+const path = n > 1 ? `/cases/${n}/` : '/cases/';
+const intro = `모터리페어는 경기 화성 동탄의 수입차 전문 정비소입니다. BMW·벤츠·아우디·폭스바겐 등 수입차 정비 사례 ${page.total}건을 차종·증상·원인·수리 과정 순서로 기록하며, 매주 새 사례가 올라옵니다.`;
+---
+
+<BaseLayout title={title} description={description} path={path}>
+  <CasesListPage page={page} currentKey="all" basePath="/cases/" intro={intro} />
+</BaseLayout>

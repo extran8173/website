@@ -1,0 +1,33 @@
+---
+// 정비 사례 목록 (브랜드 필터) — /cases/<key>/ · /cases/<key>/2/ · …
+// 그룹 정의·매핑: src/data/caseBrands.ts (건수는 콘텐츠에서 계산)
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CasesListPage from '../../../components/CasesListPage.astro';
+import { BRAND_GROUPS, filterByGroup } from '../../../data/caseBrands.ts';
+
+export async function getStaticPaths({ paginate }) {
+  const all = (await getCollection('cases')).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+  );
+  return BRAND_GROUPS.flatMap((g) =>
+    paginate(filterByGroup(all, g.key), { params: { brand: g.key }, pageSize: 12 })
+  );
+}
+
+const { page } = Astro.props;
+const { brand } = Astro.params;
+const group = BRAND_GROUPS.find((g) => g.key === brand)!;
+const n = page.currentPage;
+
+const baseTitle = `동탄 ${group.seoName} 정비 사례 | 모터리페어`;
+const title = n > 1 ? `동탄 ${group.seoName} 정비 사례 — ${n}페이지 | 모터리페어` : baseTitle;
+const description = `${group.seoName} 정비 사례 ${page.total}건. 증상과 원인, 수리 과정을 사진으로 기록합니다.`;
+const basePath = `/cases/${group.key}/`;
+const path = n > 1 ? `${basePath}${n}/` : basePath;
+const intro = `모터리페어는 경기 화성 동탄의 수입차 전문 정비소입니다. ${group.seoName} 정비 사례 ${page.total}건을 증상·원인·수리 과정 순서로 사진과 함께 기록합니다.`;
+---
+
+<BaseLayout title={title} description={description} path={path}>
+  <CasesListPage page={page} currentKey={group.key} basePath={basePath} intro={intro} />
+</BaseLayout>
