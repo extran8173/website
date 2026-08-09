@@ -9,7 +9,8 @@
  */
 
 // WGS84 좌표 — 주소 geo·지도 링크·임베드 URL이 전부 이 값 하나를 참조한다
-const geo = { lat: 37.2121627, lng: 127.0515001 } as const;
+// 2026-08-09 정정: 구 좌표(37.2121627, 127.0515001)가 실제 위치보다 남서쪽 ~170m 어긋나 있었음
+const geo = { lat: 37.2136955, lng: 127.0522204 } as const;
 
 export const business = {
   // ── 상호 ──────────────────────────────────────────────
@@ -92,13 +93,15 @@ export const business = {
   },
 } as const;
 
-// ── 사이트 내비게이션 (5개) ────────────────────────────
+// ── 사이트 내비게이션 (6개) ────────────────────────────
 // 2026-07: 문의 페이지를 오시는 길로 통합 → 메뉴에서 문의 제거.
+// 2026-08: 업체 소개 페이지(WP 슬러그 승계) 추가 → 6개.
 export const navItems = [
   { label: '홈', href: '/' },
   { label: '서비스', href: '/services/' },
   { label: '정비 사례', href: '/cases/' },
   { label: '진단 장비', href: '/equipment/' },
+  { label: '소개', href: '/dongtan-import-car-specialty-motor-repair-introduction/' },
   { label: '오시는 길', href: '/location/' },
 ] as const;
 
