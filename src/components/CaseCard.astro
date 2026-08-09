@@ -9,7 +9,8 @@ interface Props {
 }
 const { entry } = Astro.props;
 const d = entry.data;
-const href = `/cases/${d.slug ?? entry.id.replace(/\/index$/, '')}/`;
+// 사례 상세는 사이트 최상위 경로 — 프론트매터 slug만 사용 (워드프레스 URL 승계 방침)
+const href = `/${d.slug}/`;
 const dateText = d.date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 

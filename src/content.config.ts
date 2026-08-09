@@ -9,7 +9,9 @@ const cases = defineCollection({
     z.object({
       title: z.string(),
       seo_title: z.string(),
-      slug: z.string().optional(), // 미지정 시 폴더명 사용
+      // URL 슬러그 — 필수. 워드프레스 이전 글은 원본 슬러그를 한 글자도 바꾸지 않고 넣는다 (자동 생성 금지).
+      // 한글 슬러그는 디코딩된 원문을 넣는다 (렌더 시 동일하게 퍼센트 인코딩됨).
+      slug: z.string(),
       date: z.coerce.date(),
       focus_keyword: z.string(),
       description: z.string().max(160),

@@ -1,25 +1,37 @@
 ---
 // 캡션 달린 최적화 이미지 — 명세: Astro_정비사례_파이프라인.md §3
 // 디자인: 그림자·보더 없음(다큐 컷), rounded.lg(18px), 캡션 caption + ink-muted-48
+// 두 가지 소스를 받는다:
+//  - img(ImageMetadata): astro:assets 최적화 경로 (주간 신규 발행 글)
+//  - src(string) + width/height: 사전 최적화된 public/ 정적 파일 (워드프레스 이전 글 — 빌드 시간 관리)
 import { Image } from 'astro:assets';
 
 interface Props {
-  img: ImageMetadata;
+  img?: ImageMetadata;
+  src?: string; // public/ 기준 절대 경로 (예: /img/cases/<slug>/01.webp)
+  width?: number; // src 사용 시 필수 — CLS 방지
+  height?: number;
   alt: string;
   caption?: string;
 }
-const { img, alt, caption } = Astro.props;
+const { img, src, width, height, alt, caption } = Astro.props;
+if (!img && !src) throw new Error('Figure: img 또는 src 중 하나는 필수입니다.');
+if (src && (!width || !height)) throw new Error('Figure: src 사용 시 width/height가 필수입니다 (CLS 방지).');
 ---
 
 <figure class="case-figure">
-  <Image
-    src={img}
-    alt={alt}
-    widths={[480, 768, 1200]}
-    sizes="(max-width: 980px) 100vw, 980px"
-    loading="lazy"
-    decoding="async"
-  />
+  {img ? (
+    <Image
+      src={img}
+      alt={alt}
+      widths={[480, 768, 1200]}
+      sizes="(max-width: 980px) 100vw, 980px"
+      loading="lazy"
+      decoding="async"
+    />
+  ) : (
+    <img src={src} alt={alt} width={width} height={height} loading="lazy" decoding="async" />
+  )}
   {caption && <figcaption>{caption}</figcaption>}
 </figure>
 
