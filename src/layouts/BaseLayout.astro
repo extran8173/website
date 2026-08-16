@@ -19,9 +19,16 @@ interface Props {
   hideFab?: boolean;
   /** og:image 경로 (예: 사례 thumbnail). 미지정 시 브랜드 기본 OG 이미지 */
   ogImage?: string;
+  /**
+   * OG·트위터 전용 설명. 미지정 시 description 을 그대로 쓴다.
+   * 카카오톡 공유 카드는 앞 50~60자만 노출한다 — 검색용 메타 디스크립션(키워드 밀도 우선)과
+   * 공유 카드용 문구(첫 문장에서 판단이 끝나야 함)의 요구가 달라 분리한다.
+   */
+  ogDescription?: string;
 }
 
-const { title, description, path, hideFab = false, ogImage = '/og-default.png' } = Astro.props;
+const { title, description, path, hideFab = false, ogImage = '/og-default.png', ogDescription } = Astro.props;
+const ogDesc = ogDescription ?? description;
 const canonical = new URL(path ?? Astro.url.pathname, Astro.site).href;
 const ogImageUrl = new URL(ogImage, Astro.site).href;
 
@@ -76,7 +83,7 @@ const jsonLd: Record<string, unknown> = {
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={ogDesc} />
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content={business.name} />
     <meta property="og:locale" content="ko_KR" />
@@ -87,7 +94,7 @@ const jsonLd: Record<string, unknown> = {
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:description" content={ogDesc} />
     <meta name="twitter:image" content={ogImageUrl} />
 
     <!-- 파비콘 -->
