@@ -37,3 +37,6 @@ src/assets/site/_incoming/
 
 # 워드프레스 이전 원본 자료(XML·uploads) — 리포에 올리지 않는다
 migration/
+
+# 주간 발행 원본 사진 드롭 폴더 — publish-case 가 images/NN.webp 로 정리한다. 원본은 올리지 않는다
+src/content/cases/*/raw/

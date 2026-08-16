@@ -48,7 +48,8 @@
 - **dev 서버**: `.claude/launch.json` — astro-dev(4321)·astro-dev-4325·astro-preview(4322). **HMR 꼬이면(스타일 미반영) 서버 재시작이 답**. 브라우저 패널 숨김 상태에선 lazy 이미지가 안 실리고 스크린샷 불가 — computed style·fetch 계측으로 검증
 - **PowerShell 5.1**: `&&` 없음. 파일 쓰기는 Write 도구, 검색은 Grep
 - **예약 경로 가드**: `src/pages/[...slug].astro` RESERVED에 소개 페이지 슬러그 포함 — 새 정적 최상위 페이지를 만들면 여기에 추가할 것
-- **주간 발행**: publish-case 스킬은 명세만 있고 실물 미생성(`docs/기획/Astro_정비사례_파이프라인.md`). 신규 발행 글은 astro:assets 경로(img 모드), 이전 글은 public 정적(src 모드) — Figure가 두 모드 지원
+- **주간 발행**: `.claude/skills/publish-case/` 구축 완료(2026-08-16) — SKILL.md 7단계 + prepare-images.mjs(EXIF 촬영시각 정렬·2000px·WebP). 절차의 단일 소스는 SKILL.md이고 파이프라인 문서는 포인터만 둔다. 신규 발행 글은 astro:assets 경로(img 모드), 이전 글은 public 정적(src 모드) — Figure가 두 모드 지원. img 모드는 임시 사례로 빌드 검증함(95페이지 확인 후 제거)
+- **로고·파비콘**: `src/components/Logo.astro`가 유일한 로고 사용처(헤더 32/28px·푸터 38/34px). 파비콘 ico는 16·32 단순화본(NOW·REPAIR 제거) + 48 원본
 - **`migration/`·`_incoming/`은 gitignore** — 삭제 금지, 커밋 금지(개인정보 포함 가능)
 - **작업 방식(사용자 선호)**: 구조화 스펙([대상/수정/검증/보고])으로 지시가 옴. 전제가 실제와 다르면 임의 대체 말고 근거와 함께 보고. 검증은 수치로. 미확인 값은 넣지 말고 보고(수원 20분 사례). 애매한 건 보류 목록으로
 

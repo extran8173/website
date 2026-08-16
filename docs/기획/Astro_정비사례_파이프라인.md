@@ -15,8 +15,7 @@ src/
 ├─ styles/
 │   └─ tokens.css                    # 디자인 MD 토큰 → CSS 변수(아래 §6, 발췌)
 ├─ pages/
-│   └─ cases/
-│       └─ [...id].astro             # 사례 상세 라우트(아래 §4)
+│   └─ [...slug].astro               # 사례 상세 라우트 — 최상위 URL(아래 §4)
 └─ content/
     └─ cases/
         └─ benz-e400-air-suspension-replacement-arnott/
@@ -108,9 +107,15 @@ const { img, alt, caption } = Astro.props;
 
 ---
 
-## 4. `src/pages/cases/[...id].astro` — 사례 상세(읽기 컬럼)
+## 4. `src/pages/[...slug].astro` — 사례 상세(읽기 컬럼)
 
 사례 본문은 타일 리듬이 아니라 **단일 리딩 컬럼(~980px)**. 상단에 "한눈에 보기" GEO 카드 + 본문(Figure 포함) + FAQ + FAQPage JSON-LD.
+
+> **구현 확정본은 코드다** (2026-08-09 URL 방침 확정 반영). 아래 코드는 설계 의도를 보이는 초안이고, 실제와 다음이 다르다:
+> - URL 은 **최상위** `/<slug>/` — `/cases/` 하위가 아니다. `/cases/` 는 목록·브랜드 필터 전용
+> - 라우팅은 프론트매터 `slug` 값만 쓴다 (폴더명·제목 기반 자동 생성 금지). `slug` 는 필수 필드
+> - 상세 페이지가 제목·요약 카드·FAQ·전환 CTA·맺음말까지 렌더한다 — 본문 mdx 에 같은 것을 넣지 않는다
+> - 예약 경로 가드(`RESERVED`)가 기존 정적 페이지·자산과의 충돌을 빌드에서 잡는다
 
 ```astro
 ---
@@ -255,31 +260,12 @@ import img02 from "./images/02.webp";
 
 ---
 
-## 7. Astro용 발행 스킬 — `.claude/skills/publish-case/SKILL.md`
+## 7. Astro용 발행 스킬
 
-```markdown
----
-name: publish-case
-description: 정비 사례(raw 사진 + 젬 본문)를 Astro 콘텐츠 컬렉션용 index.mdx로 만든다. 이미지 정렬·정리, alt/figcaption 생성, 본문 배치까지 끝낸다. "정비 사례 발행", "이 글 발행 준비"에서 사용.
----
+**실물: `.claude/skills/publish-case/`** (2026-08-16 구축). 절차·규칙의 단일 소스는 그 `SKILL.md` 이고, 이 문서는 스킬 내용을 복사해 두지 않는다 — 두 벌이 되면 어긋난다.
 
-# 정비 사례 발행 스킬 (Astro)
-
-입력: src/content/cases/{slug}/raw/(원본 사진) + 젬 "웹사이트 세트" 본문.
-
-## 절차
-1. 젬 프런트매터를 §2 스키마에 맞춰 index.mdx frontmatter로 정리(필드 누락 금지). region은 동탄·화성·오산·평택 고정.
-2. raw/ 사진을 EXIF 촬영시각 오름차순 정렬(없으면 파일명). 공정 순서 = 시간 순서.
-3. 사진을 images/NN.webp로 이름 정리(2자리). 원본이 2000px 초과면 가로 2000px로 1회 다운스케일 + EXIF strip(레포 용량 관리). **반응형 변환은 하지 않는다 — Astro가 빌드 때 처리.** 썸네일은 대표 1장을 thumb.webp로.
-4. 각 이미지를 작게 리사이즈해 비전으로 보고, 본문 맥락과 결합해 생성:
-   - alt: [지역 + 브랜드/업종 + 설명], region은 동탄 기준. 장식 컷은 alt 빈 문자열.
-   - caption(figcaption:true일 때): 담담한 존댓말 1문장("~하게 되죠/됩니다"). 장비명은 실명.
-   - 이미지에 없는 사실을 지어내지 않는다.
-5. index.mdx 작성: 상단에 Figure import + 사용 이미지 import 자동 생성 → 본문(공정순) 단락 경계에 <Figure>를 순차 삽입하되 시각 단서로 위치 보정(진단기 화면→진단 단락, 드레인볼트→배출 단락, 파츠 박스→파츠 입고 단락, 외관→도입/결론).
-6. summary_lead·diagnosis_cause·faq(3개)를 본문에서 도출해 frontmatter에 채운다.
-7. captions.md(파일|위치|alt|caption 표)를 출력해 리뷰 가능하게 한다.
-8. 검증: npm run build가 통과하는지 확인(스키마 오류·깨진 import 없음). 통과 후 "검토→commit→push" 안내. 임의 push 금지.
-```
+- `SKILL.md` — 7단계 절차(입력 확인 → 이미지 정리 → 사진 판독 → index.mdx → captions.md → 빌드 검증 → 보고)
+- `prepare-images.mjs` — raw 사진을 EXIF 촬영시각 순으로 `images/NN.webp` + `thumb.webp` 로 정리(가로 2000px 상한 · EXIF 제거 · WebP q80). 반응형 변환은 astro:assets 가 빌드 때 한다
 
 ---
 
@@ -299,9 +285,7 @@ description: 정비 사례(raw 사진 + 젬 본문)를 Astro 콘텐츠 컬렉션
 
 ---
 
-## 9. 남은 확정(소소)
+## 9. 확정 완료 (구 "남은 확정")
 
-- URL 경로 `/cases/<영문슬러그>` 로 갈지, `/정비사례/<영문슬러그>` 로 갈지(메뉴 라벨은 어느 쪽이든 "정비 사례").
-- 목록 페이지(/cases) 카드: 썸네일 + 제목 + 차종·증상 — 출시 사례 채워지면 이어서 설계.
-```
-이 두 가지는 page_정비사례.md 단계에서 확정하면 됩니다.
+- **URL 경로** — 사례는 **최상위** `/<영문슬러그>/` (2026-08-09 확정). 워드프레스 원본 슬러그를 그대로 승계하기 위한 방침이고, 신규 글도 같은 규칙을 따른다. `/cases/` 는 목록·브랜드 필터 전용. 메뉴 라벨은 "정비 사례".
+- **목록 페이지 카드** — 구축 완료. 썸네일(4/3 각진) · 브랜드·차종 · 제목 2줄 클램프 · `symptom_customer` 인용 · 발행일. 브랜드 필터 7종 + 12건 페이지네이션(`src/components/CasesListPage.astro`, `src/data/caseBrands.ts`).
