@@ -49,7 +49,9 @@ const related = all
 const dateText = d.date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
 
 // og:image = 사례 thumbnail (06 §5)
-const ogImg = await getImage({ src: d.thumbnail, width: 1200, height: 630, format: 'webp' });
+// ⚠️ jpeg 고정 — 카카오톡·네이버 공유 카드는 WebP 썸네일 렌더가 불안정하다.
+//    사례 글은 개별 공유 빈도가 가장 높은 콘텐츠라 호환 포맷을 쓴다.
+const ogImg = await getImage({ src: d.thumbnail, width: 1200, height: 630, format: 'jpeg' });
 
 const faqLd = {
   '@context': 'https://schema.org',
