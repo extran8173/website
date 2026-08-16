@@ -80,8 +80,17 @@ export const business = {
   //
   // [B계열] 고객 체감 거리 축 — 방문자가 접근성을 판단하는 정보.
   //   적용: 오시는 길 히어로 라벨 · 오시는 길 지역 목록(소요시간 병기)
-  accessRegions: ['동탄', '수원', '용인', '오산', '평택'] as const,
-  accessRegionLabel: '동탄 · 수원 · 용인 · 오산 · 평택',
+  //
+  // 소요시간은 실측값이 확인된 지역만 표기한다.
+  // 기준점(시청·역 등)을 반드시 함께 표기할 것.
+  // 나머지 지역은 도메인 전환 후 실측 확보 시 추가.
+  accessRegions: [
+    { name: '동탄' },
+    { name: '수원', travelTime: '수원시청 기준 약 30분' },
+    { name: '용인' },
+    { name: '오산' },
+    { name: '평택' },
+  ] as const,
 
   // ── 취급 브랜드 / 진단 장비 ───────────────────────────
   brands: ['BMW', '벤츠', '아우디', '폭스바겐', '미니', '포르쉐'] as const,
@@ -100,6 +109,10 @@ export const business = {
     distance: '2만km',
   },
 } as const;
+
+// 지역명만 나열하는 자리(오시는 길 히어로 라벨 등) — accessRegions 에서 파생한다.
+// 지역 목록을 두 곳에 적지 않기 위한 것이니 직접 문자열을 쓰지 말 것.
+export const accessRegionLabel = business.accessRegions.map((r) => r.name).join(' · ');
 
 // ── 사이트 내비게이션 (6개) ────────────────────────────
 // 2026-07: 문의 페이지를 오시는 길로 통합 → 메뉴에서 문의 제거.

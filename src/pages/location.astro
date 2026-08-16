@@ -7,20 +7,13 @@ import CtaSection from '../components/CtaSection.astro';
 import ImageSlot from '../components/ImageSlot.astro';
 import ProcessFlow from '../components/ProcessFlow.astro';
 import PageHero from '../components/PageHero.astro';
-import { business, cta } from '../data/business.ts';
+import { business, cta, accessRegionLabel } from '../data/business.ts';
 
 const title = '오시는 길 · 문의 예약 | 동탄 모터리페어';
 const description =
   '경기 화성시 효행로1156번길 9. 동탄·화성·오산·평택에서 가까운 수입차 정비소. 전화 010-3203-7607 또는 네이버 예약. 월–금 08:30–18:30, 토 08:30–15:00. 대차 2대 운용.';
 
-// 지역별 소요 시간 — 사장님 확인값 (2026-08-09 사실관계 정정: 동탄 능동 스타벅스 뒤편, 동탄신도시 생활권. 수원 20분 확인 완료)
-const regions = [
-  '동탄신도시 내에 있어 능동·청계동에서 5~10분 거리입니다.',
-  '수원에서 차로 약 20분 거리입니다.',
-  '용인에서 차로 약 30분 거리입니다.',
-  '오산에서 차로 약 20분 거리입니다.',
-  '평택에서 차로 약 30분 거리입니다.',
-];
+// 지역 목록·소요시간의 단일 소스는 business.accessRegions (B계열). 여기서 문자열을 만들지 않는다.
 
 // 첫 방문 3단계 (문의 §2). ⚠️ 1단계 "준비물 없음"은 사장님 확인값
 const steps = [
@@ -59,7 +52,7 @@ const faqLd = {
 
   {/* [1] 페이지 헤드 — 공용 PageHero (4개 하위 페이지 통일 2026-07-26 신설) */}
   <PageHero
-    label={business.accessRegionLabel}
+    label={accessRegionLabel}
     heading="오시는 길 · 문의"
     sub="동탄 능동 스타벅스 뒤편, 동탄신도시 안에 있습니다."
     img="IMG-021"
@@ -133,8 +126,14 @@ const faqLd = {
   <section class="loc-regions">
     <div class="container">
       <h2 class="t-display-md">이 지역에서 오시는 분들이 많습니다</h2>
+      {/* 소요시간이 확인된 지역만 시간을 병기한다 — 없으면 해당 영역을 렌더하지 않는다 */}
       <ul class="region-list">
-        {regions.map((r) => <li class="t-body">{r}</li>)}
+        {business.accessRegions.map((r) => (
+          <li class="t-body">
+            <span class="region-name">{r.name}</span>
+            {'travelTime' in r && <span class="region-time t-caption">{r.travelTime}</span>}
+          </li>
+        ))}
       </ul>
       <p class="region-etc t-body">서울·인천 등 수도권과 충청권에서도 찾아주십니다.</p>
     </div>
@@ -204,6 +203,9 @@ const faqLd = {
   .loc-regions { background: var(--color-canvas-parchment); padding-block: var(--space-section); }
   .loc-regions h2 { color: var(--color-ink); margin: 0 0 var(--space-lg); }
   .region-list { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 8px; color: var(--color-ink-muted-80); }
+  .region-list li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
+  .region-name { color: var(--color-ink); }
+  .region-time { color: var(--color-ink-muted-48); }
   .region-etc { color: var(--color-ink-muted-48); margin: var(--space-md) 0 0; }
 
   .loc-faq { background: var(--color-canvas); padding-block: var(--space-section); }
