@@ -27,7 +27,8 @@ interface Props {
   ogDescription?: string;
 }
 
-const { title, description, path, hideFab = false, ogImage = '/og-default.png', ogDescription } = Astro.props;
+// 기본 OG 이미지는 jpeg — 사진 카드라 PNG 는 1.2MB 로 과하고, 카카오톡·네이버 호환도 jpeg 가 안전하다
+const { title, description, path, hideFab = false, ogImage = '/og-default.jpg', ogDescription } = Astro.props;
 const ogDesc = ogDescription ?? description;
 const canonical = new URL(path ?? Astro.url.pathname, Astro.site).href;
 const ogImageUrl = new URL(ogImage, Astro.site).href;
