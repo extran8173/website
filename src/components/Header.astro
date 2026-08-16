@@ -13,8 +13,14 @@ const isActive = (href: string) =>
 
 <header class="site-header">
   <div class="header-inner container">
+    <!-- 로고 + 한글 상호 병기. 상호는 일반 텍스트다 — h1 은 각 페이지가 갖는다 -->
     <a href="/" class="logo-link" aria-label="모터리페어 홈">
       <Logo height={32} mobileHeight={28} />
+      <span class="logo-divider" aria-hidden="true"></span>
+      <span class="logo-name">
+        <span class="logo-name-main">{business.name}</span>
+        <span class="logo-name-sub">동탄 수입차 전문</span>
+      </span>
     </a>
 
     <!-- 데스크톱 메뉴 -->
@@ -97,10 +103,50 @@ const isActive = (href: string) =>
     justify-content: space-between;
     gap: 16px;
   }
-  /* 로고 링크 — 크기는 Logo 컴포넌트가 갖는다. 여기선 정렬만 */
+  /* 로고 링크 — 이미지 크기는 Logo 컴포넌트가 갖는다. 여기선 정렬과 상호 병기 */
   .logo-link {
     display: inline-flex;
     align-items: center;
+    gap: 10px;
+    flex: none; /* 압축되면 nowrap 상호가 박스를 넘어 아이콘·메뉴와 겹친다 */
+  }
+  /* 영문 로고와 한글 상호를 시각적으로 가르는 세로선 */
+  .logo-divider {
+    flex: none;
+    width: 1px;
+    height: 24px;
+    background: var(--color-hairline);
+  }
+  .logo-name {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.15;
+    white-space: nowrap;
+  }
+  .logo-name-main {
+    font-family: var(--font-text);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  /* 2행은 768px 이상에서만 — 좁은 화면에선 1행만 남긴다 */
+  .logo-name-sub { display: none; }
+  /* 360px 미만 — 로고 폭을 줄여 한글 상호가 전화 아이콘과 겹치지 않게 한다.
+     (28px 로고 + 상호는 360px 에서 여유가 1.3px 뿐이고 그 아래로는 겹친다) */
+  @media (max-width: 359px) {
+    .logo-link { gap: 6px; }
+    .logo-link :global(img) { height: 20px; }
+  }
+  @media (min-width: 768px) {
+    .logo-name-main { font-size: 16px; }
+    .logo-name-sub {
+      display: block;
+      font-family: var(--font-text);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--color-ink-muted-48);
+    }
   }
 
   /* 데스크톱 */
@@ -170,10 +216,16 @@ const isActive = (href: string) =>
 
   /* 데스크톱 전환 (834px 초과) */
   @media (min-width: 835px) {
-    .nav-desktop { display: flex; }
+    /* 835px 이 가장 빠듯한 지점 — 로고+상호(274px)·메뉴·CTA 가 한 줄에 들어가도록 메뉴 간격을 좁힌다.
+       여유가 생기는 1024px 이상에서는 기준 간격 28px 로 되돌린다 */
+    .nav-desktop { display: flex; gap: 18px; }
     .header-cta-desktop { display: flex; }
     .header-cta-mobile { display: none; }
     .mobile-menu { display: none !important; }
+  }
+
+  @media (min-width: 1024px) {
+    .nav-desktop { gap: 28px; } /* 기준 간격 (03_common_ui §1) */
   }
 </style>
 

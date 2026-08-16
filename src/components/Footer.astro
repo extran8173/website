@@ -11,7 +11,7 @@ import Logo from './Logo.astro';
     <div class="footer-col">
       <!-- 링크 없음(헤더 로고와 중복) · alt 빈 문자열(장식 취급) -->
       <div class="footer-brand"><Logo height={38} mobileHeight={34} alt="" /></div>
-      <p class="t-caption">{business.alternateName}</p>
+      <p class="t-caption">{business.name} ({business.alternateName})</p>
       <p class="t-caption">사업자등록번호 {business.businessRegistrationNumber}</p>
       <p class="t-caption">{business.address.full}</p>
       <address class="footer-hours t-caption">
