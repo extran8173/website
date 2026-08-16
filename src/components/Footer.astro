@@ -2,13 +2,15 @@
 // 푸터 — parchment 배경 · 3단(데스크톱)/1단(모바일) · 법정·SEO 행
 // 기준: 03_common_ui §2 · DESIGN-motorrepair §5 · 05_local_business §4
 import { navItems, business, cta } from '../data/business.ts';
+import Logo from './Logo.astro';
 ---
 
 <footer class="site-footer">
   <div class="container footer-grid">
     <!-- 열 1 — 사업자 정보 -->
     <div class="footer-col">
-      <p class="footer-brand t-body-strong">{business.name}</p>
+      <!-- 링크 없음(헤더 로고와 중복) · alt 빈 문자열(장식 취급) -->
+      <div class="footer-brand"><Logo height={38} mobileHeight={34} alt="" /></div>
       <p class="t-caption">{business.alternateName}</p>
       <p class="t-caption">사업자등록번호 {business.businessRegistrationNumber}</p>
       <p class="t-caption">{business.address.full}</p>
@@ -52,7 +54,7 @@ import { navItems, business, cta } from '../data/business.ts';
     gap: 32px;
   }
   .footer-col { display: flex; flex-direction: column; gap: 6px; }
-  .footer-brand { color: var(--color-ink); }
+  .footer-brand { margin-bottom: 6px; }
   .footer-hours { display: flex; flex-direction: column; gap: 2px; margin: 0; font-style: normal; }
   .footer-menu-link { color: var(--color-ink-muted-80); }
   .footer-phone { color: var(--color-ink); }   /* 유일 강조 */

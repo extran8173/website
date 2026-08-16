@@ -1,0 +1,51 @@
+---
+// 가로형 워드마크 로고 — 헤더·푸터 공용 단일 소스
+// 원본: src/assets/logo-horizontal.png (1807×328, 5.51:1). astro:assets 가 WebP·2x srcset 자동 생성.
+// ⚠️ 이미지 경로를 다른 곳에 복사하지 말 것 — 로고를 쓰는 모든 자리는 이 컴포넌트를 거친다.
+import { Image } from 'astro:assets';
+import logo from '../assets/logo-horizontal.png';
+
+interface Props {
+  /** 데스크톱(835px 이상) 표시 높이 px */
+  height: number;
+  /** 모바일 표시 높이 px — 미지정 시 height 와 동일 */
+  mobileHeight?: number;
+  /** 장식용으로 쓸 때(같은 페이지에 이미 로고가 있을 때)는 빈 문자열 */
+  alt?: string;
+}
+
+const {
+  height,
+  mobileHeight = height,
+  alt = '동탄 수입차 정비소 모터리페어',
+} = Astro.props;
+
+// 원본 비율 유지 — 폭은 계산값이고 하드코딩하지 않는다
+const ratio = logo.width / logo.height;
+const width = Math.round(height * ratio);
+---
+
+<Image
+  src={logo}
+  alt={alt}
+  width={width}
+  height={height}
+  densities={[1, 2]}
+  loading="eager"
+  decoding="async"
+  class="mr-logo"
+  style={`--logo-h:${height}px;--logo-h-mobile:${mobileHeight}px`}
+/>
+
+<style>
+  .mr-logo {
+    display: block;
+    width: auto;
+    height: var(--logo-h-mobile);
+  }
+  @media (min-width: 835px) {
+    .mr-logo {
+      height: var(--logo-h);
+    }
+  }
+</style>
