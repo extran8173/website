@@ -36,7 +36,12 @@
 
 ## 2. 미결 사항 (사용자 결정 대기)
 
-- [ ] **motorrepair.co.kr 도메인 전환 시점** — URL 승계는 도메인 연결이 전제. 전환 전까지 WP 유지 권장
+- [ ] **motorrepair.co.kr 도메인 전환** — 진행 중(2026-08-16 기준 Cloudflare DNS 정리: A·CNAME 3건 삭제 → Worker 커스텀 도메인 연결). URL 승계는 도메인 연결이 전제라 전환 전까지 WP 유지 권장.
+  전환 시 함께 고칠 곳 — **코드 2곳 + 외부 캐시 2곳**:
+  1. `astro.config.mjs` 의 `site` — canonical·og:url·og:image·JSON-LD `url` 이 전부 여기서 파생된다
+  2. `public/robots.txt` 의 `Sitemap:` — 정적 파일이라 빌드 변수가 안 먹는다
+  3. 카카오 공유 디버거로 새 도메인 캐시 초기화 (https://developers.kakao.com/tool/debugger/sharing) — 워커스 도메인으로 캐시된 내용은 승계되지 않는다
+  4. 네이버도 별도 캐시 — 블로그에 링크를 넣어 썸네일 노출 확인
 - [ ] "자동-임시글동탄-랜드로버-…" 슬러그 개명+301 여부 (원문 보존 중)
 - [ ] 잔여 이미지 자산: IMG-002/008 고해상 세트컷, IMG-016 대표 프로필, VID-003 Picoscope 클립 (`docs/기획/image_requests.csv`)
 - [ ] **icon-512.png — 보류(2026-08-16)**. 원본 엠블럼이 150px급이라 512px 업스케일 시 화질 열화. PWA(홈 화면 추가) 용도인데 현 사이트 성격상 필요성 낮음. 매니페스트가 없어 404·콘솔 오류도 없다(참조하는 곳 자체가 없음). **고해상도 엠블럼 원본 확보 시 재진행**
@@ -52,6 +57,11 @@
 - **예약 경로 가드**: `src/pages/[...slug].astro` RESERVED에 소개 페이지 슬러그 포함 — 새 정적 최상위 페이지를 만들면 여기에 추가할 것
 - **주간 발행**: `.claude/skills/publish-case/` 구축 완료(2026-08-16) — SKILL.md 7단계 + prepare-images.mjs(EXIF 촬영시각 정렬·2000px·WebP). 절차의 단일 소스는 SKILL.md이고 파이프라인 문서는 포인터만 둔다. 신규 발행 글은 astro:assets 경로(img 모드), 이전 글은 public 정적(src 모드) — Figure가 두 모드 지원. img 모드는 임시 사례로 빌드 검증함(95페이지 확인 후 제거)
 - **로고·파비콘**: `src/components/Logo.astro`가 유일한 로고 사용처(헤더 32/28px·푸터 38/34px). 파비콘 ico는 16·32 단순화본(NOW·REPAIR 제거) + 48 원본
+- **OG 기본 이미지는 손으로 만든 파일이 아니라 스크립트 산출물이다** — `scripts/gen-og-image.mjs` 가 `public/og-default.jpg` 를 생성한다(실사 외관 IMG-001 크롭 + 하단 스크림 + 로고 + 2행 문안, 1200×630 jpeg).
+  - **문안·사진·밝기를 바꾸려면 이 스크립트를 고치고 `node scripts/gen-og-image.mjs` 로 재생성한다.** 이미지 파일만 교체하면 다음에 스크립트를 돌리는 순간 되돌아간다 — 실제로 구 스크립트에 폐기된 약속형 카피("과정을 사진으로 보여드립니다")가 남아 있어 되살아날 뻔했다(2026-08-16 교체)
+  - 파일명을 바꾸면 `BaseLayout.astro` 의 `ogImage` 기본값과 `[...slug].astro` 의 RESERVED 도 함께 고칠 것
+  - 한글은 시스템 폰트 **Noto Sans KR** 로 렌더된다(Pretendard 는 woff2 라 librsvg 가 못 쓴다)
+  - 사례 상세는 각 글 thumbnail 에서 개별 생성(`[...slug].astro`). **포맷은 jpeg 고정** — 카카오톡·네이버는 WebP 썸네일 렌더가 불안정하다
 - **`migration/`·`_incoming/`은 gitignore** — 삭제 금지, 커밋 금지(개인정보 포함 가능)
 - **작업 방식(사용자 선호)**: 구조화 스펙([대상/수정/검증/보고])으로 지시가 옴. 전제가 실제와 다르면 임의 대체 말고 근거와 함께 보고. 검증은 수치로. 미확인 값은 넣지 말고 보고(수원 20분 사례). 애매한 건 보류 목록으로
 
