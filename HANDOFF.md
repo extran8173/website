@@ -1,4 +1,4 @@
-# HANDOFF — 모터리페어 웹사이트 (2026-08-09 심야 갱신)
+# HANDOFF — 모터리페어 웹사이트 (2026-08-16 갱신)
 
 > 다음 세션/작업자를 위한 인계 문서. 프로젝트 기준·규칙은 [CLAUDE.md](CLAUDE.md)가 원본이고, 이 문서는 **현재 진행 상태와 미결 사항**만 담는다.
 > 오래되면 믿지 말 것 — git log와 실제 코드가 항상 우선.
@@ -30,6 +30,14 @@ main 푸시 → Cloudflare Workers 자동 배포, 보통 1~2분. 엣지 전파 �
 - B계열 `accessRegions` 동탄·수원·용인·오산·평택 — 체감 거리 축 (오시는길 히어로 라벨·지역 목록)
 - CLAUDE.md 불변 사실에 문서화됨. 구 `serviceAreas` 상수는 제거됨
 
+**도메인 전환 — 완료 (2026-08-16):**
+- DNS 전파 완료 — 리졸버 3곳(1.1.1.1 · 8.8.8.8 · KT 168.126.63.1) 전부 Cloudflare IP 반환, 구 A 레코드 `112.175.85.158` 소멸. apex·www 둘 다 Worker 커스텀 도메인 + 프록시
+- 사이트 기준 URL `workers.dev` → `motorrepair.co.kr` 전면 교체 (커밋 `5a10676`) — `astro.config.mjs` 의 `site`, `public/robots.txt` 의 `Sitemap:`
+- 문서 내 구 도메인 잔존 정리 (커밋 `8979c40`) — CLAUDE.md, HANDOFF.md
+  ※ 두 문서에 `workers.dev` 가 한 번씩 남아 있는 것은 **의도된 설명 문장**이다(그 주소도 계속 응답하나 canonical 은 커스텀 도메인을 가리킨다는 뜻)
+- 검증: dist 94/94 (canonical·og:url·og:image), sitemap 93건 전부 새 도메인, 라이브 전건 200, og:image 고유 74개 전건 로드, 구 도메인 참조 0건
+- JSON-LD `url` 은 `Astro.site` 파생이라 자동 교체됨 (AutoRepair, 정상)
+
 **카피 클레임 리스크 정리 (2026-08-09 확정):**
 - "사진으로 보여드립니다" 계열 약속형 13곳 → "알려드립니다/안내드립니다"로 정정. 3단계 다이어그램 화살표 라벨("승인 후") 제거
 - 사례 목록·메타의 "사진과 함께 기록" 계열은 **사실 서술로 유지 확정** / 오시는길·진단장비의 "승인" 표현도 **절차 안내로 유지 확정** — 재론 금지
@@ -38,17 +46,35 @@ main 푸시 → Cloudflare Workers 자동 배포, 보통 1~2분. 엣지 전파 �
 ## 2. 미결 사항 (사용자 결정 대기)
 
 - [x] ~~motorrepair.co.kr 도메인 전환~~ — **완료(2026-08-16)**. 코드 2곳(`astro.config.mjs` `site` · `public/robots.txt` `Sitemap:`) 교체 후 라이브 전수 검증: sitemap 93 URL 전건 200, canonical·og:url·og:image 구 도메인 0건, og:image 74개 전건 로드, dist 산출물 구 도메인 0건
-- [ ] **도메인 전환 잔여 3건** (사장님 작업)
-  1. 카카오 공유 디버거로 캐시 초기화 (https://developers.kakao.com/tool/debugger/sharing) — 홈 + 사례글 1건. 워커스 도메인으로 캐시된 내용은 승계되지 않는다
-  2. 네이버 블로그에 링크 삽입해 썸네일 노출 확인
-  3. **www → apex 301 미설정** — 현재 apex·www·http 전부 200이라 중복 콘텐츠 상태(canonical 이 전부 apex 를 가리켜 심각하진 않다). Rules → Redirect Rules 로 `Hostname equals www.motorrepair.co.kr` → `concat("https://motorrepair.co.kr", http.request.uri.path)` 301. 함께 SSL/TLS → Edge Certificates → **Always Use HTTPS** 켤 것(http 가 https 로 안 넘어감)
+- [ ] **도메인 전환 잔여 4건** (사장님 작업 — Cloudflare 대시보드·외부 도구). **⚠️ 아래 순서대로 할 것 — 리다이렉트 적용 전에 캐시를 잡으면 www 경유 공유 링크가 꼬인다**
+  1. **www → apex 301 Redirect Rule** — Rules → Redirect Rules → Create rule
+     조건 `Hostname equals www.motorrepair.co.kr` / Type `Dynamic` / Expression `concat("https://motorrepair.co.kr", http.request.uri.path)` / Status **301** / Preserve query string 체크
+  2. **SSL/TLS → Edge Certificates → Always Use HTTPS** 켜기
+  3. 1·2 적용 후 **카카오 디버거 캐시 초기화** (https://developers.kakao.com/tool/debugger/sharing) — 홈 + 사례글 1건. 워커스 도메인으로 캐시된 내용은 승계되지 않는다
+  4. **네이버 블로그에 링크 삽입해 썸네일 노출 확인**
+
+  현재 상태: apex·www·http 전부 200이라 중복 콘텐츠다. 다만 canonical 이 전부 apex 를 가리켜 검색엔진은 정본을 통합한다 — 급하진 않다
 - [ ] "자동-임시글동탄-랜드로버-…" 슬러그 개명+301 여부 (원문 보존 중)
 - [ ] 잔여 이미지 자산: IMG-002/008 고해상 세트컷, IMG-016 대표 프로필, VID-003 Picoscope 클립 (`docs/기획/image_requests.csv`)
 - [ ] **icon-512.png — 보류(2026-08-16)**. 원본 엠블럼이 150px급이라 512px 업스케일 시 화질 열화. PWA(홈 화면 추가) 용도인데 현 사이트 성격상 필요성 낮음. 매니페스트가 없어 404·콘솔 오류도 없다(참조하는 곳 자체가 없음). **고해상도 엠블럼 원본 확보 시 재진행**
 - [x] ~~OG 기본 이미지 재제작~~ — 완료(2026-08-16). `public/og-default.jpg` (실사 외관 IMG-001 + 스크림 + 로고 + 2행 문안). 구 카드에 박혀 있던 약속형 카피 제거. 생성기: `scripts/gen-og-image.mjs`
 - [ ] 검토 여지: 미니쿠퍼 사례 태그 "병점 정비소" 1건(법적 주소상 오류는 아님, 동탄 정체성 관점 판단 필요) · 렉서스/재규어 글의 Picoscope 언급(범용 계측기 + 원문 실작업 기록이라 유지 판단함)
 
-## 3. 알아두면 시간 아끼는 것들
+## 3. 다음 세션 과제 — JSON-LD 구조화 데이터 보강
+
+이번 세션에서 **착수하지 않기로 한 항목**이다(기록만). 현재 홈의 JSON-LD 는 `AutoRepair` 하나이고, `@id`·`image` 필드가 없으며 **BreadcrumbList 는 사이트 어디에도 없다**(사례글은 `FAQPage` 만 보유). 소스는 `src/layouts/BaseLayout.astro`.
+
+**착수 전에 먼저 할 것** — 현재 `AutoRepair` 스키마의 보유 필드를 전부 출력해 확인한다: `telephone` · `address` · `geo` · `openingHoursSpecification` · `sameAs` · `priceRange` 유무.
+
+우선순위:
+
+1. **`@id`(`https://motorrepair.co.kr/#business`) · `image`(og-default.jpg) · `sameAs`(네이버 플레이스·네이버 블로그·유튜브)** — 엔티티 결합, GEO 효과가 가장 크다
+2. **누락된 NAP·영업시간·좌표 필드** — geo 는 `37.2136955 / 127.0522204`, 영업시간은 월–금 08:30–18:30 · 토 08:30–15:00 · 일 휴무 (값의 원본은 `src/data/business.ts`)
+3. **BreadcrumbList** — 사례글이 top-level path 라 URL 계층이 없어 후순위
+
+> **금지: `aggregateRating` 추가 금지.** 자체 사이트에서 자기 사업체 평점을 마크업하는 것은 Google 의 self-serving review 정책 위반이라 수동 조치 대상이 될 수 있다. 화면 텍스트 표기("네이버 리뷰 15건 · 구글 평점 ★4.7", `src/pages/index.astro`)는 **그대로 둔다** — 마크업만 금지다.
+
+## 4. 알아두면 시간 아끼는 것들
 
 - **배포 플로우**: "배포" 지시 → 커밋+푸시 → 라이브 폴링. **한글 문자열 검증은 WebClient + UTF8 인코딩 명시**(Invoke-WebRequest .Content는 한글 매칭 불가). `$home`은 PowerShell 예약 변수 — 쓰지 말 것. 커밋 메시지 큰따옴표는 파싱 사고 — 히어스트링(`@'...'@`) 사용
 - **부분 문자열 오탐 주의**: "수원·서울·인천" 검사가 FAQ의 "용인·수원·서울·인천"에 걸리는 식 — 요소 단위로 검증할 것
@@ -65,7 +91,7 @@ main 푸시 → Cloudflare Workers 자동 배포, 보통 1~2분. 엣지 전파 �
 - **`migration/`·`_incoming/`은 gitignore** — 삭제 금지, 커밋 금지(개인정보 포함 가능)
 - **작업 방식(사용자 선호)**: 구조화 스펙([대상/수정/검증/보고])으로 지시가 옴. 전제가 실제와 다르면 임의 대체 말고 근거와 함께 보고. 검증은 수치로. 미확인 값은 넣지 말고 보고(수원 20분 사례). 애매한 건 보류 목록으로
 
-## 4. 참고 경로 모음
+## 5. 참고 경로 모음
 
 | 무엇 | 어디 |
 |---|---|
