@@ -5,7 +5,8 @@
 
 ## 1. 지금 어디까지 왔나
 
-라이브: https://website.nomadicom.workers.dev (main 푸시 → Cloudflare Workers 자동 배포, 보통 1~2분. 엣지 전파 중 구버전 응답이 섞일 수 있음 — 캐시버스터로 재확인)
+라이브: **https://motorrepair.co.kr** (2026-08-16 도메인 전환 완료 — apex·www 둘 다 Worker 커스텀 도메인. `website.nomadicom.workers.dev` 도 계속 응답하나 canonical 은 커스텀 도메인을 가리킨다)
+main 푸시 → Cloudflare Workers 자동 배포, 보통 1~2분. 엣지 전파 중 구버전 응답이 섞일 수 있음 — 캐시버스터로 재확인
 
 **워드프레스 이전 — 완료 (2026-08-09):**
 - 발행글 74건 전량 이전: 정비 사례 **73건**(사례 컬렉션) + **업체 소개 1건**(일반 정적 페이지 `/dongtan-import-car-specialty-motor-repair-introduction/`, 내비 "소개")
@@ -36,12 +37,11 @@
 
 ## 2. 미결 사항 (사용자 결정 대기)
 
-- [ ] **motorrepair.co.kr 도메인 전환** — 진행 중(2026-08-16 기준 Cloudflare DNS 정리: A·CNAME 3건 삭제 → Worker 커스텀 도메인 연결). URL 승계는 도메인 연결이 전제라 전환 전까지 WP 유지 권장.
-  전환 시 함께 고칠 곳 — **코드 2곳 + 외부 캐시 2곳**:
-  1. `astro.config.mjs` 의 `site` — canonical·og:url·og:image·JSON-LD `url` 이 전부 여기서 파생된다
-  2. `public/robots.txt` 의 `Sitemap:` — 정적 파일이라 빌드 변수가 안 먹는다
-  3. 카카오 공유 디버거로 새 도메인 캐시 초기화 (https://developers.kakao.com/tool/debugger/sharing) — 워커스 도메인으로 캐시된 내용은 승계되지 않는다
-  4. 네이버도 별도 캐시 — 블로그에 링크를 넣어 썸네일 노출 확인
+- [x] ~~motorrepair.co.kr 도메인 전환~~ — **완료(2026-08-16)**. 코드 2곳(`astro.config.mjs` `site` · `public/robots.txt` `Sitemap:`) 교체 후 라이브 전수 검증: sitemap 93 URL 전건 200, canonical·og:url·og:image 구 도메인 0건, og:image 74개 전건 로드, dist 산출물 구 도메인 0건
+- [ ] **도메인 전환 잔여 3건** (사장님 작업)
+  1. 카카오 공유 디버거로 캐시 초기화 (https://developers.kakao.com/tool/debugger/sharing) — 홈 + 사례글 1건. 워커스 도메인으로 캐시된 내용은 승계되지 않는다
+  2. 네이버 블로그에 링크 삽입해 썸네일 노출 확인
+  3. **www → apex 301 미설정** — 현재 apex·www·http 전부 200이라 중복 콘텐츠 상태(canonical 이 전부 apex 를 가리켜 심각하진 않다). Rules → Redirect Rules 로 `Hostname equals www.motorrepair.co.kr` → `concat("https://motorrepair.co.kr", http.request.uri.path)` 301. 함께 SSL/TLS → Edge Certificates → **Always Use HTTPS** 켤 것(http 가 https 로 안 넘어감)
 - [ ] "자동-임시글동탄-랜드로버-…" 슬러그 개명+301 여부 (원문 보존 중)
 - [ ] 잔여 이미지 자산: IMG-002/008 고해상 세트컷, IMG-016 대표 프로필, VID-003 Picoscope 클립 (`docs/기획/image_requests.csv`)
 - [ ] **icon-512.png — 보류(2026-08-16)**. 원본 엠블럼이 150px급이라 512px 업스케일 시 화질 열화. PWA(홈 화면 추가) 용도인데 현 사이트 성격상 필요성 낮음. 매니페스트가 없어 404·콘솔 오류도 없다(참조하는 곳 자체가 없음). **고해상도 엠블럼 원본 확보 시 재진행**

@@ -5,7 +5,8 @@
 ## 프로젝트 개요
 
 - 수입차 전문 정비소 **모터리페어**(경기 화성 동탄)의 정적 웹사이트.
-- 스택: **Astro** + GitHub → **Cloudflare Workers(정적 자산)** 자동 배포. 라이브: https://website.nomadicom.workers.dev (main 푸시 시 자동 배포, `wrangler.jsonc`).
+- 스택: **Astro** + GitHub → **Cloudflare Workers(정적 자산)** 자동 배포. 라이브: **https://motorrepair.co.kr** (2026-08-16 도메인 전환 완료. `website.nomadicom.workers.dev` 도 계속 응답하지만 canonical 은 커스텀 도메인을 가리킨다). main 푸시 시 자동 배포, `wrangler.jsonc`.
+- **사이트 URL 상수는 `astro.config.mjs` 의 `site` 하나다.** canonical·og:url·og:image·JSON-LD `url`·sitemap 이 전부 여기서 파생된다. 예외는 `public/robots.txt` 의 `Sitemap:` — 정적 파일이라 빌드 변수가 안 먹으니 함께 고친다.
 - **핵심 정비 비중: 메인터넌스(소모품 교환) 80% = 대표 서비스, 고장 점검 진단(트러블슈팅) 20% = 보조.** 사이트도 이 비중을 반영한다 — 소모품 교환을 앞세우고, 진단 장비는 강력한 신뢰 요소로 함께 강조한다. (2026-07 방향 확정)
 - 주 전환: 전화 탭 투 콜(010-3203-7607) + 네이버 예약. 폼 백엔드 없음.
 - 콘텐츠 운영: 주 1회 정비 사례 발행 (`.claude/skills/publish-case` 스킬 사용).
