@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://website.nomadicom.workers.dev/sitemap-index.xml
+Sitemap: https://motorrepair.co.kr/sitemap-index.xml
