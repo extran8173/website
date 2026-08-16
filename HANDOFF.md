@@ -37,6 +37,10 @@ main 푸시 → Cloudflare Workers 자동 배포, 보통 1~2분. 엣지 전파 �
   ※ 두 문서에 `workers.dev` 가 한 번씩 남아 있는 것은 **의도된 설명 문장**이다(그 주소도 계속 응답하나 canonical 은 커스텀 도메인을 가리킨다는 뜻)
 - 검증: dist 94/94 (canonical·og:url·og:image), sitemap 93건 전부 새 도메인, 라이브 전건 200, og:image 고유 74개 전건 로드, 구 도메인 참조 0건
 - JSON-LD `url` 은 `Astro.site` 파생이라 자동 교체됨 (AutoRepair, 정상)
+- **Cloudflare 마감 설정 완료** — www → apex 301 Redirect Rule(와일드카드, Preserve query string 켬) + Always Use HTTPS.
+  실측: `https://www/services/` → 301 `https://motorrepair.co.kr/services/`, 쿼리스트링(`?page=2`) 보존, `http://apex` → 301 https, apex 200.
+  `http://www` 는 Always Use HTTPS → Redirect Rule 순으로 **2홉**을 거친다(정상 동작)
+- **카카오 공유 캐시 초기화 완료** — 홈·BMW 320d 사례글 각 1건 확인. 홈은 og:url·og:image 모두 새 도메인으로 카드 정상, 사례는 개별 썸네일·제목 정상(73건 구조 검증됨)
 
 **카피 클레임 리스크 정리 (2026-08-09 확정):**
 - "사진으로 보여드립니다" 계열 약속형 13곳 → "알려드립니다/안내드립니다"로 정정. 3단계 다이어그램 화살표 라벨("승인 후") 제거
@@ -46,14 +50,10 @@ main 푸시 → Cloudflare Workers 자동 배포, 보통 1~2분. 엣지 전파 �
 ## 2. 미결 사항 (사용자 결정 대기)
 
 - [x] ~~motorrepair.co.kr 도메인 전환~~ — **완료(2026-08-16)**. 코드 2곳(`astro.config.mjs` `site` · `public/robots.txt` `Sitemap:`) 교체 후 라이브 전수 검증: sitemap 93 URL 전건 200, canonical·og:url·og:image 구 도메인 0건, og:image 74개 전건 로드, dist 산출물 구 도메인 0건
-- [ ] **도메인 전환 잔여 4건** (사장님 작업 — Cloudflare 대시보드·외부 도구). **⚠️ 아래 순서대로 할 것 — 리다이렉트 적용 전에 캐시를 잡으면 www 경유 공유 링크가 꼬인다**
-  1. **www → apex 301 Redirect Rule** — Rules → Redirect Rules → Create rule
-     조건 `Hostname equals www.motorrepair.co.kr` / Type `Dynamic` / Expression `concat("https://motorrepair.co.kr", http.request.uri.path)` / Status **301** / Preserve query string 체크
-  2. **SSL/TLS → Edge Certificates → Always Use HTTPS** 켜기
-  3. 1·2 적용 후 **카카오 디버거 캐시 초기화** (https://developers.kakao.com/tool/debugger/sharing) — 홈 + 사례글 1건. 워커스 도메인으로 캐시된 내용은 승계되지 않는다
-  4. **네이버 블로그에 링크 삽입해 썸네일 노출 확인**
-
-  현재 상태: apex·www·http 전부 200이라 중복 콘텐츠다. 다만 canonical 이 전부 apex 를 가리켜 검색엔진은 정본을 통합한다 — 급하진 않다
+- [x] ~~도메인 전환 잔여 — www 301 · Always Use HTTPS · 카카오 캐시 초기화~~ **완료(2026-08-16)**. 실측 결과는 §1 참조
+- [ ] **네이버 링크 카드가 구 워드프레스 메타를 표시 중** — "동탄 수입차 전문정비 모터리페어 / '정확한 진단과 신뢰의 기술'로…", 썸네일 없음.
+  **네이버는 강제 캐시 초기화 수단이 없다** — 자체 재크롤링을 기다려야 하고 보통 수일~2주 걸린다. 사이트 쪽에 고칠 것은 없다(OG 태그는 이미 정상).
+  네이버 서치어드바이저에 사이트 등록·수집 요청을 하면 앞당길 수 있으나, **검색엔진 등록은 후순위 결정 항목이라 별도 세션에서 진행**한다
 - [ ] "자동-임시글동탄-랜드로버-…" 슬러그 개명+301 여부 (원문 보존 중)
 - [ ] 잔여 이미지 자산: IMG-002/008 고해상 세트컷, IMG-016 대표 프로필, VID-003 Picoscope 클립 (`docs/기획/image_requests.csv`)
 - [ ] **icon-512.png — 보류(2026-08-16)**. 원본 엠블럼이 150px급이라 512px 업스케일 시 화질 열화. PWA(홈 화면 추가) 용도인데 현 사이트 성격상 필요성 낮음. 매니페스트가 없어 404·콘솔 오류도 없다(참조하는 곳 자체가 없음). **고해상도 엠블럼 원본 확보 시 재진행**
