@@ -47,9 +47,9 @@ export interface BrandGroup {
 export const BRAND_GROUPS: BrandGroup[] = [
   { key: 'bmw', label: 'BMW·MINI', brands: ['BMW', 'MINI'], seoName: 'BMW·MINI' },
   { key: 'benz', label: '벤츠', brands: ['벤츠'], seoName: '벤츠' },
-  { key: 'audi-vw', label: '아우디 · 폭스바겐', brands: ['아우디', '폭스바겐'], seoName: '아우디·폭스바겐' },
+  { key: 'audi-vw', label: '아우디·폭스바겐', brands: ['아우디', '폭스바겐'], seoName: '아우디·폭스바겐' },
   { key: 'porsche', label: '포르쉐', brands: ['포르쉐'], seoName: '포르쉐' },
-  { key: 'jaguar-lr', label: '재규어 · 랜드로버', brands: ['재규어', '랜드로버'], seoName: '재규어·랜드로버' },
+  { key: 'jaguar-lr', label: '재규어·랜드로버', brands: ['재규어', '랜드로버'], seoName: '재규어·랜드로버' },
   { key: 'others', label: '기타', brands: [], seoName: '기타 수입차' },
 ];
 
