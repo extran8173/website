@@ -29,6 +29,7 @@ const EXT = new Set(['.jpg', '.jpeg', '.png', '.webp', '.heic', '.heif', '.tif',
 
 const THUMB_PREFIX = /^t_/i; // 목록 대표이미지
 const FIRST_PREFIX = /^00_/i; // 본문 첫 사진
+const EXCLUDE_PREFIX = /^x_/i; // 발행 제외 — 사용자가 원본 폴더에서 지정한다
 
 // ── 파일명 끝 괄호 순번 ─────────────────────────────────
 // `benz cls63 amg (14).jpg` → 14. 확장자를 떼고 봐야 끝(`$`)에 걸린다.
@@ -193,9 +194,17 @@ async function main() {
     process.exit(1);
   }
 
-  const files = (await readdir(rawDir)).filter((f) => EXT.has(path.extname(f).toLowerCase()));
+  const all = (await readdir(rawDir)).filter((f) => EXT.has(path.extname(f).toLowerCase()));
+
+  // x_ 접두어는 발행 제외 — 어떤 사진을 뺄지는 사용자가 원본 폴더에서 정한다.
+  // 스킬은 그 외의 사진을 전부 쓴다(선별하지 않는다).
+  const excluded = all.filter((f) => EXCLUDE_PREFIX.test(f));
+  const files = all.filter((f) => !EXCLUDE_PREFIX.test(f));
+  if (excluded.length > 0) {
+    console.log(`x_ 제외 ${excluded.length}장: ${excluded.join(', ')}`);
+  }
   if (files.length === 0) {
-    console.error(`raw 폴더에 이미지가 없습니다: src/content/cases/${slug}/raw/`);
+    console.error(`raw 폴더에 쓸 이미지가 없습니다: src/content/cases/${slug}/raw/`);
     process.exit(1);
   }
 
@@ -337,15 +346,21 @@ async function renumber(outDir, spec, dryRun) {
   const present = (await readdir(outDir))
     .filter((f) => /^\d{2}\.webp$/.test(f))
     .sort((a, b) => a.localeCompare(b, 'ko', { numeric: true }));
+  // 현재 번호에 결번이 있을 수 있다(사진을 뺀 경우). 1~N 을 가정하지 않고 실제 번호를 본다.
+  const presentNums = present.map((f) => Number(f.slice(0, 2)));
   const order = spec.split(',').map((s) => Number(s.trim()));
 
-  if (order.length !== present.length || order.some((n) => !Number.isInteger(n))) {
-    console.error(`--renumber 항목 수가 맞지 않습니다 — 현재 ${present.length}장, 지정 ${order.length}개.`);
+  if (order.length !== presentNums.length || order.some((n) => !Number.isInteger(n))) {
+    console.error(`--renumber 항목 수가 맞지 않습니다 — 현재 ${presentNums.length}장, 지정 ${order.length}개.`);
+    console.error(`현재 번호: ${presentNums.join(', ')}`);
     process.exit(1);
   }
-  const seen = new Set(order);
-  if (seen.size !== order.length || order.some((n) => n < 1 || n > present.length)) {
-    console.error(`--renumber 는 1~${present.length} 을 중복 없이 한 번씩 써야 합니다: ${spec}`);
+  const have = new Set(presentNums);
+  const unknown = order.filter((n) => !have.has(n));
+  if (new Set(order).size !== order.length || unknown.length > 0) {
+    console.error(`--renumber 는 현재 번호를 중복 없이 한 번씩 써야 합니다.`);
+    console.error(`현재 번호: ${presentNums.join(', ')}`);
+    if (unknown.length > 0) console.error(`없는 번호 지정: ${unknown.join(', ')}`);
     process.exit(1);
   }
   if (order.every((n, i) => n === i + 1)) {
