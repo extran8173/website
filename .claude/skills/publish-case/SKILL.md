@@ -178,6 +178,8 @@ node .claude/skills/publish-case/prepare-images.mjs <slug> --renumber=1,3,2,…
 
 **멈추는 경우는 발행을 물리적으로 못 할 때뿐이다** — 파일 누락, 빌드 실패, 3단계 중단 조건(마스킹 누락·원인 근접샷 없음).
 
+**예외 — 기존 사례에 영향을 주는 수정은 적용 전에 알린다.** 이번 건을 위한 수정이 다른 사례의 렌더 결과를 바꾸면 멈추고 보고한다. 공용 코드(`src/layouts/`·`src/pages/[...slug].astro`·`src/components/Figure.astro`·`src/data/`)를 건드릴 때가 여기 해당한다. 영향 범위를 실측해 몇 건이 어떻게 바뀌는지 함께 낸다.
+
 검수표는 마지막 보고와 `captions.md` 에 함께 낸다.
 
 ```
