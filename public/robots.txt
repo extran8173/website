@@ -1,4 +1,117 @@
+# robots.txt — motorrepair.co.kr
+# 모터리페어 (동탄 수입차 전문정비)
+# 최종 수정: 2026-08-30
+#
+# 배치 위치: /public/robots.txt  →  빌드 시 사이트 루트로 복사됨
+# 방침: 전면 허용. 감출 콘텐츠가 없고, AI 검색 노출(GEO)이 목표이므로
+#       크롤러를 막지 않는다.
+
+
+# ══════════════════════════════════════════
+# 기본 — 모든 크롤러 전체 허용
+# ══════════════════════════════════════════
 User-agent: *
 Allow: /
 
+
+# ══════════════════════════════════════════
+# 검색엔진
+# ══════════════════════════════════════════
+
+# 네이버 (로컬 검색 핵심)
+User-agent: Yeti
+Allow: /
+
+# 다음
+User-agent: Daumoa
+Allow: /
+
+# 구글
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+# 빙
+User-agent: bingbot
+Allow: /
+
+# 애플 (Siri·Spotlight)
+User-agent: Applebot
+Allow: /
+
+
+# ══════════════════════════════════════════
+# AI 검색·인용 크롤러 — 전부 허용
+#
+# 정비 사례 글이 AI 답변에 인용되는 것이 목표이므로
+# 학습용·검색용을 구분하지 않고 모두 연다.
+# 크롤러 이름은 각각 별개로 판정되므로 하나씩 적어야 한다.
+# ══════════════════════════════════════════
+
+# OpenAI
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+# Anthropic
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+# Google 생성형 AI
+User-agent: Google-Extended
+Allow: /
+
+# Apple 생성형 AI
+User-agent: Applebot-Extended
+Allow: /
+
+# 기타
+User-agent: Amazonbot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+
+# ══════════════════════════════════════════
+# 대역폭 절감용 차단 (필요 시 주석 해제)
+#
+# SEO 분석 도구 크롤러다. 사이트 노출에는 기여하지 않으면서
+# 요청 수만 늘린다. 클라우드플레어 요청 수가 부담되면 열어 쓴다.
+# 단, 해당 도구로 자사 사이트를 분석할 수 없게 된다.
+# ══════════════════════════════════════════
+
+# User-agent: AhrefsBot
+# Disallow: /
+#
+# User-agent: SemrushBot
+# Disallow: /
+#
+# User-agent: MJ12bot
+# Disallow: /
+#
+# User-agent: DotBot
+# Disallow: /
+
+
+# ══════════════════════════════════════════
+# 사이트맵
+# ══════════════════════════════════════════
 Sitemap: https://motorrepair.co.kr/sitemap-index.xml
