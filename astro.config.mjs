@@ -4,12 +4,11 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import fs from 'node:fs';
 import path from 'node:path';
-import { execFileSync } from 'node:child_process';
 
 // ── 사이트맵 lastmod ────────────────────────────────────
 // 주 1회 새 글이 올라가므로 크롤러가 신규·수정 페이지를 먼저 보게 한다.
 //  - 정비 사례: 프론트매터 date (실제 작업·발행일)
-//  - 고정 페이지: 소스 파일의 git 커밋 시각 (읽을 수 없으면 생략 — 틀린 값보다 없는 편이 낫다)
+//  - 고정 페이지: 페이지 파일의 export const LASTMOD (없으면 생략 — 틀린 값보다 없는 편이 낫다)
 //  - 목록·페이지네이션(/cases/2/, /cases/bmw/2/): lastmod 없음 — 새 글마다 바뀌어 신호가 흐려진다
 
 /** 사례 slug → date. astro:content 를 쓸 수 없는 위치라 프론트매터를 직접 읽는다. */
@@ -42,24 +41,20 @@ const STATIC_PAGE_SOURCES = {
 const CASE_DATES = readCaseDates();
 
 /**
- * 고정 페이지의 최종 수정 시각 — git 커밋 시각만 쓴다.
+ * 고정 페이지의 최종 수정일 — 페이지 파일에 적힌 `export const LASTMOD` 를 읽는다.
  *
- * 파일 mtime 으로 폴백하지 않는다. Cloudflare Workers Builds 는 매번 새로 clone 하므로
- * mtime 이 곧 빌드 시각이 되고, 그러면 빌드할 때마다 lastmod 가 갱신돼 "언제 실제로
- * 바뀌었나" 신호가 사라진다. 크롤러가 "이 페이지는 늘 바뀐다"고 학습하면 lastmod 자체를
- * 무시하게 되므로, 틀린 값을 넣느니 비우는 편이 낫다(목록 페이지와 같은 취급).
+ * git 커밋 시각을 쓰지 않는 이유: Cloudflare Workers Builds 는 shallow clone(--depth=1)
+ * 이라 이력에 커밋이 하나뿐이고, 그 커밋이 루트 커밋처럼 취급돼 모든 파일이 거기서 처음
+ * 추가된 것으로 보인다. 그래서 `git log -1 -- <파일>` 이 어떤 파일을 물어도 tip 커밋을
+ * 돌려주고, 고정 페이지 전부가 "마지막 배포 커밋 시각"으로 같아진다(실측 확인).
+ * 파일 mtime 도 매번 새로 clone 하므로 빌드 시각이 되어 같은 문제를 낳는다.
  *
- * shallow clone(--depth=1) 이면 이력을 못 읽어 undefined 가 되고 lastmod 가 생략된다.
- * 고정 페이지에도 값을 넣고 싶으면 빌드 명령을 `git fetch --unshallow || true; npm run build`
- * 로 바꾼다. 정비 사례는 프론트매터 date 를 쓰므로 이 문제와 무관하다.
+ * 값이 없으면 lastmod 를 생략한다 — 매 빌드마다 바뀌는 틀린 값보다 없는 편이 낫다.
  */
 function lastModifiedOf(file) {
   try {
-    const iso = execFileSync('git', ['log', '-1', '--format=%cI', '--', file], {
-      encoding: 'utf8',
-      stdio: ['ignore', 'pipe', 'ignore'],
-    }).trim();
-    return iso ? new Date(iso).toISOString() : undefined;
+    const m = fs.readFileSync(file, 'utf8').match(/export const LASTMOD\s*=\s*['"](\d{4}-\d{2}-\d{2})['"]/);
+    return m ? new Date(`${m[1]}T00:00:00Z`).toISOString() : undefined;
   } catch {
     return undefined;
   }
