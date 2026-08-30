@@ -9,7 +9,7 @@ import { execFileSync } from 'node:child_process';
 // ── 사이트맵 lastmod ────────────────────────────────────
 // 주 1회 새 글이 올라가므로 크롤러가 신규·수정 페이지를 먼저 보게 한다.
 //  - 정비 사례: 프론트매터 date (실제 작업·발행일)
-//  - 고정 페이지: 소스 파일의 git 커밋 시각 (mtime 폴백)
+//  - 고정 페이지: 소스 파일의 git 커밋 시각 (읽을 수 없으면 생략 — 틀린 값보다 없는 편이 낫다)
 //  - 목록·페이지네이션(/cases/2/, /cases/bmw/2/): lastmod 없음 — 새 글마다 바뀌어 신호가 흐려진다
 
 /** 사례 slug → date. astro:content 를 쓸 수 없는 위치라 프론트매터를 직접 읽는다. */
@@ -42,10 +42,16 @@ const STATIC_PAGE_SOURCES = {
 const CASE_DATES = readCaseDates();
 
 /**
- * 고정 페이지의 최종 수정 시각.
- * 1순위 git 커밋 시각 — CI 는 매번 새로 clone 하므로 파일 mtime 이 빌드 시각이 되어 버린다.
- *   그러면 빌드할 때마다 lastmod 가 갱신돼 "언제 실제로 바뀌었나" 신호가 사라진다.
- * 2순위 파일 mtime — shallow clone 등으로 git 이력을 못 읽는 경우의 폴백.
+ * 고정 페이지의 최종 수정 시각 — git 커밋 시각만 쓴다.
+ *
+ * 파일 mtime 으로 폴백하지 않는다. Cloudflare Workers Builds 는 매번 새로 clone 하므로
+ * mtime 이 곧 빌드 시각이 되고, 그러면 빌드할 때마다 lastmod 가 갱신돼 "언제 실제로
+ * 바뀌었나" 신호가 사라진다. 크롤러가 "이 페이지는 늘 바뀐다"고 학습하면 lastmod 자체를
+ * 무시하게 되므로, 틀린 값을 넣느니 비우는 편이 낫다(목록 페이지와 같은 취급).
+ *
+ * shallow clone(--depth=1) 이면 이력을 못 읽어 undefined 가 되고 lastmod 가 생략된다.
+ * 고정 페이지에도 값을 넣고 싶으면 빌드 명령을 `git fetch --unshallow || true; npm run build`
+ * 로 바꾼다. 정비 사례는 프론트매터 date 를 쓰므로 이 문제와 무관하다.
  */
 function lastModifiedOf(file) {
   try {
@@ -53,12 +59,7 @@ function lastModifiedOf(file) {
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'ignore'],
     }).trim();
-    if (iso) return new Date(iso).toISOString();
-  } catch {
-    // git 이 없거나 이력을 못 읽으면 아래 폴백
-  }
-  try {
-    return fs.statSync(file).mtime.toISOString();
+    return iso ? new Date(iso).toISOString() : undefined;
   } catch {
     return undefined;
   }
