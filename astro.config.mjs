@@ -4,11 +4,12 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import fs from 'node:fs';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 
 // ── 사이트맵 lastmod ────────────────────────────────────
 // 주 1회 새 글이 올라가므로 크롤러가 신규·수정 페이지를 먼저 보게 한다.
 //  - 정비 사례: 프론트매터 date (실제 작업·발행일)
-//  - 고정 페이지: 소스 파일 수정 시각
+//  - 고정 페이지: 소스 파일의 git 커밋 시각 (mtime 폴백)
 //  - 목록·페이지네이션(/cases/2/, /cases/bmw/2/): lastmod 없음 — 새 글마다 바뀌어 신호가 흐려진다
 
 /** 사례 slug → date. astro:content 를 쓸 수 없는 위치라 프론트매터를 직접 읽는다. */
@@ -40,7 +41,22 @@ const STATIC_PAGE_SOURCES = {
 
 const CASE_DATES = readCaseDates();
 
-function mtimeOf(file) {
+/**
+ * 고정 페이지의 최종 수정 시각.
+ * 1순위 git 커밋 시각 — CI 는 매번 새로 clone 하므로 파일 mtime 이 빌드 시각이 되어 버린다.
+ *   그러면 빌드할 때마다 lastmod 가 갱신돼 "언제 실제로 바뀌었나" 신호가 사라진다.
+ * 2순위 파일 mtime — shallow clone 등으로 git 이력을 못 읽는 경우의 폴백.
+ */
+function lastModifiedOf(file) {
+  try {
+    const iso = execFileSync('git', ['log', '-1', '--format=%cI', '--', file], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+    if (iso) return new Date(iso).toISOString();
+  } catch {
+    // git 이 없거나 이력을 못 읽으면 아래 폴백
+  }
   try {
     return fs.statSync(file).mtime.toISOString();
   } catch {
@@ -72,7 +88,7 @@ export default defineConfig({
 
         const src = STATIC_PAGE_SOURCES[seg];
         if (src) {
-          const m = mtimeOf(src);
+          const m = lastModifiedOf(src);
           if (m) item.lastmod = m;
         }
         return item;

@@ -1,3 +1,10 @@
 # 문의 페이지를 오시는 길로 통합(2026-07) — 기존 링크·북마크 대비 301 리다이렉트
 /contact/  /location/  301
 /contact   /location/  301
+
+# 워드프레스 auto-draft 흔적이 남은 슬러그를 교체(2026-08-30). 2025-11 발행 글이라 색인 대비 301.
+# 한글 경로는 요청이 퍼센트 인코딩으로 도착할 수 있어 원문·인코딩 두 형태를 모두 둔다.
+/자동-임시글동탄-랜드로버-디스커버리스포츠-예열/  /dongtan-discovery-sport-glow-plug-ac-compressor/  301
+/자동-임시글동탄-랜드로버-디스커버리스포츠-예열   /dongtan-discovery-sport-glow-plug-ac-compressor/  301
+/%EC%9E%90%EB%8F%99-%EC%9E%84%EC%8B%9C%EA%B8%80%EB%8F%99%ED%83%84-%EB%9E%9C%EB%93%9C%EB%A1%9C%EB%B2%84-%EB%94%94%EC%8A%A4%EC%BB%A4%EB%B2%84%EB%A6%AC%EC%8A%A4%ED%8F%AC%EC%B8%A0-%EC%98%88%EC%97%B4/  /dongtan-discovery-sport-glow-plug-ac-compressor/  301
+/%EC%9E%90%EB%8F%99-%EC%9E%84%EC%8B%9C%EA%B8%80%EB%8F%99%ED%83%84-%EB%9E%9C%EB%93%9C%EB%A1%9C%EB%B2%84-%EB%94%94%EC%8A%A4%EC%BB%A4%EB%B2%84%EB%A6%AC%EC%8A%A4%ED%8F%AC%EC%B8%A0-%EC%98%88%EC%97%B4   /dongtan-discovery-sport-glow-plug-ac-compressor/  301
