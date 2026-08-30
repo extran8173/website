@@ -6,7 +6,6 @@
  *
  * 입력 파일명 규칙 — 사용자가 원본 폴더에서 접두어를 붙인다:
  *   t_*    목록 대표이미지 — thumb.webp 로만 나가고 본문 번호에서 제외. 정확히 1개.
- *   00_*   본문 첫 사진 — 정렬과 무관하게 항상 01.webp. 정확히 1개.
  *   그 외   본문 사진 — 파일명 끝 괄호 순번 `(n)` 오름차순.
  *
  * 하는 일: --from 폴더 → raw/ 복사 → 정렬 → 가로 2000px 상한 → EXIF 제거 → WebP q80
@@ -28,7 +27,6 @@ const QUALITY = 80;
 const EXT = new Set(['.jpg', '.jpeg', '.png', '.webp', '.heic', '.heif', '.tif', '.tiff']);
 
 const THUMB_PREFIX = /^t_/i; // 목록 대표이미지
-const FIRST_PREFIX = /^00_/i; // 본문 첫 사진
 const EXCLUDE_PREFIX = /^x_/i; // 발행 제외 — 사용자가 원본 폴더에서 지정한다
 
 // ── 파일명 끝 괄호 순번 ─────────────────────────────────
@@ -210,19 +208,11 @@ async function main() {
 
   // ── 1) 접두어 검사 — 각각 정확히 1개 ──
   const thumbFiles = files.filter((f) => THUMB_PREFIX.test(f));
-  const firstFiles = files.filter((f) => FIRST_PREFIX.test(f));
   if (thumbFiles.length !== 1) {
     console.error(`t_ 파일이 ${thumbFiles.length}개입니다 — 정확히 1개여야 합니다.`);
     for (const f of thumbFiles) console.error(`  ${f}`);
     process.exit(1);
   }
-  // 00_ 는 선택이다 — 없으면 판독 단계에서 오버레이 컷을 자동 식별해 --renumber 로 앞에 세운다.
-  if (firstFiles.length > 1) {
-    console.error(`00_ 파일이 ${firstFiles.length}개입니다 — 0개(자동 식별) 또는 1개(수동 지정)여야 합니다.`);
-    for (const f of firstFiles) console.error(`  ${f}`);
-    process.exit(1);
-  }
-
   // ── 2) 메타데이터 수집 ──
   const entries = [];
   for (const file of files) {
@@ -249,7 +239,6 @@ async function main() {
       fromName: filenameCaptureTime(file),
       paren: parenNumber(file),
       isThumb: THUMB_PREFIX.test(file),
-      isFirst: FIRST_PREFIX.test(file),
       width: swap ? meta.height : meta.width,
       height: swap ? meta.width : meta.height,
     });
@@ -260,7 +249,7 @@ async function main() {
   }
 
   // ── 3) 괄호 순번 결번·중복 — 접두어 파일까지 합산해 1~N 연속인지 본다 ──
-  //     t_ 와 00_ 도 같은 번호 계열에서 번호를 가져가므로 빼고 세면 항상 결번이 난다.
+  //     t_ 와 x_ 도 같은 번호 계열에서 번호를 가져가므로 빼고 세면 항상 결번이 난다.
   const parens = entries.map((e) => e.paren).filter((n) => n !== null).sort((a, b) => a - b);
   if (parens.length > 0) {
     const max = parens[parens.length - 1];
@@ -272,26 +261,19 @@ async function main() {
     if (dup.length > 0) console.log(`※ 괄호 순번 중복: ${dup.join(', ')} — 계속 진행합니다.`);
   }
 
-  // ── 4) 본문 배열 구성 — 00_ 최상단 고정 + 나머지 정렬 ──
+  // ── 4) 본문 배열 구성 — t_ 를 뺀 나머지를 정렬 ──
   const thumb = entries.find((e) => e.isThumb);
-  const first = entries.find((e) => e.isFirst) ?? null;
-  const rest = entries.filter((e) => !e.isThumb && !e.isFirst);
-  const kind = decideKeyKind(rest);
-  sortByKind(rest, kind);
-  const body = first ? [first, ...rest] : rest;
+  const body = entries.filter((e) => !e.isThumb);
+  const kind = decideKeyKind(body);
+  sortByKind(body, kind);
 
   const KIND_LABEL = { paren: '파일명 괄호 순번', name: '파일명 날짜', exif: 'EXIF 촬영시각', file: '파일명' };
   console.log(`정렬 기준: ${KIND_LABEL[kind]} (폴더 단위 결정)`);
-  const noKey = rest.filter((e) => keyOf(e, kind) === null || keyOf(e, kind) === undefined).length;
+  const noKey = body.filter((e) => keyOf(e, kind) === null || keyOf(e, kind) === undefined).length;
   if (noKey > 0) {
     console.log(`※ 정렬 키 없음 ${noKey}장 — 맨 뒤 배치. 3단계에서 순서를 바로잡을 것.`);
   }
-  console.log(`대표: ${thumb.file} → thumb.webp (본문 제외)`);
-  if (first) {
-    console.log(`본문 첫 사진: ${first.file} → 01.webp (00_ 수동 지정)`);
-  } else {
-    console.log('본문 첫 사진: 미지정 — 판독 단계에서 오버레이 컷을 식별해 --renumber 로 앞에 세울 것.');
-  }
+  console.log(`대표 원본: ${thumb.file} → overlay.mjs 로 오버레이 후 thumb.webp (본문 제외)`);
 
   if (!dryRun) await mkdir(outDir, { recursive: true });
 

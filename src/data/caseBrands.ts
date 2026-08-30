@@ -3,20 +3,22 @@
 // 건수는 하드코딩하지 않는다 — 각 사용처에서 컬렉션으로 계산.
 import type { CollectionEntry } from 'astro:content';
 
-// ── brand 정본 ↔ 별칭 ────────────────────────────────────
-// 원고의 brand 표기가 흔들려도(공백·대소문자·영문/한글) 정본으로 접는다.
-// 표기가 어긋났다고 빌드를 깨거나 필터에서 누락시키지 않는다.
-// 키가 정본, 값이 별칭 목록. 정본 자신은 별칭에 다시 적지 않는다.
-export const BRAND_ALIASES: Record<string, string[]> = {
-  BMW: ['비엠더블유', '비엠', 'bmw'],
-  MINI: ['미니', 'mini', 'Mini', 'BMW미니', 'BMW MINI'],
-  벤츠: ['benz', 'Benz', 'mercedes', 'Mercedes', '메르세데스', '메르세데스벤츠', '메르세데스-벤츠'],
-  아우디: ['audi', 'Audi'],
-  폭스바겐: ['vw', 'VW', 'volkswagen', 'Volkswagen', '폭스바겐(VW)', '바겐'],
-  포르쉐: ['porsche', 'Porsche', '포르셰'],
-  재규어: ['jaguar', 'Jaguar'],
-  랜드로버: ['landrover', 'Land Rover', 'land rover', '랜드로바', '레인지로버'],
-};
+// ── brand 정본 ↔ 별칭 ↔ 영문 토큰 ─────────────────────────
+// 표기가 흔들려도(공백·대소문자·영문/한글) 정본으로 접는다. 어긋났다고 빌드를 깨거나
+// 필터에서 누락시키지 않는다.
+//
+// 실제 데이터는 src/data/brands.json 에 있다 — 발행 도구(.mjs)가 .ts 를 import 할 수 없어
+// 양쪽이 같은 JSON 을 읽는다. 브랜드를 추가·수정할 때는 그 파일만 고친다.
+import brandsData from './brands.json';
+
+export interface BrandIdentity {
+  canonical: string; // frontmatter brand 정본
+  en: string; // 이미지 오버레이 1행 영문 대문자
+  slugToken: string; // 슬러그 <브랜드영문> 자리
+  aliases: string[];
+}
+
+export const BRAND_IDENTITY: BrandIdentity[] = brandsData.brands;
 
 /** 비교용 정규화 — 공백·가운뎃점·하이픈 제거 + 소문자. */
 function normKey(s: string): string {
@@ -24,9 +26,18 @@ function normKey(s: string): string {
 }
 
 const CANON_BY_KEY = new Map<string, string>();
-for (const [canonical, aliases] of Object.entries(BRAND_ALIASES)) {
-  CANON_BY_KEY.set(normKey(canonical), canonical);
-  for (const a of aliases) CANON_BY_KEY.set(normKey(a), canonical);
+const IDENTITY_BY_CANON = new Map<string, BrandIdentity>();
+for (const b of BRAND_IDENTITY) {
+  IDENTITY_BY_CANON.set(b.canonical, b);
+  CANON_BY_KEY.set(normKey(b.canonical), b.canonical);
+  CANON_BY_KEY.set(normKey(b.en), b.canonical);
+  CANON_BY_KEY.set(normKey(b.slugToken), b.canonical);
+  for (const a of b.aliases) CANON_BY_KEY.set(normKey(a), b.canonical);
+}
+
+/** 정본 브랜드의 영문·슬러그 토큰. 표에 없는 브랜드는 undefined. */
+export function brandIdentity(raw: string): BrandIdentity | undefined {
+  return IDENTITY_BY_CANON.get(canonicalBrand(raw));
 }
 
 /**
