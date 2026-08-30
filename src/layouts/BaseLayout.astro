@@ -49,6 +49,15 @@ const ogDesc = ogDescription ?? description;
 const canonical = new URL(path ?? Astro.url.pathname, Astro.site).href;
 const ogImageUrl = new URL(ogImage, Astro.site).href;
 
+// Google 태그 관리자 컨테이너 ID — 이 한 곳에서만 관리한다.
+// GA4·전환 추적 등 태그는 GTM 웹 UI 에서 붙인다(코드 수정 불필요).
+const GTM_ID = 'GTM-57TMPLH';
+const gtmSnippet = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${GTM_ID}');`;
+
 // ── JSON-LD: AutoRepair (LocalBusiness 하위) — 05_local_business §3 ──
 const jsonLd: Record<string, unknown> = {
   '@context': 'https://schema.org',
@@ -93,6 +102,11 @@ const jsonLd: Record<string, unknown> = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Google Tag Manager — head 최상단에 둔다(GTM 권장) -->
+    <script is:inline set:html={gtmSnippet} />
+    <!-- End Google Tag Manager -->
+
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -125,6 +139,16 @@ const jsonLd: Record<string, unknown> = {
     <slot name="head" />
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) — body 여는 태그 바로 뒤 -->
+    <noscript
+      ><iframe
+        src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"></iframe></noscript
+    >
+    <!-- End Google Tag Manager (noscript) -->
+
     <Header />
     <main id="main">
       <slot />
