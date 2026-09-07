@@ -112,6 +112,39 @@ function fitText(font, text, maxW, size, { floor, hardFloor }) {
   return { text, size: hardFloor, shrunk: true, dropped: false, overflow: true };
 }
 
+/**
+ * 본문 사진의 번호판 마스킹 — 정면 컷 전용 (설계문서 §4, 2026-08-30 개정).
+ * 대표 이미지와 같은 방식으로 덮는다: #1A1A1C 사각형, 모서리 반경 6px.
+ * 측면·후면은 대상이 아니며, 정면 여부가 애매하면 호출하지 않고 보고에 표시한다.
+ *
+ * 좌표는 이미지 대비 비율(0~1)이다. 제자리 덮어쓰기라 원본 크기·포맷을 유지한다.
+ */
+export async function maskPlate({ file: rawFile, rect }) {
+  // 한글 경로는 상대경로로 넘기면 libvips 가 쓰기에서 실패한다 — 절대경로로 바꿔 쓴다
+  const file = path.resolve(rawFile);
+  // sharp 가 경로로 파일을 열면 그 파일에 다시 쓸 수 없다(libvips, Windows에서 확인).
+  // 경로를 한 번도 열지 않도록 버퍼로만 다룬다.
+  const input = fs.readFileSync(file);
+  const meta = await sharp(input).metadata();
+  const W = meta.width;
+  const H = meta.height;
+  const k = W / BASE_WIDTH;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">${roundedRect(
+    Math.round(rect.x * W),
+    Math.round(rect.y * H),
+    Math.round(rect.w * W),
+    Math.round(rect.h * H),
+    Math.max(3, Math.round(PLATE_RADIUS * k)),
+    PLATE_FILL
+  )}</svg>`;
+  // 임시 파일로 쓴 뒤 교체한다. 같은 경로에 바로 쓰면 libvips 가 "unable to open for write" 로 실패한다.
+  const tmp = `${file}.tmp${path.extname(file)}`;
+  await sharp(input).composite([{ input: Buffer.from(svg), top: 0, left: 0 }]).toFile(tmp);
+  fs.rmSync(file);
+  fs.renameSync(tmp, file);
+  return { width: W, height: H };
+}
+
 export async function renderOverlay({
   src,
   out,
@@ -193,6 +226,20 @@ if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
     const hit = args.find((a) => a.startsWith(`${n}=`));
     return hit ? hit.slice(n.length + 1).replace(/^["']|["']$/g, '') : null;
   };
+  // 마스킹 전용 모드 — 본문 정면 컷의 번호판을 제자리에서 덮는다
+  const maskFile = val('--mask');
+  if (maskFile) {
+    const p = val('--plate');
+    if (!p) {
+      console.error('--mask 에는 --plate=x,y,w,h 가 필요합니다 (이미지 대비 0~1 비율)');
+      process.exit(1);
+    }
+    const [x, y, w, h] = p.split(',').map(Number);
+    const r = await maskPlate({ file: maskFile, rect: { x, y, w, h } });
+    console.log(`번호판 마스킹 → ${maskFile}  (${r.width}×${r.height})`);
+    process.exit(0);
+  }
+
   const src = val('--src');
   const out = val('--out');
   if (!src || !out) {
