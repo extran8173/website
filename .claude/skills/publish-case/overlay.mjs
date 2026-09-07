@@ -78,6 +78,40 @@ function roundedRect(x, y, w, h, r, fill) {
   return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" ry="${r}" fill="${fill}"/>`;
 }
 
+/**
+ * 띠 폭에 맞춰 글자 크기를 줄인다. **자르지 않는다** — 문장이 잘린 채 이미지에 박히면 보기 나쁘다.
+ * 1) 지정 크기로 들어가면 그대로
+ * 2) 안 들어가면 floor 까지 축소
+ * 3) 그래도 넘치고 항목이 둘 이상이면(`A · B`) 첫 항목만 남기고 다시 1)부터
+ * 4) 끝내 넘치면 더 줄이되 hardFloor 에서 멈추고 경고한다
+ */
+function fitText(font, text, maxW, size, { floor, hardFloor }) {
+  const fits = (t, s) => font.getAdvanceWidth(t, s) <= maxW;
+  if (fits(text, size)) return { text, size, shrunk: false, dropped: false, overflow: false };
+
+  for (let s = size; s >= floor; s -= 1) {
+    if (fits(text, s)) return { text, size: s, shrunk: true, dropped: false, overflow: false };
+  }
+
+  const parts = text.split(/\s*·\s*/).filter(Boolean);
+  if (parts.length > 1) {
+    const first = parts[0];
+    if (fits(first, size)) return { text: first, size, shrunk: false, dropped: true, overflow: false };
+    for (let s = size; s >= floor; s -= 1) {
+      if (fits(first, s)) return { text: first, size: s, shrunk: true, dropped: true, overflow: false };
+    }
+    for (let s = floor; s >= hardFloor; s -= 1) {
+      if (fits(first, s)) return { text: first, size: s, shrunk: true, dropped: true, overflow: false };
+    }
+    return { text: first, size: hardFloor, shrunk: true, dropped: true, overflow: true };
+  }
+
+  for (let s = floor; s >= hardFloor; s -= 1) {
+    if (fits(text, s)) return { text, size: s, shrunk: true, dropped: false, overflow: false };
+  }
+  return { text, size: hardFloor, shrunk: true, dropped: false, overflow: true };
+}
+
 export async function renderOverlay({
   src,
   out,
@@ -108,11 +142,16 @@ export async function renderOverlay({
   const size2 = 30 * k;
   const sizeMark = 25 * k;
 
-  const t1 = textPath(fonts.bold, String(line1).toUpperCase(), marginX, bandTop + bandH * 0.52, size1, '#FFFFFF');
-  const t2 = textPath(fonts.medium, line2, marginX, bandTop + bandH * 0.85, size2, '#C4C6CA');
-
+  // 오른쪽 MOTOR REPAIR 자리를 비워두고 남는 폭 안에서 1·2행을 맞춘다
   const markText = 'MOTOR REPAIR';
   const markW = fonts.semibold.getAdvanceWidth(markText, sizeMark);
+  const textMaxW = W - marginX * 2 - markW - 24 * k;
+
+  const f1 = fitText(fonts.bold, String(line1).toUpperCase(), textMaxW, size1, { floor: 32 * k, hardFloor: 26 * k });
+  const f2 = fitText(fonts.medium, String(line2), textMaxW, size2, { floor: 24 * k, hardFloor: 20 * k });
+
+  const t1 = textPath(fonts.bold, f1.text, marginX, bandTop + bandH * 0.52, f1.size, '#FFFFFF');
+  const t2 = textPath(fonts.medium, f2.text, marginX, bandTop + bandH * 0.85, f2.size, '#C4C6CA');
   const tm = textPath(fonts.semibold, markText, W - marginX - markW, bandTop + bandH * 0.62, sizeMark, '#787A80');
 
   const color = BRAND_COLORS[brand] ?? BRAND_COLOR_FALLBACK;
@@ -144,7 +183,7 @@ ${tm.svg}
     .toFile(out);
 
   const missing = [...new Set([...t1.missing, ...t2.missing, ...tm.missing])];
-  return { width: W, height: H, bandH, color, missing, plateMasked: !!plate };
+  return { width: W, height: H, bandH, color, missing, plateMasked: !!plate, fit: { line1: f1, line2: f2 } };
 }
 
 // ── CLI ─────────────────────────────────────────────────
@@ -175,5 +214,10 @@ if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
   });
   console.log(`오버레이 생성 → ${out}`);
   console.log(`  ${r.width}×${r.height} · 띠 ${r.bandH}px · 브랜드 색 ${r.color}${r.plateMasked ? ' · 번호판 마스킹 적용' : ''}`);
+  for (const [label, f] of [['1행', r.fit.line1], ['2행', r.fit.line2]]) {
+    if (f.dropped) console.log(`  ※ ${label} 폭 초과 — 첫 항목만 남겼습니다: "${f.text}"`);
+    if (f.shrunk) console.log(`  ※ ${label} 글자 크기 축소 → ${f.size.toFixed(0)}px (자르지 않았습니다)`);
+    if (f.overflow) console.log(`  ※ ${label} 최소 크기에서도 폭을 넘습니다 — 문구를 줄여야 합니다`);
+  }
   if (r.missing.length) console.log(`  ※ 폰트에 없는 글자: ${r.missing.join(' ')} — 빈 칸으로 나갑니다`);
 }
