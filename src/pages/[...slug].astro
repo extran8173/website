@@ -51,14 +51,24 @@ const dateText = d.date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'l
 // og:image = 사례 thumbnail (06 §5)
 // ⚠️ jpeg 고정 — 카카오톡·네이버 공유 카드는 WebP 썸네일 렌더가 불안정하다.
 //    사례 글은 개별 공유 빈도가 가장 높은 콘텐츠라 호환 포맷을 쓴다.
-// 원본이 1200×630 을 채우면 기존대로 1200×630 으로 크롭한다(공유 카드 표준 비율).
-// 채우지 못하면 확대하지 않고 원본 크기·비율을 그대로 쓴다 — 도면·캡처처럼 작은 컷을
-// 대표로 쓰는 사례가 있고, 강제 확대는 화질만 버린다.
+// 원본 비율을 그대로 유지하고 가로만 1200 으로 맞춘다. 업스케일도 크롭도 하지 않는다.
+//  - 크롭하지 않는 이유: 대표 이미지 하단 16% 가 오버레이 띠(차종·작업 내용)다.
+//    1200×630 으로 자르면 그 띠가 잘려나가 공유 카드에서 오버레이가 사라진다.
+//  - 업스케일하지 않는 이유: 도면·캡처처럼 작은 컷을 대표로 쓰는 사례가 있다.
+// getImage 에 height 를 넘겨도 가로만 맞춰지므로(실측), 높이는 직접 계산해 메타에 싣는다.
+// libvips 는 리사이즈 높이를 round-half-to-even 으로 정한다. Math.round 를 쓰면
+// 정확히 .5 인 경우(예: 1600×862 → 646.5) 메타가 실물과 1px 어긋난다.
+const rint = (x: number) => {
+  const f = Math.floor(x);
+  const diff = x - f;
+  if (diff > 0.5) return f + 1;
+  if (diff < 0.5) return f;
+  return f % 2 === 0 ? f : f + 1;
+};
 const th = d.thumbnail;
-const fitsOg = th.width >= 1200 && th.height >= 630;
-const ogImg = fitsOg
-  ? await getImage({ src: th, width: 1200, height: 630, format: 'jpeg' })
-  : await getImage({ src: th, width: th.width, format: 'jpeg' });
+const ogW = Math.min(1200, th.width);
+const ogH = rint((th.height * ogW) / th.width);
+const ogImg = await getImage({ src: th, width: ogW, format: 'jpeg' });
 
 const faqLd = {
   '@context': 'https://schema.org',
@@ -76,8 +86,8 @@ const faqLd = {
   description={d.description}
   path={`/${d.slug}/`}
   ogImage={ogImg.src}
-  ogImageWidth={ogImg.attributes.width ?? ogW}
-  ogImageHeight={ogImg.attributes.height}
+  ogImageWidth={ogW}
+  ogImageHeight={ogH}
 >
   <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(faqLd)} />
 
