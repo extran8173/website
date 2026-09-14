@@ -18,9 +18,15 @@ const BANNED = [
   '최상의', '최고의', '제일', '정확한', '완전히 사라지', '되찾아진',
 ];
 
-// 전용 진단기 — 주력 6개 브랜드에만 해당 (CLAUDE.md 불변 사실)
+// 진단 장비 실명 — 2026-09-15 부터 전 채널·전 필드 금지 (작성지침 §7)
 const SCANNER_NAMES = ['ISTA', 'Xentry', 'XENTRY', 'ODIS', 'VCDS', 'PIWIS', 'Picoscope'];
-const SCANNER_BRANDS = ['BMW', 'MINI', '벤츠', '아우디', '폭스바겐', '포르쉐'];
+
+// 감상·추임새 — 차량 상태와 작업 사실만 쓴다 (작성지침 §2, 2026-09-15 신설)
+const FILLER = [
+  '지켜볼 내용이 제법 많', '제법 많습니다', '만만치 않', '쉽지 않은 작업',
+  '다행입니다', '듯싶군요',
+];
+const FILLER_ENDING = /[가-힣]군요/g; // 감탄조 어미 전반
 
 // 서비스 지역 — 이 밖의 지역명은 쓰지 않는다 (CLAUDE.md)
 const FORBIDDEN_REGIONS = ['충주', '제천', '원주', '음성'];
@@ -43,9 +49,9 @@ export function checkDraft(draft) {
   // ── 세면 되는 것 ──
   const naverLen = countNoSpace(n.body);
   out.push(
-    naverLen >= 1500 && naverLen <= 2000
-      ? row('pass', '네이버 본문', `${naverLen.toLocaleString()}자 (공백 제외)`, '1,500~2,000')
-      : row('fail', '네이버 본문', `${naverLen.toLocaleString()}자 (공백 제외)`, `1,500~2,000 범위 밖 — ${naverLen < 1500 ? '늘려야' : '줄여야'} 합니다`)
+    naverLen >= 1000 && naverLen <= 1500
+      ? row('pass', '네이버 본문', `${naverLen.toLocaleString()}자 (공백 제외)`, '1,000~1,500')
+      : row('fail', '네이버 본문', `${naverLen.toLocaleString()}자 (공백 제외)`, `1,000~1,500 범위 밖 — ${naverLen < 1000 ? '늘려야' : '줄여야'} 합니다`)
   );
 
   const desc = fm.description ?? '';
@@ -83,28 +89,35 @@ export function checkDraft(draft) {
       : row('fail', '차량번호·VIN', [...plates, ...vins].join(', '), '텍스트에서 제거해야 합니다')
   );
 
-  // ── 진단기 표기 ──
-  const scannerInAstroBody = SCANNER_NAMES.filter((s) => (a.body ?? '').includes(s));
+  // ── 진단기 표기 — 2026-09-15 개정: 전 채널·전 필드에서 실명 금지 ──
+  // 이전에는 Astro `diagnostic` 필드만 실명을 허용했다. 그 예외가 폐기되면서
+  // 검사도 "본문만 경고"에서 "원고 전체를 FAIL"로 바뀌었다 (작성지침 §7).
+  const scannerHits = SCANNER_NAMES.filter((s) => allText.includes(s));
   out.push(
-    scannerInAstroBody.length === 0
-      ? row('pass', '진단기 표기 (Astro 본문)', '실명 없음', '본문은 "시스템 진단기"')
-      : row('warn', '진단기 표기 (Astro 본문)', scannerInAstroBody.join(', '), '본문에는 실명 대신 "시스템 진단기"')
-  );
-  const scannerInNaver = SCANNER_NAMES.filter((s) => (n.body ?? '').includes(s));
-  out.push(
-    scannerInNaver.length === 0
-      ? row('pass', '진단기 표기 (네이버)', '실명 없음', '네이버는 "스캐너 시스템"')
-      : row('warn', '진단기 표기 (네이버)', scannerInNaver.join(', '), '네이버 본문은 "스캐너 시스템"')
+    scannerHits.length === 0
+      ? row('pass', '진단기 실명', '없음', '"스캐너 시스템" / "시스템 진단기"')
+      : row('fail', '진단기 실명', scannerHits.join(', '), '본문·diagnostic·alt·캡션·태그 어디에도 쓰지 않습니다')
   );
 
-  // 확장 브랜드에 전용 진단기를 붙이면 과장이다
-  const brand = fm.brand ?? draft.brand ?? '';
-  const usedScanner = SCANNER_NAMES.filter((s) => allText.includes(s));
-  if (usedScanner.length > 0 && !SCANNER_BRANDS.includes(brand)) {
-    out.push(row('fail', '전용 진단기 / 브랜드', `${brand} + ${usedScanner.join(', ')}`, '전용 진단기는 주력 6개 브랜드에만 해당합니다'));
-  } else {
-    out.push(row('pass', '전용 진단기 / 브랜드', brand || '(미지정)'));
-  }
+  // ── 볼드 마크업 — 별표를 어디에도 쓰지 않는다 (작성지침 §2, 2026-09-15 신설) ──
+  const starHits = [n.body, a.body].filter(Boolean).filter((t) => t.includes('*')).length;
+  out.push(
+    starHits === 0
+      ? row('pass', '볼드 마크업', '없음', '강조는 문장 구성으로')
+      : row('fail', '볼드 마크업', `${starHits}개 세트`, '별표(*)를 제거해야 합니다')
+  );
+
+  // ── 감상·추임새 — 차량 상태와 작업 사실만 쓴다 (작성지침 §2, 2026-09-15 신설) ──
+  const bodyText = [n.body, a.body].filter(Boolean).join('\n');
+  const fillerHits = [
+    ...FILLER.filter((w) => bodyText.includes(w)),
+    ...new Set(bodyText.match(FILLER_ENDING) ?? []),
+  ];
+  out.push(
+    fillerHits.length === 0
+      ? row('pass', '감상·추임새', '없음')
+      : row('fail', '감상·추임새', [...new Set(fillerHits)].join(', '), '소감·감탄조를 빼고 사실만 남깁니다')
+  );
 
   // ── 지역 ──
   const badRegions = FORBIDDEN_REGIONS.filter((r) => allText.includes(r));
