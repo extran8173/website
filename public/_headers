@@ -8,6 +8,13 @@
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
+# llms.txt — charset 명시 필수.
+#   charset 이 없으면 브라우저가 로컬 기본 인코딩으로 해석해 한글이 깨진다(실측 확인).
+#   파일 자체는 BOM 없는 UTF-8 이고, 생성은 src/pages/llms.txt.ts 엔드포인트가 한다.
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
+
+
 # 전역 보안 헤더
 /*
   X-Content-Type-Options: nosniff

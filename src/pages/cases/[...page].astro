@@ -17,10 +17,12 @@ export async function getStaticPaths({ paginate }) {
 
 const { page } = Astro.props;
 const n = page.currentPage;
-const title =
-  n > 1 ? `수입차 정비 사례 — ${n}페이지 | 동탄 모터리페어` : '수입차 정비 사례 | 동탄 모터리페어';
-const description =
+// llms.txt 가 이 두 값을 import 한다 — 목록 페이지의 제목·설명을 두 곳에 적지 않기 위한 것.
+// title 은 1페이지 기준 문구. 2페이지 이상은 아래 pageTitle 에서 번호를 끼워 조립한다.
+export const title = '수입차 정비 사례 | 동탄 모터리페어';
+export const description =
   'BMW·벤츠·아우디·포르쉐 등 유럽 수입차 정비 기록. 차종, 증상, 원인, 수리 과정과 결과를 사진과 함께 남깁니다.';
+const pageTitle = n > 1 ? `수입차 정비 사례 — ${n}페이지 | 동탄 모터리페어` : title;
 const path = n > 1 ? `/cases/${n}/` : '/cases/';
 // 빵부스러기 — 2페이지 이상은 마지막 항목에 페이지 번호를 붙인다(목록 1페이지와 구분).
 const breadcrumbs =
@@ -30,6 +32,6 @@ const breadcrumbs =
 const intro = `모터리페어는 경기 화성 동탄의 수입차 전문 정비소입니다. BMW·벤츠·아우디·폭스바겐 등 수입차 정비 사례 ${page.total}건을 차종·증상·원인·수리 과정 순서로 기록하며, 매주 새 사례가 올라옵니다.`;
 ---
 
-<BaseLayout title={title} description={description} path={path} breadcrumbs={breadcrumbs}>
+<BaseLayout title={pageTitle} description={description} path={path} breadcrumbs={breadcrumbs}>
   <CasesListPage page={page} currentKey="all" basePath="/cases/" intro={intro} />
 </BaseLayout>
