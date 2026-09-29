@@ -161,7 +161,6 @@ export function casePostNode(
     description,
     datePublished,
     image,
-    brand,
     carModel,
     keywords,
   }: {
@@ -170,7 +169,6 @@ export function casePostNode(
     description: string;
     datePublished: string;
     image: string;
-    brand: string;
     carModel: string;
     keywords: string[];
   },
@@ -187,11 +185,12 @@ export function casePostNode(
     isPartOf: websiteRef(site),
     author: businessRef(site),
     publisher: businessRef(site),
-    about: {
-      '@type': 'Vehicle',
-      name: carModel,
-      brand: { '@type': 'Brand', name: brand },
-    },
+    // ⚠️ about 에 Vehicle·Product 계열 타입을 쓰지 말 것.
+    // Vehicle 은 Product 하위 타입이라 구글이 이 글을 '제품 스니펫' 후보로 잡고
+    // offers·review·aggregateRating 중 하나를 필수로 요구한다(리치 결과 테스트 오류 실측, 2026-09-29).
+    // 정비 사례는 차량을 파는 글이 아니고 review·aggregateRating 은 금지 항목이므로 Thing 을 쓴다.
+    // 브랜드는 keywords 로 전달한다.
+    about: { '@type': 'Thing', name: carModel },
     keywords,
   };
 }

@@ -86,7 +86,6 @@ const schema = [
     // 본문 Figure 방식(src= 73건 / img={} 4건)과 무관 — thumbnail 은 77건 모두 astro image() 라
     // 여기 한 경로로 절대 URL 이 만들어진다.
     image: new URL(ogImg.src, site).href,
-    brand: d.brand,
     carModel: d.car_model,
     // tags 전량(30개 내외)은 스키마에 넣지 않는다 — 키워드 나열로 읽힐 소지가 있다.
     keywords: [d.focus_keyword, d.brand, d.car_model, d.category],
