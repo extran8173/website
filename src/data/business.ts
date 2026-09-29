@@ -74,9 +74,8 @@ export const business = {
 
   // ── 외부 프로필 (JSON-LD sameAs) ──────────────────────
   // 네이버 플레이스·블로그는 maps.naverPlace · booking.naverBlogUrl 을 그대로 참조한다(값 중복 금지).
-  // ⚠️ TODO: 구글 비즈니스 프로필 URL 미확인 — 확인되면 아래 null 을 URL 문자열로 바꾸기만 하면
-  //    sameAs 에 자동 포함된다 (05_local_business §4 구글 비즈니스 프로필 체크리스트).
-  googleBusinessUrl: null as string | null,
+  // 구글 비즈니스 프로필 (2026-09-29 확인). cid = 구글이 부여한 장소 고유 ID.
+  googleBusinessUrl: 'https://www.google.com/maps?cid=13779375829803297826' as string | null,
 
   // ── 서비스 지역 — 이원 구조 (2026-08-09 확정: 통일하지 않는다. CLAUDE.md 불변 사실) ──
   // ⚠️ 두 계열 모두 충주·제천·원주·음성 절대 금지

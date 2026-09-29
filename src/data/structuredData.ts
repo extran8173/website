@@ -29,7 +29,7 @@ type Node = Record<string, unknown>;
  * @param logo   로고 절대 URL
  */
 export function autoRepairNode(site: URL, { images, logo }: { images: string[]; logo: string }): Node {
-  // sameAs — 실재가 확인된 채널만. 구글 비즈니스 프로필은 URL 미확인 상태라 값이 들어오면 자동 포함된다.
+  // sameAs — 실재가 확인된 채널만. business.ts 에서 값이 비면 자동으로 빠진다.
   const sameAs = [
     business.booking.naverBlogUrl,
     business.maps.naverPlace,
