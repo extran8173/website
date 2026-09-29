@@ -7,6 +7,7 @@ import { getImage } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CaseCard from '../components/CaseCard.astro';
 import { cta } from '../data/business.ts';
+import { casePostNode, faqNode } from '../data/structuredData.ts';
 
 export async function getStaticPaths() {
   const cases = await getCollection('cases');
@@ -70,15 +71,28 @@ const ogW = Math.min(1200, th.width);
 const ogH = rint((th.height * ogW) / th.width);
 const ogImg = await getImage({ src: th, width: ogW, format: 'jpeg' });
 
-const faqLd = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: d.faq.map((f) => ({
-    '@type': 'Question',
-    name: f.q,
-    acceptedAnswer: { '@type': 'Answer', text: f.a },
-  })),
-};
+// ── JSON-LD ────────────────────────────────────────────
+// canonical 은 BaseLayout 과 같은 방식으로 만든다 — 한글 슬러그가 동일하게 퍼센트 인코딩돼야
+// @id 와 canonical 이 어긋나지 않는다.
+const site = Astro.site!;
+const canonical = new URL(`/${d.slug}/`, site).href;
+const schema = [
+  casePostNode(site, {
+    canonical,
+    headline: d.title,
+    description: d.description,
+    // date = 작성·발행일 (예외 없음). Date 는 UTC 자정으로 파싱되므로 날짜만 잘라 쓴다.
+    datePublished: d.date.toISOString().slice(0, 10),
+    // 본문 Figure 방식(src= 73건 / img={} 4건)과 무관 — thumbnail 은 77건 모두 astro image() 라
+    // 여기 한 경로로 절대 URL 이 만들어진다.
+    image: new URL(ogImg.src, site).href,
+    brand: d.brand,
+    carModel: d.car_model,
+    // tags 전량(30개 내외)은 스키마에 넣지 않는다 — 키워드 나열로 읽힐 소지가 있다.
+    keywords: [d.focus_keyword, d.brand, d.car_model, d.category],
+  }),
+  faqNode(canonical, d.faq),
+];
 ---
 
 <BaseLayout
@@ -88,9 +102,9 @@ const faqLd = {
   ogImage={ogImg.src}
   ogImageWidth={ogW}
   ogImageHeight={ogH}
+  breadcrumbs={[{ name: '정비 사례', path: '/cases/' }, { name: d.title, path: `/${d.slug}/` }]}
+  schema={schema}
 >
-  <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(faqLd)} />
-
   <article class="case container">
     <!-- [1] 헤드 -->
     <header class="case-head">

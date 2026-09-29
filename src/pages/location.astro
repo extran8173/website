@@ -11,6 +11,7 @@ import ImageSlot from '../components/ImageSlot.astro';
 import ProcessFlow from '../components/ProcessFlow.astro';
 import PageHero from '../components/PageHero.astro';
 import { business, cta, accessRegionLabel } from '../data/business.ts';
+import { faqNode } from '../data/structuredData.ts';
 
 const title = '오시는 길 · 문의 예약 | 동탄 모터리페어';
 const description =
@@ -39,20 +40,16 @@ const faqs = [
 
 const hoursLine = business.hours.displayLines.join(' · ');
 
-const faqLd = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faqs.map((f) => ({
-    '@type': 'Question',
-    name: f.q,
-    acceptedAnswer: { '@type': 'Answer', text: f.a },
-  })),
-};
+const canonical = new URL('/location/', Astro.site!).href;
 ---
 
-<BaseLayout title={title} description={description} path="/location/">
-  <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(faqLd)} />
-
+<BaseLayout
+  title={title}
+  description={description}
+  path="/location/"
+  breadcrumbs={[{ name: '오시는 길', path: '/location/' }]}
+  schema={[faqNode(canonical, faqs)]}
+>
   {/* [1] 페이지 헤드 — 공용 PageHero (4개 하위 페이지 통일 2026-07-26 신설) */}
   <PageHero
     label={accessRegionLabel}

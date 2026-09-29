@@ -4,6 +4,20 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FabContact from '../components/FabContact.astro';
 import { business } from '../data/business.ts';
+import {
+  autoRepairNode,
+  webSiteNode,
+  webPageNode,
+  breadcrumbNode,
+  graph,
+  type Crumb,
+} from '../data/structuredData.ts';
+// JSON-LD image·logo 는 실제 사이트 자산을 가리켜야 한다 — 빌드된 절대 URL 로 넘긴다.
+// 원본 import 의 .src 를 쓰므로 이미지 변환이 추가로 일어나지 않는다.
+import exteriorFront from '../assets/site/IMG-001.jpg';
+import exteriorSign from '../assets/site/IMG-013.jpg';
+import exteriorSpring from '../assets/site/IMG-021.jpg';
+import logoAsset from '../assets/logo-horizontal.png';
 
 // 파비콘(2026-08-16): 원형 엠블럼. favicon.ico 에 16·32·48 프레임(알파) 포함.
 //   16·32 프레임은 NOW·REPAIR 글자를 뺀 단순화본 — 그 크기에선 글자가 붉은 얼룩으로 뭉개져 형태를 흐린다.
@@ -32,6 +46,16 @@ interface Props {
    * 공유 카드용 문구(첫 문장에서 판단이 끝나야 함)의 요구가 달라 분리한다.
    */
   ogDescription?: string;
+  /**
+   * 빵부스러기 경로 — 홈 뒤의 항목만 넘긴다(홈은 자동으로 붙는다).
+   * 메인 페이지에는 넘기지 않는다 (04단계 규칙).
+   */
+  breadcrumbs?: Crumb[];
+  /**
+   * 이 페이지 고유의 JSON-LD 노드 (BlogPosting·FAQPage 등). 같은 @graph 안에 합쳐진다.
+   * ⚠️ 페이지에서 <script type="application/ld+json"> 을 직접 쓰지 말 것 — 출력 지점은 여기 하나다.
+   */
+  schema?: Record<string, unknown>[];
 }
 
 // 기본 OG 이미지는 jpeg — 사진 카드라 PNG 는 1.2MB 로 과하고, 카카오톡·네이버 호환도 jpeg 가 안전하다
@@ -44,6 +68,8 @@ const {
   ogImageWidth = 1200,
   ogImageHeight = 630,
   ogDescription,
+  breadcrumbs,
+  schema = [],
 } = Astro.props;
 const ogDesc = ogDescription ?? description;
 const canonical = new URL(path ?? Astro.url.pathname, Astro.site).href;
@@ -58,43 +84,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','${GTM_ID}');`;
 
-// ── JSON-LD: AutoRepair (LocalBusiness 하위) — 05_local_business §3 ──
-const jsonLd: Record<string, unknown> = {
-  '@context': 'https://schema.org',
-  '@type': 'AutoRepair',
-  name: business.name,
-  alternateName: business.alternateName,
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: business.address.street,
-    addressLocality: business.address.locality,
-    addressRegion: business.address.region,
-    postalCode: business.address.postalCode,
-    addressCountry: business.address.country,
-  },
-  telephone: business.phone.intl,
-  url: Astro.site?.href,
-  openingHoursSpecification: [
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-      opens: business.hours.weekday.opens,
-      closes: business.hours.weekday.closes,
-    },
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: 'Saturday',
-      opens: business.hours.saturday.opens,
-      closes: business.hours.saturday.closes,
-    },
-  ],
-  areaServed: [...business.seoRegions], // A계열 — SEO 키워드 축
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: business.address.geo.lat,
-    longitude: business.address.geo.lng,
-  },
-};
+// ── JSON-LD ────────────────────────────────────────────
+// 한 페이지의 모든 노드를 @graph 하나에 담는다. 조립 규칙은 src/data/structuredData.ts 주석 참조.
+//  - 사업체(AutoRepair)·사이트(WebSite) 전체 정의: 메인 페이지에서만
+//  - 다른 페이지: WebPage 가 publisher 로 #business 를 참조 + 빵부스러기 + 페이지 고유 노드
+const site = Astro.site!;
+const isHome = new URL(canonical).pathname === '/';
+const absolute = (src: string) => new URL(src, site).href;
+
+const nodes: Record<string, unknown>[] = [
+  ...(isHome
+    ? [
+        autoRepairNode(site, {
+          images: [exteriorFront.src, exteriorSign.src, exteriorSpring.src].map(absolute),
+          logo: absolute(logoAsset.src),
+        }),
+        webSiteNode(site),
+      ]
+    : []),
+  webPageNode(site, { canonical, title, description }),
+  ...(breadcrumbs?.length ? [breadcrumbNode(site, breadcrumbs)] : []),
+  ...schema,
+];
+const jsonLd = graph(nodes);
 ---
 
 <!doctype html>
@@ -132,10 +144,10 @@ const jsonLd: Record<string, unknown> = {
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-    <!-- JSON-LD: AutoRepair -->
+    <!-- JSON-LD (@graph) — 출력 지점은 사이트 전체에서 이 한 곳뿐이다 -->
     <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
-    <!-- 페이지별 추가 head (예: 사례 상세의 FAQPage JSON-LD) -->
+    <!-- 페이지별 추가 head (JSON-LD 는 여기 넣지 말 것 — schema prop 사용) -->
     <slot name="head" />
   </head>
   <body>

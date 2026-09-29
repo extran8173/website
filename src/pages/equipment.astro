@@ -29,7 +29,12 @@ const tools = [
 ];
 ---
 
-<BaseLayout title={title} description={description} path="/equipment/">
+<BaseLayout
+  title={title}
+  description={description}
+  path="/equipment/"
+  breadcrumbs={[{ name: '진단 장비', path: '/equipment/' }]}
+>
   {/* [1] 페이지 헤드 — 공용 PageHero (다크 타일 폐기, 4개 하위 페이지 통일 2026-07-26) */}
   <PageHero
     label="브랜드 전용 진단기"

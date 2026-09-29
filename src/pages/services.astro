@@ -62,7 +62,12 @@ const maintenanceGroups = [
 ];
 ---
 
-<BaseLayout title={title} description={description} path="/services/">
+<BaseLayout
+  title={title}
+  description={description}
+  path="/services/"
+  breadcrumbs={[{ name: '서비스', path: '/services/' }]}
+>
   {/* [1] 페이지 헤드 — 공용 PageHero (좌 텍스트 / 우 이미지) */}
   <PageHero
     label="소모품 교환 · 고장 진단"

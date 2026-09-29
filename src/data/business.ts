@@ -16,6 +16,8 @@ export const business = {
   // ── 상호 ──────────────────────────────────────────────
   name: '모터리페어',
   alternateName: '장용석의 내차를 부탁해 동탄신도시점',
+  // JSON-LD alternateName — 병기 상호 + 영문 표기. 화면 표기는 위 alternateName 을 쓴다.
+  alternateNames: ['장용석의 내차를 부탁해 동탄신도시점', 'MOTOR REPAIR'] as const,
   industry: '수입차 전문정비',
 
   // ── 사업자 ────────────────────────────────────────────
@@ -69,6 +71,12 @@ export const business = {
     naverUrl: 'https://map.naver.com/p/entry/place/1323147007?placePath=/ticket', // 예약 탭 직행. 길찾기는 maps.naverPlace 사용
     naverBlogUrl: 'https://blog.naver.com/extran',
   },
+
+  // ── 외부 프로필 (JSON-LD sameAs) ──────────────────────
+  // 네이버 플레이스·블로그는 maps.naverPlace · booking.naverBlogUrl 을 그대로 참조한다(값 중복 금지).
+  // ⚠️ TODO: 구글 비즈니스 프로필 URL 미확인 — 확인되면 아래 null 을 URL 문자열로 바꾸기만 하면
+  //    sameAs 에 자동 포함된다 (05_local_business §4 구글 비즈니스 프로필 체크리스트).
+  googleBusinessUrl: null as string | null,
 
   // ── 서비스 지역 — 이원 구조 (2026-08-09 확정: 통일하지 않는다. CLAUDE.md 불변 사실) ──
   // ⚠️ 두 계열 모두 충주·제천·원주·음성 절대 금지
