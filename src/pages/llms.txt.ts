@@ -46,11 +46,15 @@ export const GET: APIRoute = async ({ site }) => {
   // 정비 사례 — 최신순 단일 목록. 브랜드로 나누지 않는다(제목에 차종이 들어 있다).
   // draft 개념은 이 프로젝트에 없다 — 컬렉션에 있는 글이 곧 발행된 글이다.
   // 나중에 draft 를 도입하면 content.config.ts 스키마와 함께 여기에도 필터를 넣을 것.
-  // 정렬은 date 내림차순 + slug 오름차순. slug 를 tiebreaker 로 두는 이유는 date 가 같은 글이
-  // 여럿 있고(실측 10개 날짜에 중복), getCollection 의 반환 순서가 빌드 환경마다 달라
-  // 그것만으로는 같은 소스에서 매번 다른 파일이 나오기 때문이다.
+  // 정렬은 date 내림차순 + slug 오름차순.
+  //  - slug 를 tiebreaker 로 두는 이유: date 가 같은 글이 여럿 있고(실측 10개 날짜에 2~3건씩),
+  //    getCollection 의 반환 순서가 빌드 환경마다 달라 date 만으로는 같은 소스에서 매번
+  //    다른 파일이 나온다.
+  //  - ⚠️ localeCompare 를 쓰지 말 것. 로케일 의존이라 한글 슬러그와 ASCII 슬러그의 선후가
+  //    로컬과 CI 에서 갈린다(실측 확인). 코드유닛 비교라야 환경과 무관하게 결정적이다.
+  const bySlug = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
   const cases = (await getCollection('cases')).sort(
-    (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.slug.localeCompare(b.data.slug),
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || bySlug(a.data.slug, b.data.slug),
   );
 
   const lines = [
