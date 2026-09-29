@@ -101,6 +101,8 @@ const schema = [
   ogImage={ogImg.src}
   ogImageWidth={ogW}
   ogImageHeight={ogH}
+  ogType="article"
+  publishedTime={d.date.toISOString().slice(0, 10)}
   breadcrumbs={[{ name: '정비 사례', path: '/cases/' }, { name: d.title, path: `/${d.slug}/` }]}
   schema={schema}
 >

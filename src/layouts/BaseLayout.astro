@@ -47,6 +47,13 @@ interface Props {
    */
   ogDescription?: string;
   /**
+   * og:type. 정비 사례 글은 'article' 을 넘긴다 — 공유 카드와 크롤러가 글인지 사이트인지 구분한다.
+   * JSON-LD 쪽은 이미 BlogPosting 으로 나가므로 OG 만 맞추면 둘이 일치한다.
+   */
+  ogType?: 'website' | 'article';
+  /** og:type 이 'article' 일 때의 발행일 (YYYY-MM-DD). article:published_time 으로 나간다. */
+  publishedTime?: string;
+  /**
    * 빵부스러기 경로 — 홈 뒤의 항목만 넘긴다(홈은 자동으로 붙는다).
    * 메인 페이지에는 넘기지 않는다 (04단계 규칙).
    */
@@ -68,6 +75,8 @@ const {
   ogImageWidth = 1200,
   ogImageHeight = 630,
   ogDescription,
+  ogType = 'website',
+  publishedTime,
   breadcrumbs,
   schema = [],
 } = Astro.props;
@@ -124,7 +133,10 @@ const jsonLd = graph(nodes);
     <link rel="canonical" href={canonical} />
 
     <!-- Open Graph -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
+    {ogType === 'article' && publishedTime && (
+      <meta property="article:published_time" content={publishedTime} />
+    )}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={ogDesc} />
     <meta property="og:url" content={canonical} />
@@ -139,6 +151,9 @@ const jsonLd = graph(nodes);
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={ogDesc} />
     <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- 정비 사례 피드 — 크롤러·구독 도구가 이 링크로 피드를 찾는다 -->
+    <link rel="alternate" type="application/rss+xml" title="모터리페어 정비 사례" href="/rss.xml" />
 
     <!-- 파비콘 -->
     <link rel="icon" href="/favicon.ico" sizes="any" />

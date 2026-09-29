@@ -22,6 +22,10 @@
 /robots.txt
   Content-Type: text/plain; charset=utf-8
 
+# 정비 사례 RSS 피드 — 생성: src/pages/rss.xml.ts. 한글 본문이라 charset 이 필요하다.
+/rss.xml
+  Content-Type: application/rss+xml; charset=utf-8
+
 
 # 전역 보안 헤더
 /*
