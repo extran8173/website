@@ -75,7 +75,8 @@ const faqs = [
     <div class="container hero-inner">
       <h1 class="t-hero-display">동탄 수입차 전문 정비</h1>
       <p class="hero-sub t-lead">정기 점검·소모품 교환부터 고장 진단까지</p>
-      <div class="hero-cta">
+      {/* data-fab-hide — 이 블록이 화면에 보이는 동안 플로팅 전화 버튼을 숨긴다 (FabContact.astro) */}
+      <div class="hero-cta" data-fab-hide>
         <a href={cta.callHref} class="btn btn-call btn-hero">{cta.callLabel}</a>
         <a href={cta.naverHref} target="_blank" rel="noopener noreferrer" class="btn btn-naver btn-hero">{cta.naverLabel}</a>
       </div>
@@ -255,7 +256,8 @@ const faqs = [
     position: relative;
     color: var(--color-on-dark);
     background: var(--color-surface-tile-1);
-    min-height: 78vh;
+    min-height: 78vh;  /* 폴백 — svh 미지원 브라우저 */
+    min-height: 78svh; /* 모바일 주소창이 펼쳐진 상태 기준 — 주소창 때문에 CTA 가 잘리지 않게 */
     display: flex;
     align-items: flex-end;
     overflow: hidden;
@@ -387,7 +389,8 @@ const faqs = [
   }
   @media (max-width: 640px) {
     .hero { padding-block: 72px; }
-    .hero :global(.t-hero-display) { font-size: 34px; }
+    /* 모바일 크롭에서 제목 윗부분이 밝은 간판과 겹친다 — 사진은 더 어둡게 하지 않고 글자 주변만 약하게 번지는 그림자 추가 */
+    .hero :global(.t-hero-display) { font-size: 34px; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 0 14px rgba(0, 0, 0, 0.45); }
     /* 모바일: 커버 크롭으로 밝은 반사가 텍스트 위까지 올라옴 → 어두운 구간을 더 높이 확보 */
     .hero-scrim {
       background: linear-gradient(

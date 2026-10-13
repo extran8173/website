@@ -102,6 +102,8 @@ const isActive = (href: string) =>
     backdrop-filter: var(--frost);
     -webkit-backdrop-filter: var(--frost);
     border-bottom: 1px solid var(--color-hairline);
+    /* 아래 360px 미만 축소 규칙의 기준 — 뷰포트가 아니라 헤더 실제 폭으로 판정한다 */
+    container-type: inline-size;
   }
   .header-inner {
     height: 52px;
@@ -140,8 +142,11 @@ const isActive = (href: string) =>
   /* 2행은 768px 이상에서만 — 좁은 화면에선 1행만 남긴다 */
   .logo-name-sub { display: none; }
   /* 360px 미만 — 로고 폭을 줄여 한글 상호가 전화 아이콘과 겹치지 않게 한다.
-     (28px 로고 + 상호는 360px 에서 여유가 1.3px 뿐이고 그 아래로는 겹친다) */
-  @media (max-width: 359px) {
+     (28px 로고 + 상호는 360px 에서 여유가 1.3px 뿐이고 그 아래로는 겹친다)
+     @media 가 아니라 @container 인 이유: PC 브라우저는 세로 스크롤바(약 15px)를 뺀 폭으로 배치하지만
+     미디어 쿼리는 스크롤바를 포함한 폭으로 판정한다. 창 폭 360px 이면 실제 배치 폭은 345px 인데
+     이 규칙이 켜지지 않아 헤더가 14px 넘치며 가로 스크롤이 생겼다 (2026-10-13) */
+  @container (max-width: 359px) {
     .logo-link { gap: 6px; }
     .logo-link :global(img) { height: 20px; }
   }

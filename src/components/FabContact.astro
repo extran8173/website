@@ -26,6 +26,16 @@ import { cta } from '../data/business.ts';
     flex-direction: column;
     align-items: flex-end;
     gap: 12px;
+    transition: opacity 0.2s ease, visibility 0s linear 0s;
+  }
+  /* 페이지의 [data-fab-hide] 블록(메인 히어로 CTA 등)이 화면에 보이는 동안 숨김 — 같은 전화 버튼 중복 방지.
+     스크립트가 판정하기 전 첫 화면에서 깜빡이지 않도록, 그런 블록이 있는 페이지는 숨긴 채로 시작한다 */
+  .fab[data-hidden='true'],
+  :global(body:has([data-fab-hide])) .fab:not([data-hidden='false']) {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, visibility 0s linear 0.2s;
   }
   .fab-actions { display: flex; flex-direction: column; gap: 12px; }
   .fab-actions[hidden] { display: none; }
@@ -54,6 +64,13 @@ import { cta } from '../data/business.ts';
   @media (min-width: 1024px) {
     .fab { display: none; }
   }
+  /* 페이지 맨 아래에서 버튼(하단 16px + 56px)이 푸터 법적 고지 문구를 가리지 않도록 푸터 하단 여백 확보.
+     버튼 위 끝보다 16px 위에서 푸터 내용이 끝나게 한다 (기본 64px → 88px) */
+  @media (max-width: 1023px) {
+    :global(body:has(#fab-contact) .site-footer) {
+      padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+    }
+  }
 </style>
 
 <script>
@@ -78,4 +95,24 @@ import { cta } from '../data/business.ts';
   document.addEventListener('click', (e) => {
     if (fab && !fab.contains(e.target as Node)) setOpen(false);
   });
+
+  // [data-fab-hide] 블록이 하나라도 화면에 보이면 숨기고, 모두 벗어나면 페이드 인
+  const hideTargets = document.querySelectorAll('[data-fab-hide]');
+  if (fab && hideTargets.length) {
+    if (!('IntersectionObserver' in window)) {
+      fab.dataset.hidden = 'false';
+    } else {
+      const visible = new Set<Element>();
+      const io = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) visible.add(entry.target);
+          else visible.delete(entry.target);
+        }
+        const hide = visible.size > 0;
+        if (hide) setOpen(false);
+        fab.dataset.hidden = String(hide);
+      });
+      hideTargets.forEach((el) => io.observe(el));
+    }
+  }
 </script>
