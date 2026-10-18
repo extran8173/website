@@ -282,7 +282,9 @@ const faqs = [
   }
   /* 텍스트 그림자 — 그림자 금지 규칙(§3)의 예외: 장식 아닌 가독성 확보 목적, 사용자 승인(2026-07-26) */
   .hero :global(.t-hero-display) { color: var(--color-on-dark); text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); }
-  .hero-sub { color: #eaeaea; margin: 0; max-width: 40ch; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); }
+  /* keep-all — 한글이 음절 중간에서 끊기지 않게 어절 단위로 줄바꿈한다("교환부|터" 방지).
+     현재 문구·기기 폭(320px 이상)에서는 줄바꿈 결과가 같다 — 문구가 길어지거나 더 좁은 폭이 생길 때를 위한 방어책이다. */
+  .hero-sub { color: #eaeaea; margin: 0; max-width: 40ch; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); word-break: keep-all; }
   .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
   .hero .btn-naver { color: var(--color-on-dark); border-color: var(--color-on-dark); }
 
