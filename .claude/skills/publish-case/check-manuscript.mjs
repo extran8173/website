@@ -49,9 +49,9 @@ export function checkDraft(draft) {
   // ── 세면 되는 것 ──
   const naverLen = countNoSpace(n.body);
   out.push(
-    naverLen >= 1000 && naverLen <= 1500
-      ? row('pass', '네이버 본문', `${naverLen.toLocaleString()}자 (공백 제외)`, '1,000~1,500')
-      : row('fail', '네이버 본문', `${naverLen.toLocaleString()}자 (공백 제외)`, `1,000~1,500 범위 밖 — ${naverLen < 1000 ? '늘려야' : '줄여야'} 합니다`)
+    naverLen >= 1400 && naverLen <= 1700
+      ? row('pass', '네이버 본문', `${naverLen.toLocaleString()}자 (공백 제외)`, '1,500자 내외 (1,400~1,700)')
+      : row('fail', '네이버 본문', `${naverLen.toLocaleString()}자 (공백 제외)`, `1,400~1,700 범위 밖 — ${naverLen < 1400 ? '늘려야' : '줄여야'} 합니다`)
   );
 
   const desc = fm.description ?? '';
