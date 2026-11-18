@@ -5,8 +5,10 @@
  *   node .claude/skills/publish-case/prepare-images.mjs <slug> --renumber=3,1,2,…  [--dry]
  *
  * 입력 파일명 규칙 — 사용자가 원본 폴더에서 접두어를 붙인다:
- *   t_*    목록 대표이미지 — thumb.webp 로만 나가고 본문 번호에서 제외. 정확히 1개.
- *   그 외   본문 사진 — 파일명 끝 괄호 순번 `(n)` 오름차순.
+ *   t_*    목록 대표이미지 — thumb.webp 로 나가고 **본문에도 반드시 들어간다**. 정확히 1개.
+ *          (2026-11-19 개정 — 이전에는 본문에서 뺐다)
+ *   그 외   본문 사진.
+ *   본문 배열은 t_ 를 포함해 파일명 끝 괄호 순번 `(n)` 오름차순.
  *
  * 하는 일: --from 폴더 → raw/ 복사 → 정렬 → 가로 2000px 상한 → EXIF 제거 → WebP q80
  *          → src/content/cases/<slug>/images/01.webp … NN.webp + thumb.webp
@@ -261,9 +263,11 @@ async function main() {
     if (dup.length > 0) console.log(`※ 괄호 순번 중복: ${dup.join(', ')} — 계속 진행합니다.`);
   }
 
-  // ── 4) 본문 배열 구성 — t_ 를 뺀 나머지를 정렬 ──
+  // ── 4) 본문 배열 구성 — t_ 도 본문에 넣는다 (2026-11-19 개정) ──
+  //     대표 컷은 대개 작업의 핵심 장면(사용 부품·결과)이라 본문에서 빠지면 공정 서술에 구멍이 난다.
+  //     thumb.webp 는 6단계에서 같은 원본으로 따로 만든다.
   const thumb = entries.find((e) => e.isThumb);
-  const body = entries.filter((e) => !e.isThumb);
+  const body = [...entries];
   const kind = decideKeyKind(body);
   sortByKind(body, kind);
 
@@ -273,7 +277,7 @@ async function main() {
   if (noKey > 0) {
     console.log(`※ 정렬 키 없음 ${noKey}장 — 맨 뒤 배치. 3단계에서 순서를 바로잡을 것.`);
   }
-  console.log(`대표 원본: ${thumb.file} → overlay.mjs 로 오버레이 후 thumb.webp (본문 제외)`);
+  console.log(`대표 원본: ${thumb.file} → thumb.webp + 본문 ${String(body.indexOf(thumb) + 1).padStart(2, '0')}.webp (본문에도 포함)`);
 
   if (!dryRun) await mkdir(outDir, { recursive: true });
 
@@ -293,6 +297,7 @@ async function main() {
       n: i + 1,
       image: `images/${name}`,
       source: e.file,
+      isThumb: e.isThumb,
       paren: e.paren,
       taken: e.taken,
       fromName: e.fromName,
